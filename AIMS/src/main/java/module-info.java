@@ -7,6 +7,7 @@ module com.hust.ict.aims {
     requires org.kordamp.bootstrapfx.core;
     requires java.sql;
 	requires org.apache.httpcomponents.httpclient;
+	requires java.desktop;
 
     opens com.hust.ict.aims to javafx.fxml;
     exports com.hust.ict.aims;

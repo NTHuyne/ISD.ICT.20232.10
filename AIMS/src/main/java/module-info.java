@@ -8,6 +8,7 @@ module com.hust.ict.aims {
     requires java.sql;
 	requires org.apache.httpcomponents.httpclient;
 	requires java.desktop;
+	requires net.freeutils.jlhttp;
 
     opens com.hust.ict.aims to javafx.fxml;
     exports com.hust.ict.aims;

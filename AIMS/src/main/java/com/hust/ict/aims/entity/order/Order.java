@@ -1,8 +1,8 @@
 package com.hust.ict.aims.entity.order;
 
-import com.hust.ict.aims.entity.shipping.DeliveryInfo;
-
 import java.util.List;
+
+import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 
 public class Order {
     private int id;

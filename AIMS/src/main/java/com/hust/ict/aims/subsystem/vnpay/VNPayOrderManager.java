@@ -8,35 +8,33 @@ import com.hust.ict.aims.subsystem.IPayment;
 public class VNPayOrderManager implements IPayment {
 	private IClient client;
 	private VNPayDisplay vnpayDisplay;
-	
+
 	public VNPayOrderManager() {
 		super();
 		this.vnpayDisplay = new VNPayDisplay();
 	}
 
 	void processResponse(String url) {
-		
+
 	}
 
 	@Override
 	public void payOrder(double amount, String orderInfo, IClient client) {
 		// TODO Auto-generated method stub
 		this.client = client;
-		Request newRequest = new Request(amount, orderInfo);
-		
-	
-		String queryURL = "";
+		VNPayRequest newRequest = new VNPayRequest(amount, orderInfo);
+
 		try {
-			 queryURL = newRequest.buildQueryURL();
+			String queryURL = newRequest.buildQueryURL();
+			System.out.println(queryURL);
+			vnpayDisplay.sendPayOrder(queryURL);
+			
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		System.out.println(queryURL);
-		vnpayDisplay.sendPayOrder(queryURL);
 	}
-	
+
     public static void main(String[] args) {
         System.out.println("MainClassB is running");
         VNPayOrderManager orderManage = new VNPayOrderManager();

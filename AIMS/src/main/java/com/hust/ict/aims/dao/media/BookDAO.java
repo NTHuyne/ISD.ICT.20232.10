@@ -2,7 +2,7 @@ package com.hust.ict.aims.dao.media;
 
 
 
-import com.hust.ict.aims.database.ConnectJDBC;
+import com.hust.ict.aims.persistence.database.ConnectJDBC;
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.Media;
 

@@ -3,6 +3,7 @@ package com.hust.ict.aims.subsystem.vnpay;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,25 +31,27 @@ public class VNPayDisplay {
 		}
 	}
 	
-	private boolean serverStopped = false;
-	
 	private void configureURLReceivingServer() {
 		// Initialize server on port
 		// https://github.com/curtcox/JLHTTP/blob/main/faq.md
 		
 		server = new HTTPServer(chosenPort);
-		System.out.println("Server initialized:" + serverHost + chosenPort + chosenPath);
+		System.out.println("Server initialized: " + serverHost + chosenPort + chosenPath);
 		
 		// default virtual host
 		VirtualHost host = server.getVirtualHost(null);  
 		host.addContext(chosenPath, new ContextHandler() {
 		    public int serve(Request req, Response resp) throws IOException {
-		    	System.out.println("TESTING");
+		    	System.out.println("Received response.");
 		        resp.getHeaders().add("Content-Type", "text/plain");
 		        resp.send(200, "Hello, World!");
-		        req.getParams();
+		        
+		        for (Map.Entry<String, String> entry : req.getParams().entrySet()) {
+		            System.out.println(entry.getKey() + " = " + entry.getValue());
+		        }
 		        
 		        server.stop();
+		        System.out.println("Server terminating...");
 		        return 0;
 		    }
 		});
@@ -61,33 +64,13 @@ public class VNPayDisplay {
 		}
 	}
 
-    static long counter = 0; 
 	public void sendPayOrder(String queryURL) {
 		displayURL(queryURL);
 		configureURLReceivingServer();
-		
-//        ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-//
-//        // Schedule a task to check the state after 5 seconds, and repeat every 5 seconds
-//
-//        executor.scheduleAtFixedRate(() -> {
-//            if (serverStopped) {
-//                System.out.println("Response received. Exiting program.");
-//                executor.shutdown(); // Stop the executor
-//            } else {
-//                System.out.println("State is not stopped. Keeping server alive. (" + counter + ")");
-//                counter += 1;
-//            }
-//        }, 5, 5, TimeUnit.SECONDS); // Check after 5 seconds, repeat every 5 seconds
-//
-//        // Wait for the executor to terminate
-//        try {
-//            executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
-//        } catch (InterruptedException e) {
-//            // Handle interrupted exception
-//            e.printStackTrace();
-//        }
 	}
 
-	
+	public void sendPayOrder(String queryURL, IBrowserDisplay browser) {
+		browser.displayURL(queryURL);
+		configureURLReceivingServer();
+	}
 }

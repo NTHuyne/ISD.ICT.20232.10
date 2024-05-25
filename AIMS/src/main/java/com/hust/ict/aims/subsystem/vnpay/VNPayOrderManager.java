@@ -36,8 +36,9 @@ public class VNPayOrderManager implements IPayment {
 	}
 
     public static void main(String[] args) {
-        System.out.println("MainClassB is running");
+        System.out.println("VNPayOrderManager is running");
         VNPayOrderManager orderManage = new VNPayOrderManager();
         orderManage.payOrder(1806000, "Thanh toan don hang :5", null);
+        System.out.println("Continuing VNPayOrderManager.");
     }
 }

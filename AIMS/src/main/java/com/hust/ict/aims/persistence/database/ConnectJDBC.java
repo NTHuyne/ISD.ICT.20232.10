@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectJDBC {
-    public static Connection getConnection(){
+
+    public static Connection getConnection() {
         Connection conn = null;
 
         try (FileInputStream f = new FileInputStream("src/main/java/db.properties")) {
@@ -28,3 +29,4 @@ public class ConnectJDBC {
         return conn;
     }
 }
+

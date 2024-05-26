@@ -11,5 +11,7 @@ module com.hust.ict.aims {
 	requires net.freeutils.jlhttp;
 
     opens com.hust.ict.aims to javafx.fxml;
+    opens com.hust.ict.aims.view.home to javafx.fxml;
+    opens com.hust.ict.aims.view.cart to javafx.fxml;
     exports com.hust.ict.aims;
 }

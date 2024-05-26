@@ -43,6 +43,9 @@ public class Book extends Media{
         this.setPages(pages);
         this.setPublicationDate(publicationDate);
     }
+    public Book() {
+    	super();
+    }
 
     public String getLanguage() {
         return language;

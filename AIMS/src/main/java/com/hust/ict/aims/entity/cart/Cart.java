@@ -1,16 +1,18 @@
 package com.hust.ict.aims.entity.cart;
 
-import com.hust.ict.aims.entity.media.Media;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.hust.ict.aims.entity.media.Media;
 
 public class Cart {
     private final List<CartMedia> lstCartMedia;
     private static Cart cartInstance;
 
     public static Cart getCart(){
-        if(cartInstance == null) cartInstance = new Cart();
+        if(cartInstance == null) {
+			cartInstance = new Cart();
+		}
         return cartInstance;
     }
 
@@ -40,7 +42,9 @@ public class Cart {
 
     public CartMedia checkMediaInCart(Media media){
         for (CartMedia cartMedia : lstCartMedia) {
-            if (cartMedia.getMedia().getId() == media.getId()) return cartMedia;
+            if (cartMedia.getMedia().getId() == media.getId()) {
+				return cartMedia;
+			}
         }
         return null;
     }

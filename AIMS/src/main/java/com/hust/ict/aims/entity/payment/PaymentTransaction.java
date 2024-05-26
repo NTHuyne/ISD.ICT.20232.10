@@ -1,9 +1,9 @@
 package com.hust.ict.aims.entity.payment;
 
-import com.hust.ict.aims.entity.invoice.Invoice;
-
 import java.math.BigInteger;
 import java.util.Date;
+
+import com.hust.ict.aims.entity.invoice.Invoice;
 
 public class PaymentTransaction {
     private BigInteger id;

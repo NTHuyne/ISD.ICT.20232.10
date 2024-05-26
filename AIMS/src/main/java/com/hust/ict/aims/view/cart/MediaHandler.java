@@ -2,7 +2,8 @@ package com.hust.ict.aims.view.cart;
 
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.cart.CartMedia;
-import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.utils.Utils;
+import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.view.FXMLScreenHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -13,42 +14,35 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import com.hust.ict.aims.utils.Utils;
-import com.hust.ict.aims.utils.Configs;
 
-
-import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.logging.Logger;
-
 
 public class MediaHandler extends FXMLScreenHandler {
 
     private static Logger LOGGER = Utils.getLogger(MediaHandler.class.getName());
 
     @FXML
-    protected HBox hboxMedia;
+    private HBox hboxMedia;
 
     @FXML
-    protected ImageView image;
+    private ImageView image;
 
     @FXML
-    protected Label labelOutOfStock;
+    private Label labelOutOfStock;
 
     @FXML
-    protected Label quantity;
+    private Label quantity;
 
     @FXML
-    protected Label title;
+    private Label title;
 
     @FXML
-    protected Label price;
+    private Label price;
 
     @FXML
-    protected Button deleteBtn;
+    private Button deleteBtn;
 
     private CartScreenHandler cartScreen;
 
@@ -73,19 +67,17 @@ public class MediaHandler extends FXMLScreenHandler {
         price.setText(Utils.getCurrencyFormat(cartMedia.getPrice()));
         quantity.setText(String.valueOf(cartMedia.getQuantity()));
 
-//        File file = new File(cartMedia.getMedia().getImageUrl());
-//        Image im = new Image(file.toURI().toString());
-//        image.setImage(im);
-//        image.setPreserveRatio(false);
-//        image.setFitHeight(110);
-//        image.setFitWidth(92);
+        Image im = new Image(getClass().getResourceAsStream("/assets/images/" + cartMedia.getMedia().getImageUrl()));
+        image.setImage(im);
+        image.setPreserveRatio(false);
+        image.setFitHeight(110);
+        image.setFitWidth(92);
 
-        // add delete button
         deleteBtn.setFont(Configs.REGULAR_FONT);
         deleteBtn.setOnMouseClicked(e -> {
             try {
-                Cart.getCart().removeCartMedia(cartMedia); // update user cart
-                cartScreen.updateCart(); // re-display user cart
+                Cart.getCart().removeCartMedia(cartMedia);
+                cartScreen.updateCart();
             } catch (SQLException exp) {
                 exp.printStackTrace();
             }
@@ -94,8 +86,7 @@ public class MediaHandler extends FXMLScreenHandler {
     }
 
     private void initializeSpinner(){
-        SpinnerValueFactory<Integer> valueFactory = //
-                new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, cartMedia.getQuantity());
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, cartMedia.getQuantity());
         spinner = new Spinner<Integer>(valueFactory);
         spinner.setOnMouseClicked( e -> {
             try {
@@ -103,19 +94,19 @@ public class MediaHandler extends FXMLScreenHandler {
                 int remainQuantity = cartMedia.getMedia().getQuantity();
                 LOGGER.info("NumOfProd: " + numOfProd + " -- remainOfProd: " + remainQuantity);
                 if (numOfProd > remainQuantity){
-                    LOGGER.info("product " + cartMedia.getMedia().getTitle() + " only remains " + remainQuantity + " (required " + numOfProd + ")");
+                    LOGGER.info("Product " + cartMedia.getMedia().getTitle() + " only remains " + remainQuantity + " (required " + numOfProd + ")");
                     labelOutOfStock.setText("Sorry, Only " + remainQuantity + " remain in stock");
                     spinner.getValueFactory().setValue(remainQuantity);
                     numOfProd = remainQuantity;
                 }
 
-                // update quantity of mediaCart in useCart
+                // Update quantity of mediaCart in useCart
                 cartMedia.setQuantity(numOfProd);
 
-                // update the total of mediaCart
-                price.setText(Utils.getCurrencyFormat(numOfProd*cartMedia.getPrice()));
+                // Update the total of mediaCart
+                price.setText(Utils.getCurrencyFormat(numOfProd * cartMedia.getPrice()));
 
-                // update subtotal and amount of Cart
+                // Update subtotal and amount of Cart
                 cartScreen.updateCartAmount();
 
             } catch (Exception e1) {

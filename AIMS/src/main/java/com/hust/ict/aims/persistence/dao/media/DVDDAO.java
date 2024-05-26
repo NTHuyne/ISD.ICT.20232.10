@@ -1,7 +1,6 @@
-package com.hust.ict.aims.dao.media;
+package com.hust.ict.aims.persistence.dao.media;
 
 import com.hust.ict.aims.persistence.database.ConnectJDBC;
-import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.entity.media.Media;
 

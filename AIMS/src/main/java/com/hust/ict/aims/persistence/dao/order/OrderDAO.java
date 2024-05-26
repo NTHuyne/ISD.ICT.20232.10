@@ -1,4 +1,4 @@
-package com.hust.ict.aims.dao.order;
+package com.hust.ict.aims.persistence.dao.order;
 
 
 

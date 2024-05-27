@@ -18,21 +18,16 @@
 
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.layout.AnchorPane?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="129.0" prefWidth="993.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200.0" prefWidth="1139.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="129.0" prefWidth="1152.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <center>
-    <HBox fx:id="hboxMedia" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="1366.0" style="-fx-background-color: fff; -fx-background-radius: 20px;">
+    <HBox fx:id="hboxMedia" alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="1139.0" style="-fx-background-color: fff; -fx-background-radius: 20px;">
         <children>
-            <Pane prefHeight="100.0" prefWidth="70.0" />
+<!--            <Pane prefHeight="100.0" prefWidth="70.0" />-->
             <ImageView fx:id="image" fitHeight="100.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@../assets/images/2.png" />
-                </image>
-                <HBox.margin>
-                    <Insets />
-                </HBox.margin>
+
             </ImageView>
-            <Label fx:id="title" contentDisplay="CENTER" prefHeight="100.0" prefWidth="300.0"  textAlignment="CENTER">
+            <Label fx:id="title" alignment="TOP_LEFT" contentDisplay="CENTER" prefHeight="100.0" prefWidth="300.0"  textAlignment="CENTER">
                 <padding>
                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                 </padding>

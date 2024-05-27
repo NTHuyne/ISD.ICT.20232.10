@@ -14,6 +14,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -97,6 +98,7 @@ public class MediaHandler extends BaseScreenHandler {
     public Media getMedia() {
         return media;
     }
+
 
     /**
      * @throws SQLException

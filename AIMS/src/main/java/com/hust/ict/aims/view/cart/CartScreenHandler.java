@@ -49,9 +49,13 @@ public class CartScreenHandler extends BaseScreenHandler {
 
     public CartScreenHandler(Stage stage, String screenPath) throws IOException {
         super(stage, screenPath);
-        File file = new File(Configs.IMAGE_PATH + "/Logo.png");
-        Image im = new Image(file.toURI().toString());
-        aimsImage.setImage(im);
+//        File file = new File(Configs.IMAGE_PATH + "/Logo.png");
+//        try {
+//            Image im = new Image("@../assets/images/Logo.png");
+//            aimsImage.setImage(im);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
         // on mouse clicked, we back to home
         aimsImage.setOnMouseClicked(e -> {
@@ -111,6 +115,9 @@ public class CartScreenHandler extends BaseScreenHandler {
     private void displayCartWithMediaAvailability(){
         // clear all old cartMedia
         vboxCart.getChildren().clear();
+        vboxCart.setPrefHeight(390.0);
+        vboxCart.setMaxWidth(Double.MAX_VALUE);
+        vboxCart.setPrefWidth(1139.0);
 
         List lstMedia = getBController().getListCartMedia();
 
@@ -120,6 +127,10 @@ public class CartScreenHandler extends BaseScreenHandler {
                 CartMedia cartMedia = (CartMedia) cm;
                 MediaHandler mediaCartScreen = new MediaHandler(Configs.CART_MEDIA_PATH, this);
                 mediaCartScreen.setCartMedia(cartMedia);
+
+                // Set maxWidth to allow mediaCartScreen to fit the width of vboxCart
+                mediaCartScreen.getContent().setMaxWidth(Double.MAX_VALUE);
+
                 // add spinner
                 vboxCart.getChildren().add(mediaCartScreen.getContent());
             }

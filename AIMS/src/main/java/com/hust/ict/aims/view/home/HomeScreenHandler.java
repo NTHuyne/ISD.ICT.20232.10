@@ -75,7 +75,8 @@ public class HomeScreenHandler extends BaseScreenHandler {
     }
     @Override
     public void show() {
-        numMediaInCart.setText(String.valueOf(Cart.getCart().getListMedia().size()) + " media");
+        System.out.println(Cart.getCart().getTotalMedia());
+        numMediaInCart.setText(String.valueOf(Cart.getCart().getTotalMedia()) + " media");
         super.show();
     }
 

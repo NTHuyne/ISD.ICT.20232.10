@@ -11,10 +11,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ImageView fx:id="detailedMediaImage" fitHeight="200.0" fitWidth="300.0" layoutX="81.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../assets/images/1.png" />
-         </image></ImageView>
+       <ImageView fx:id="detailedMediaImage" fitHeight="200.0" fitWidth="300.0" layoutX="81.0" layoutY="80.0"
+                  pickOnBounds="true" preserveRatio="true">
+       </ImageView>
         <Label fx:id="detailedMediaTitle" layoutX="98.0" layoutY="39.0" text="Media Title" textAlignment="CENTER">
             <font>
                 <Font size="20.0" />

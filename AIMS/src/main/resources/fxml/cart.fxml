@@ -13,9 +13,7 @@
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fx:id="aimsImage" fitHeight="103.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../assets/images/Logo.png" />
-                    </image>
+                    <Image url="@../assets/images/Logo.png" />
                 </ImageView>
                 <Separator maxHeight="-Infinity" maxWidth="-Infinity" orientation="VERTICAL" prefHeight="64.0" prefWidth="34.0" />
                 <Label contentDisplay="CENTER" prefHeight="86.0" prefWidth="182.0" text="Giỏ hàng" textAlignment="CENTER" textFill="#f33061">
@@ -41,23 +39,23 @@
             <children>
                 <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="1139.0" style="-fx-background-color: fff; -fx-background-radius: 20;">
                     <children>
-                        <Pane prefHeight="100.0" prefWidth="110.0" />
-                        <Label contentDisplay="CENTER" prefHeight="23.0" prefWidth="317.0" text="Sản phẩm" textAlignment="CENTER">
+                        <Pane prefHeight="46.0" prefWidth="242.0" />
+                        <Label prefHeight="27.0" prefWidth="293.0" text="Sản phẩm" textAlignment="CENTER">
                             <font>
                                 <Font name="SVN-Linux Libertine" size="18.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="190.0" text="Đơn giá" textAlignment="CENTER">
+                        <Label alignment="CENTER" prefHeight="27.0" prefWidth="92.0" text="Đơn giá" textAlignment="CENTER">
                             <font>
                                 <Font name="SVN-Linux Libertine" size="18.0" />
                             </font>
                         </Label>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="174.0" text="Số lượng" textAlignment="CENTER">
+                        <Label alignment="CENTER" prefHeight="27.0" prefWidth="204.0" text="Số lượng" textAlignment="CENTER">
                             <font>
                                 <Font name="SVN-Linux Libertine" size="18.0" />
                             </font>
                         </Label>
-                        <Label alignment="TOP_RIGHT" contentDisplay="CENTER" prefHeight="27.0" prefWidth="331.0" text="Thao tác" textAlignment="CENTER">
+                        <Label alignment="CENTER" prefHeight="27.0" prefWidth="231.0" text="Thao tác" textAlignment="CENTER">
                             <font>
                                 <Font name="SVN-Linux Libertine" size="18.0" />
                             </font>
@@ -67,11 +65,9 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </HBox>
-            <ScrollPane prefHeight="389.0" prefWidth="1166.0">
-              <content>
-                  <VBox fx:id="vboxCart" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="567.0" />
-              </content>
-            </ScrollPane>
+                <ScrollPane fitToWidth="true" prefHeight="389.0">
+                    <VBox fx:id="vboxCart" maxWidth="Infinity" prefHeight="390.0" prefWidth="1139.0" />
+                </ScrollPane>
                 <HBox alignment="BASELINE_CENTER" prefHeight="40.0" prefWidth="1166.0">
                     <children>
                         <Separator maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="16.0" prefWidth="859.0">

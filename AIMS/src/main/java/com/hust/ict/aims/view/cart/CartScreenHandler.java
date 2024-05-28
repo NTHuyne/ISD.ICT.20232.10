@@ -1,13 +1,14 @@
 package com.hust.ict.aims.view.cart;
 
+import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.controller.ViewCartController;
 import com.hust.ict.aims.entity.cart.CartMedia;
-import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 import com.hust.ict.aims.view.home.HomeScreenHandler;
+import com.hust.ict.aims.view.place.ShippingScreenHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -87,7 +88,21 @@ public class CartScreenHandler extends BaseScreenHandler {
     }
 
     public void requestToPlaceOrder(){
-      
+        PlaceOrderController placeOrderController = new PlaceOrderController();
+        if(placeOrderController.getListCartMedia().isEmpty()) return;
+        placeOrderController.placeOrder();
+//        displayCartWithMediaAvailability();
+        try {
+            ShippingScreenHandler shippingScreenHandler = new ShippingScreenHandler(this.stage, Configs.SHIPPING_SCREEN_PATH, placeOrderController);
+            shippingScreenHandler.setHomeScreenHandler(homeScreenHandler);
+            shippingScreenHandler.setScreenTitle("Shipping");
+            shippingScreenHandler.setBController(placeOrderController);
+            shippingScreenHandler.show();
+        }
+        catch(Exception e) {
+            displayCartWithMediaAvailability();
+            e.printStackTrace();
+        }
     }
 
     public void updateCart() throws SQLException{

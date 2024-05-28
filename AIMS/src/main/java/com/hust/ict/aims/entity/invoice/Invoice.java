@@ -13,6 +13,13 @@ public class Invoice {
         this.order = order;
     }
 
+    public Invoice(Order order) {
+        this.order = order;
+        order.getLstOrderMedia().forEach(item -> {
+            this.totalAmount += item.getPrice();
+        });
+    }
+
     public Invoice() {}
 
     public int getId() {

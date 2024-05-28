@@ -40,15 +40,17 @@ public class PlaceOrderController extends BaseController{
     }
 
     public Order createOrder(DeliveryInfo deliveryInfo) {
-        this.deliveryInfo = deliveryInfo;
+//        this.deliveryInfo = deliveryInfo;
         Order order = new Order();
         order.setDeliveryInfo(deliveryInfo);
+        System.out.println("Create Order, length cart items="+cartService.getListMedia().size());
         for(Object obj : cartService.getListMedia()) {
             CartMedia cartMedia = (CartMedia) obj;
-            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity(),
-                    cartMedia.getPrice());
+            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getPrice(),
+                    cartMedia.getQuantity());
             order.getLstOrderMedia().add(orderMedia);
         }
+        System.out.println("Length of order items="+order.getLstOrderMedia().size());
         return order;
     }
 

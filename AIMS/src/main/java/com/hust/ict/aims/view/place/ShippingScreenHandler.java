@@ -3,6 +3,7 @@ package com.hust.ict.aims.view.place;
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
+import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.view.BaseScreenHandler;
@@ -62,10 +63,14 @@ public class ShippingScreenHandler extends BaseScreenHandler {
                 !addressField.getText().isEmpty() && !provinceField.getValue().isEmpty()) {
                 DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), instructionsField.getText());
                 Order order = placeOrderController.createOrder(deliveryInfo);
-                // doing
                 Invoice invoice = placeOrderController.createInvoice(order);
+
                 try {
-                    InvoiceHandler invoiceHandler = new InvoiceHandler(this.stage, Configs.INVOICE_SCREEN_PATH);
+                    InvoiceHandler invoiceHandler = new InvoiceHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
+                    invoiceHandler.setHomeScreenHandler(homeScreenHandler);
+                    invoiceHandler.setScreenTitle("Invoice");
+                    invoiceHandler.setBController(placeOrderController);
+                    invoiceHandler.show();
                 }
                 catch(Exception exp) {
                     exp.printStackTrace();

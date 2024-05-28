@@ -1,9 +1,9 @@
 package com.hust.ict.aims.controller;
 
-import com.hust.ict.aims.persistence.dao.media.BookDAO;
-import com.hust.ict.aims.persistence.dao.media.CDDAO;
-import com.hust.ict.aims.persistence.dao.media.DVDDAO;
-import com.hust.ict.aims.persistence.dao.media.MediaDAO;
+import com.hust.ict.aims.dao.media.BookDAO;
+import com.hust.ict.aims.dao.media.CDDAO;
+import com.hust.ict.aims.dao.media.DVDDAO;
+import com.hust.ict.aims.dao.media.MediaDAO;
 import com.hust.ict.aims.entity.media.Media;
 
 import java.sql.SQLException;

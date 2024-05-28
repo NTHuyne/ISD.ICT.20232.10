@@ -1,14 +1,15 @@
 package com.hust.ict.aims.entity.order;
 
-import java.util.List;
-
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     private int id;
     private int shippingFees;
     private int subtotal;
-    private List<OrderMedia> lstOrderMedia;
+    private List<OrderMedia> lstOrderMedia = new ArrayList<>();
     private DeliveryInfo deliveryInfo;
 
     public Order(){

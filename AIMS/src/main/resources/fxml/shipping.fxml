@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-border-radius: 50px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="430.0" style="-fx-border-radius: 50px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <HBox prefHeight="80.0" prefWidth="600.0">
       <children>
          <ImageView fx:id="aimsImage" fitHeight="80.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -31,7 +31,7 @@
          </Label>
       </children>
    </HBox>
-    <GridPane hgap="10" layoutX="145.0" layoutY="80.0" vgap="10">
+    <GridPane hgap="10" layoutX="120.0" layoutY="91.0" vgap="10">
         <!--                <ColumnConstraints percentWidth="50"/>-->
         <!--                <ColumnConstraints percentWidth="50"/>-->
 
@@ -67,12 +67,12 @@
             <VBox />
         </VBox>
     </VBox>
-    <Button fx:id="submitDeliveryInfoButton" layoutX="242.0" layoutY="324.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: red; -fx-border-radius: 50;" text="Submit" textFill="#fdfafa">
+    <Button fx:id="submitDeliveryInfoButton" layoutX="189.0" layoutY="351.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: red; -fx-border-radius: 50;" text="Submit" textFill="#fdfafa">
         <font>
             <Font name="System Bold" size="12.0" />
         </font>
     </Button>
-   <Button fx:id="placeRushOrderButton" layoutX="393.0" layoutY="324.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: green; -fx-border-radius: 50;" text="Place rush order" textFill="#fdfafa">
+   <Button fx:id="placeRushOrderButton" layoutX="327.0" layoutY="351.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: green; -fx-border-radius: 50;" text="Place rush order" textFill="#fdfafa">
       <font>
          <Font name="System Bold" size="12.0" />
       </font>

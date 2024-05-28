@@ -2,19 +2,20 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: e1f8ff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane style="-fx-background-color: e1f8ff;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="1000.0" style="-fx-background-color: fff; -fx-background-radius: 20px;">
+      <HBox alignment="CENTER_LEFT" prefHeight="50.0" style="-fx-background-color: fff; -fx-background-radius: 0;">
          <children>
             <Pane prefHeight="100.0" prefWidth="70.0" />
             <ImageView fx:id="mediaImage" fitHeight="100.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="mediaTitle" prefHeight="100.0" prefWidth="300.0" text="Dai so HUST" textAlignment="CENTER">
+            <Label fx:id="mediaTitle" prefHeight="23.0" prefWidth="152.0" text="Dai so HUST" textAlignment="CENTER">
                <font>
                   <Font size="18.0" />
                </font>
@@ -22,11 +23,13 @@
                   <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </Label>
-            <Label fx:id="mediaUnitPrice" prefHeight="23.0" prefWidth="150.0" text="Label">
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label fx:id="mediaUnitPrice" alignment="CENTER" prefHeight="23.0" prefWidth="149.0" text="Label">
                <font>
                   <Font size="18.0" />
                </font></Label>
-            <Label fx:id="mediaQuantity" prefHeight="23.0" prefWidth="150.0" text="Label">
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label fx:id="mediaQuantity" prefHeight="23.0" prefWidth="138.0" text="Label">
                <padding>
                   <Insets left="50.0" />
                </padding>
@@ -34,7 +37,8 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="mediaTotal" alignment="CENTER" prefHeight="23.0" prefWidth="392.0" text="Label">
+            <Separator orientation="VERTICAL" prefHeight="200.0" />
+            <Label fx:id="mediaTotal" alignment="CENTER" prefHeight="23.0" prefWidth="289.0" text="Label">
                <font>
                   <Font size="18.0" />
                </font>

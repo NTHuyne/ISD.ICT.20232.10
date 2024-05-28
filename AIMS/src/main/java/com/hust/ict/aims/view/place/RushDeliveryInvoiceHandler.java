@@ -1,20 +1,16 @@
 package com.hust.ict.aims.view.place;
 
-import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
-import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
-import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,8 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class InvoiceHandler extends BaseScreenHandler {
-
+public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
     @FXML
     private ImageView aimsImage;
 
@@ -72,18 +67,17 @@ public class InvoiceHandler extends BaseScreenHandler {
     @FXML
     private VBox itemsVBox;
 
-    private Invoice invoice;
 
-    public InvoiceHandler(Stage stage, String screenPath, Invoice invoice) throws IOException {
+    public RushDeliveryInvoiceHandler(Stage stage, String screenPath, Order regularOrder, Order rushOrder) throws IOException {
         super(stage, screenPath);
-        this.invoice = invoice;
+
         File file = new File(Configs.IMAGE_PATH + "/Logo.png");
         Image im = new Image(file.toURI().toString());
         aimsImage.setImage(im);
 
-        DeliveryInfo deliveryInfo = invoice.getOrder().getDeliveryInfo();
+        DeliveryInfo deliveryInfo = regularOrder.getDeliveryInfo();
 
-        setUpData(invoice.getOrder().getLstOrderMedia(), deliveryInfo);
+        setUpData(regularOrder.getLstOrderMedia(), deliveryInfo);
 
         // on mouse clicked, we back to home
         aimsImage.setOnMouseClicked(e -> {
@@ -102,7 +96,6 @@ public class InvoiceHandler extends BaseScreenHandler {
             if(confirmationAlert.isConfirmed())
                 homeScreenHandler.show();
         });
-
     }
 
     public void setUpData(List<OrderMedia> lstOrderMedia, DeliveryInfo deliveryInfo) {
@@ -110,11 +103,11 @@ public class InvoiceHandler extends BaseScreenHandler {
         phoneField.setText(deliveryInfo.getPhone());
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
 
-        subtotalLabel.setText(Utils.getCurrencyFormat(this.invoice.getTotalAmount()));
-        vatLabel.setText(Utils.getCurrencyFormat(this.invoice.getTotalAmount() * 8 / 100));
-        priceLabel.setText(Utils.getCurrencyFormat(
-                this.invoice.getTotalAmount() * 108 / 100 + 25000
-        ));
+//        subtotalLabel.setText(Utils.getCurrencyFormat(this.invoice.getTotalAmount()));
+//        vatLabel.setText(Utils.getCurrencyFormat(this.invoice.getTotalAmount() * 8 / 100));
+//        priceLabel.setText(Utils.getCurrencyFormat(
+//                this.invoice.getTotalAmount() * 108 / 100 + 25000
+//        ));
 
         try{
             for(Object om : lstOrderMedia) {

@@ -4,6 +4,7 @@ import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
+import com.hust.ict.aims.exception.placement.RushOrderUnsupportedException;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.view.BaseScreenHandler;
@@ -80,13 +81,34 @@ public class ShippingScreenHandler extends BaseScreenHandler {
                 ErrorAlert errorAlert = new ErrorAlert();
                 errorAlert.createAlert("Error Message", null, "Some fields were left blank!");
                 errorAlert.show();
-                throw new RuntimeException("Some field were left blank!");
+                throw new RuntimeException("Some field were left blank! Please re-enter delivery information");
             }
         });
 
         placeRushOrderButton.setOnMouseClicked(e -> {
             // place rush order
-            placeOrderController.placeRushOrder();
+            if(!nameField.getText().isEmpty() && !phoneField.getText().isEmpty() &&
+                    !addressField.getText().isEmpty() && !provinceField.getValue().isEmpty()) {
+                DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), instructionsField.getText());
+                Order order = placeOrderController.createOrder(deliveryInfo);
+//                Invoice invoice = placeOrderController.createInvoice(order);
+                try {
+                    placeOrderController.placeRushOrder(order);
+                }
+                catch(RushOrderUnsupportedException exp){
+                    ErrorAlert errorAlert = new ErrorAlert();
+                    errorAlert.createAlert("Error message", null, "Rush delivery doesn\'t support current address!");
+                    errorAlert.show();
+                    throw new RuntimeException("Rush order unsupported");
+                }
+
+            }
+            else {
+                ErrorAlert errorAlert = new ErrorAlert();
+                errorAlert.createAlert("Error Message", null, "Some fields were left blank!");
+                errorAlert.show();
+                throw new RuntimeException("Some field were left blank! Please re-enter delivery information");
+            }
         });
     }
 

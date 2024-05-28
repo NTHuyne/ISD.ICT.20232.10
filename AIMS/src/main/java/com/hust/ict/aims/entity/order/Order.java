@@ -11,6 +11,7 @@ public class Order {
     private int subtotal;
     private List<OrderMedia> lstOrderMedia = new ArrayList<>();
     private DeliveryInfo deliveryInfo;
+    private boolean isRushOrder;
 
     public Order(){
     }
@@ -60,4 +61,8 @@ public class Order {
     public void setDeliveryInfo(DeliveryInfo deliveryInfo) {
         this.deliveryInfo = deliveryInfo;
     }
+
+    public boolean getIsRushOrder() { return isRushOrder; }
+
+    public void setIsRushOrder(boolean isRushOrder) { this.isRushOrder = isRushOrder; }
 }

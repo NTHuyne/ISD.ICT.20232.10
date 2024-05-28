@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-border-radius: 50px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hust.ict.aims.view.place.ShippingScreenHandler">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-border-radius: 50px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <HBox prefHeight="80.0" prefWidth="600.0">
       <children>
          <ImageView fx:id="aimsImage" fitHeight="80.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -42,7 +42,7 @@
         <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
         <Label text="Province:" GridPane.rowIndex="2" />
-      <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <ChoiceBox fx:id="provinceField" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
         <Label text="Address:" GridPane.rowIndex="3" />
         <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="3" />

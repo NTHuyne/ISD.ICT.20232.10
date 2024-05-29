@@ -1,15 +1,17 @@
 package com.hust.ict.aims.entity.order;
 
-import java.util.List;
-
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Order {
     private int id;
     private int shippingFees;
     private int subtotal;
-    private List<OrderMedia> lstOrderMedia;
+    private List<OrderMedia> lstOrderMedia = new ArrayList<>();
     private DeliveryInfo deliveryInfo;
+    private boolean isRushOrder;
 
     public Order(){
     }
@@ -59,4 +61,8 @@ public class Order {
     public void setDeliveryInfo(DeliveryInfo deliveryInfo) {
         this.deliveryInfo = deliveryInfo;
     }
+
+    public boolean getIsRushOrder() { return isRushOrder; }
+
+    public void setIsRushOrder(boolean isRushOrder) { this.isRushOrder = isRushOrder; }
 }

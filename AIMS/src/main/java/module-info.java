@@ -13,5 +13,6 @@ module com.hust.ict.aims {
     opens com.hust.ict.aims to javafx.fxml;
     opens com.hust.ict.aims.view.home to javafx.fxml;
     opens com.hust.ict.aims.view.cart to javafx.fxml;
+    opens com.hust.ict.aims.view.place to javafx.fxml;
     exports com.hust.ict.aims;
 }

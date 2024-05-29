@@ -1,13 +1,15 @@
 package com.hust.ict.aims.view.cart;
 
+import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.controller.ViewCartController;
 import com.hust.ict.aims.entity.cart.CartMedia;
-import com.hust.ict.aims.entity.order.Order;
+import com.hust.ict.aims.exception.placement.CartEmptyException;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 import com.hust.ict.aims.view.home.HomeScreenHandler;
+import com.hust.ict.aims.view.place.ShippingScreenHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -66,12 +68,13 @@ public class CartScreenHandler extends BaseScreenHandler {
             LOGGER.info("Place Order button clicked");
             try {
                 requestToPlaceOrder();
-            } catch (Exception exp) {
+            } catch (CartEmptyException exp) {
                 LOGGER.severe("Cannot place the order, see the logs");
                 ErrorAlert errorAlert = new ErrorAlert();
-                errorAlert.createAlert("Error Message", null, "Cannot place the order");
+                errorAlert.createAlert("Error Message", null, "Cannot place the order because the cart is empty");
                 errorAlert.show();
                 exp.printStackTrace();
+                homeScreenHandler.show();
                 throw new RuntimeException("Cannot place the order");
             }
         });
@@ -90,8 +93,24 @@ public class CartScreenHandler extends BaseScreenHandler {
         show();
     }
 
-    public void requestToPlaceOrder(){
-      
+    public void requestToPlaceOrder() throws CartEmptyException {
+        PlaceOrderController placeOrderController = new PlaceOrderController();
+        if (placeOrderController.getListCartMedia().isEmpty()){ //return;
+            throw new CartEmptyException("Cart is empty");
+        }
+        placeOrderController.placeOrder();
+//        displayCartWithMediaAvailability();
+        try {
+            ShippingScreenHandler shippingScreenHandler = new ShippingScreenHandler(this.stage, Configs.SHIPPING_SCREEN_PATH, placeOrderController);
+            shippingScreenHandler.setHomeScreenHandler(homeScreenHandler);
+            shippingScreenHandler.setScreenTitle("Shipping");
+            shippingScreenHandler.setBController(placeOrderController);
+            shippingScreenHandler.show();
+        }
+        catch(IOException e) {
+            displayCartWithMediaAvailability();
+            e.printStackTrace();
+        }
     }
 
     public void updateCart() throws SQLException{

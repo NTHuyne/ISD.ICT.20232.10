@@ -1,6 +1,7 @@
 package com.hust.ict.aims.view.home;
 
 import com.hust.ict.aims.controller.HomeController;
+import com.hust.ict.aims.persistence.dao.media.BookDAO;
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;

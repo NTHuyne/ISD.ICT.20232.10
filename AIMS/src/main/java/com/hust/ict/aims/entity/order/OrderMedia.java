@@ -9,8 +9,8 @@ public class OrderMedia {
 
     public OrderMedia(Media media, int price, int quantity) {
         this.setMedia(media);
-        this.setPrice(price);
         this.setQuantity(quantity);
+        this.setPrice(price);
     }
 
     public OrderMedia() {}

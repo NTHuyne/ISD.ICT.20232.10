@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -27,7 +26,7 @@
                         </image>
                     </ImageView>
                     <Separator maxHeight="-Infinity" maxWidth="-Infinity" orientation="VERTICAL" prefHeight="64.0" prefWidth="34.0" />
-                    <Label fx:id="pageTitle" contentDisplay="CENTER" prefHeight="86.0" prefWidth="318.0" text="Invoice" textAlignment="CENTER" textFill="#f33061">
+                    <Label fx:id="pageTitle" contentDisplay="CENTER" prefHeight="86.0" prefWidth="350.0" text="Rush Delivery Invoice" textAlignment="CENTER" textFill="#f33061">
                         <font>
                             <Font name="UTM Eremitage" size="36.0" />
                         </font>
@@ -96,41 +95,6 @@
                             </Label>
                         </children>
                     </GridPane>
-                    <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="1139.0" style="-fx-background-color: fff; -fx-background-radius: 20;">
-                        <children>
-                            <Pane prefHeight="100.0" prefWidth="70.0" />
-                            <Label contentDisplay="CENTER" prefHeight="23.0" prefWidth="317.0" text="Media" textAlignment="CENTER">
-                                <font>
-                                    <Font name="SVN-Linux Libertine" size="18.0" />
-                                </font>
-                            </Label>
-                            <Separator orientation="VERTICAL" prefHeight="200.0" />
-                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="190.0" text="Unit price" textAlignment="CENTER">
-                                <font>
-                                    <Font name="SVN-Linux Libertine" size="18.0" />
-                                </font>
-                            </Label>
-                            <Separator orientation="VERTICAL" prefHeight="200.0" />
-                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="174.0" text="Quantity" textAlignment="CENTER">
-                                <font>
-                                    <Font name="SVN-Linux Libertine" size="18.0" />
-                                </font>
-                            </Label>
-                            <Separator orientation="VERTICAL" prefHeight="200.0" />
-                            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="23.0" prefWidth="354.0" text="Total" textAlignment="CENTER">
-                                <font>
-                                    <Font name="SVN-Linux Libertine" size="18.0" />
-                                </font>
-                            </Label>
-                        </children>
-                        <VBox.margin>
-                            <Insets top="10.0" />
-                        </VBox.margin></HBox>
-                    <ScrollPane prefHeight="200.0" prefWidth="200.0">
-                        <content>
-                            <VBox fx:id="itemsVBox" prefHeight="200.0" prefWidth="900.0" />
-                        </content>
-                    </ScrollPane>
                 </children>
             </VBox>
         </center>
@@ -141,7 +105,7 @@
             <Pane prefHeight="50.0" prefWidth="1366.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER" />
         </bottom>
         <right>
-            <VBox alignment="TOP_CENTER" prefHeight="614.0" prefWidth="349.0" style="-fx-background-color: f33061; -fx-background-radius: 40;" BorderPane.alignment="CENTER">
+            <VBox fx:id="paymentInfoVBox" alignment="TOP_CENTER" prefHeight="614.0" prefWidth="349.0" style="-fx-background-color: f33061; -fx-background-radius: 40;" BorderPane.alignment="CENTER">
                 <opaqueInsets>
                     <Insets />
                 </opaqueInsets>
@@ -162,107 +126,191 @@
                             <Insets bottom="20.0" />
                         </VBox.margin>
                     </Separator>
-                    <GridPane prefWidth="354.0">
+               <VBox fx:id="rushDeliveryVBox" prefWidth="100.0">
+                  <children>
+                     <Label text="Rush Delivery " textFill="WHITE">
+                        <font>
+                           <Font size="24.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets left="100.0" />
+                        </VBox.margin>
+                     </Label>
+                     <GridPane>
+                       <columnConstraints>
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                        <VBox.margin>
+                           <Insets top="5.0" />
+                        </VBox.margin>
+                        <children>
+                           <Label text="VAT(10%):" textFill="WHITE" GridPane.rowIndex="1">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                              <GridPane.margin>
+                                 <Insets left="20.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label fx:id="rushDeliveryShipFeeLabel" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label text="Shipping fee:" textFill="WHITE" GridPane.rowIndex="2">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                              <GridPane.margin>
+                                 <Insets left="20.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label fx:id="rushDeliveryVatLabel" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label text="Subtotal:" textFill="WHITE">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                              <GridPane.margin>
+                                 <Insets left="20.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label fx:id="rushDeliverySubtotalLabel" text="Label" textFill="WHITE" GridPane.columnIndex="1">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </GridPane>
+                     <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="0.0" prefWidth="260.0">
+                        <VBox.margin>
+                           <Insets bottom="20.0" left="45.0" top="20.0" />
+                        </VBox.margin>
+                     </Separator>
+                  </children>
+               </VBox>
+               <VBox fx:id="regularDeliveryVBox" prefWidth="100.0">
+                  <children>
+                     <Label text="Regular Delivery " textFill="WHITE">
+                        <font>
+                           <Font size="24.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets left="100.0" />
+                        </VBox.margin>
+                     </Label>
+                     <GridPane>
                         <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.60009765625" minWidth="10.0" prefWidth="150.933447265625" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.93334960937497" minWidth="10.0" prefWidth="199.46655273437497" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         </columnConstraints>
                         <rowConstraints>
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                         </rowConstraints>
-                        <children>
-                            <Label contentDisplay="CENTER" prefHeight="43.0" prefWidth="155.0" text="Subtotal:" textAlignment="CENTER" textFill="WHITE">
-                                <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                </padding>
-                                <font>
-                                    <Font name="SVN-Linux Libertine bold" size="18.0" />
-                                </font>
-                            </Label>
-                            <Label contentDisplay="CENTER" prefHeight="61.0" prefWidth="194.0" text="VAT (8%):" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="1">
-                                <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                </padding>
-                                <font>
-                                    <Font name="SVN-Linux Libertine bold" size="18.0" />
-                                </font>
-                            </Label>
-                            <Label fx:id="subtotalLabel" prefHeight="23.0" prefWidth="180.0" text="80.000 VNĐ " textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1">
-                                <font>
-                                    <Font name="SVN-Linux Libertine" size="18.0" />
-                                </font>
-                            </Label>
-                            <Label fx:id="vatLabel" prefHeight="23.0" prefWidth="180.0" text="6.400 VNĐ " textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <font>
-                                    <Font name="SVN-Linux Libertine" size="18.0" />
-                                </font>
-                            </Label>
-                            <Label contentDisplay="CENTER" prefHeight="61.0" prefWidth="194.0" text="Shipping fee:" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="2">
-                                <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                </padding>
-                                <font>
-                                    <Font name="SVN-Linux Libertine bold" size="18.0" />
-                                </font>
-                            </Label>
-                            <Label fx:id="shippingFeeLabel" prefHeight="23.0" prefWidth="180.0" text="25.000 VNĐ " textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                <font>
-                                    <Font name="SVN-Linux Libertine" size="18.0" />
-                                </font>
-                            </Label>
-                        </children>
                         <VBox.margin>
-                            <Insets bottom="20.0" />
+                           <Insets top="5.0" />
                         </VBox.margin>
-                    </GridPane>
-                    <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="0.0" prefWidth="251.0">
-                        <opaqueInsets>
-                            <Insets />
-                        </opaqueInsets>
+                        <children>
+                           <Label text="VAT(10%):" textFill="WHITE" GridPane.rowIndex="1">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                              <GridPane.margin>
+                                 <Insets left="20.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label fx:id="regularDeliveryShipFeeLabel" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label text="Shipping fee:" textFill="WHITE" GridPane.rowIndex="2">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                              <GridPane.margin>
+                                 <Insets left="20.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label fx:id="regularDeliveryVatLabel" text="Label" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                           <Label text="Subtotal:" textFill="WHITE">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                              <GridPane.margin>
+                                 <Insets left="20.0" />
+                              </GridPane.margin>
+                           </Label>
+                           <Label fx:id="regularDeliverySubtotalLabel" text="Label" textFill="WHITE" GridPane.columnIndex="1">
+                              <font>
+                                 <Font size="18.0" />
+                              </font>
+                           </Label>
+                        </children>
+                     </GridPane>
+                     <Separator maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="0.0" prefWidth="260.0">
                         <VBox.margin>
-                            <Insets bottom="20.0" />
+                           <Insets bottom="20.0" left="45.0" top="20.0" />
                         </VBox.margin>
-                    </Separator>
-                    <GridPane prefWidth="354.0">
-                        <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.60009765625" minWidth="10.0" prefWidth="150.933447265625" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.93334960937497" minWidth="10.0" prefWidth="199.46655273437497" />
-                        </columnConstraints>
-                        <rowConstraints>
-                            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        </rowConstraints>
-                        <children>
-                            <Label contentDisplay="CENTER" prefHeight="43.0" prefWidth="155.0" text="Price:" textAlignment="CENTER" textFill="WHITE">
-                                <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                </padding>
-                                <font>
-                                    <Font name="SVN-Linux Libertine bold" size="22.0" />
-                                </font>
-                            </Label>
-                            <Label fx:id="priceLabel" prefHeight="23.0" prefWidth="180.0" text="111.400 VNĐ " textAlignment="CENTER" textFill="#ffd622" GridPane.columnIndex="1">
-                                <font>
-                                    <Font name="SVN-Linux Libertine bold" size="22.0" />
-                                </font>
-                            </Label>
-                        </children>
-                    </GridPane>
-                    <Pane prefHeight="200.0" prefWidth="200.0">
-                        <children>
-                            <Button fx:id="payOrderButton" contentDisplay="CENTER" layoutX="69.0" layoutY="41.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="211.0" style="-fx-background-color: #ffd622; -fx-background-radius: 10;" text="Pay order">
-                                <font>
-                                    <Font name="SVN-Linux Libertine bold italic" size="24.0" />
-                                </font>
-                            </Button>
-                            <Button fx:id="cancelOrderButton" contentDisplay="CENTER" layoutX="69.0" layoutY="130.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="211.0" style="-fx-background-color: white; -fx-background-radius: 10;" text="Cancel order">
-                                <font>
-                                    <Font name="SVN-Linux Libertine bold italic" size="24.0" />
-                                </font>
-                            </Button>
-                        </children>
-                    </Pane>
+                     </Separator>
+                  </children>
+               </VBox>
+               <GridPane>
+                 <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                 </columnConstraints>
+                 <rowConstraints>
+                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                 </rowConstraints>
+                  <children>
+                     <Label text="Price:" textFill="WHITE">
+                        <font>
+                           <Font size="20.0" />
+                        </font>
+                        <GridPane.margin>
+                           <Insets left="20.0" />
+                        </GridPane.margin>
+                     </Label>
+                     <Label fx:id="priceLabel" text="Label" textFill="#ffd622" GridPane.columnIndex="1">
+                        <font>
+                           <Font size="20.0" />
+                        </font>
+                     </Label>
+                  </children>
+               </GridPane>
+               <Pane prefHeight="140.0" prefWidth="200.0">
+                  <children>
+                     <Button fx:id="payOrderBtn" contentDisplay="CENTER" layoutX="69.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="211.0" style="-fx-background-color: #ffd622; -fx-background-radius: 10;" text="Pay order">
+                        <font>
+                           <Font size="24.0" />
+                        </font>
+                     </Button>
+                     <Button fx:id="cancelOrderBtn" layoutX="69.0" layoutY="71.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="211.0" style="-fx-background-color: white; -fx-background-radius: 10;" text="Cancel order">
+                        <font>
+                           <Font size="24.0" />
+                        </font>
+                     </Button>
+                  </children>
+                  <VBox.margin>
+                     <Insets top="20.0" />
+                  </VBox.margin>
+               </Pane>
                 </children>
             </VBox>
         </right>

@@ -1,5 +1,6 @@
 package com.hust.ict.aims.view.place;
 
+import com.hust.ict.aims.controller.BaseController;
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.media.Media;
@@ -74,16 +75,20 @@ public class InvoiceHandler extends BaseScreenHandler {
 
     private Invoice invoice;
 
-    public InvoiceHandler(Stage stage, String screenPath, Invoice invoice) throws IOException {
+    private PlaceOrderController placeOrderController;
+
+    public InvoiceHandler(Stage stage, String screenPath, Invoice invoice, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
         this.invoice = invoice;
         File file = new File(Configs.IMAGE_PATH + "/Logo.png");
         Image im = new Image(file.toURI().toString());
         aimsImage.setImage(im);
 
+        this.placeOrderController = placeOrderController;
+
         DeliveryInfo deliveryInfo = invoice.getOrder().getDeliveryInfo();
 
-        setUpData(invoice.getOrder().getLstOrderMedia(), deliveryInfo);
+        setUpData(invoice.getOrder(), deliveryInfo);
 
         // on mouse clicked, we back to home
         aimsImage.setOnMouseClicked(e -> {
@@ -105,19 +110,21 @@ public class InvoiceHandler extends BaseScreenHandler {
 
     }
 
-    public void setUpData(List<OrderMedia> lstOrderMedia, DeliveryInfo deliveryInfo) {
+    public void setUpData(Order order, DeliveryInfo deliveryInfo) {
         recipientNameField.setText(deliveryInfo.getName());
         phoneField.setText(deliveryInfo.getPhone());
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
 
-        subtotalLabel.setText(Utils.getCurrencyFormat(this.invoice.getTotalAmount()));
-        vatLabel.setText(Utils.getCurrencyFormat(this.invoice.getTotalAmount() * 8 / 100));
+        int subTotal = placeOrderController.calculateSubTotal(this.invoice.getOrder()).getSubtotal();
+        subtotalLabel.setText(Utils.getCurrencyFormat(subTotal));
+        vatLabel.setText(Utils.getCurrencyFormat(subTotal * 1 / 10));
+        shippingFeeLabel.setText(Utils.getCurrencyFormat(this.placeOrderController.calculateShippingFee(order)));
         priceLabel.setText(Utils.getCurrencyFormat(
-                this.invoice.getTotalAmount() * 108 / 100 + 25000
+                subTotal * 11 / 10 + placeOrderController.calculateShippingFee(order)
         ));
 
         try{
-            for(Object om : lstOrderMedia) {
+            for(Object om : order.getLstOrderMedia()) {
                 OrderMedia orderMedia = (OrderMedia) om;
                 MediaHandler mediaInvoiceScreen = new MediaHandler(Configs.INVOICE_MEDIA_PATH, orderMedia);
                 itemsVBox.getChildren().add(mediaInvoiceScreen.getContent());

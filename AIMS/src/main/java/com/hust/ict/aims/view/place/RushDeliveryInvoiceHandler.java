@@ -1,5 +1,6 @@
 package com.hust.ict.aims.view.place;
 
+import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
@@ -9,19 +10,19 @@ import com.hust.ict.aims.utils.ConfirmationAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.Separator;
+import javafx.geometry.*;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.controlsfx.control.spreadsheet.Grid;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,10 +30,10 @@ import java.util.List;
 
 public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
     @FXML
-    private ImageView aimsImage;
+    private Label addressField;
 
     @FXML
-    private Button cancelOrderButton;
+    private ImageView aimsImage;
 
     @FXML
     private VBox coverVBox;
@@ -41,54 +42,71 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
     private Label pageTitle;
 
     @FXML
-    private Button payOrderButton;
-
-    @FXML
-    private Label recipientNameField;
+    private VBox paymentInfoVBox;
 
     @FXML
     private Label phoneField;
 
     @FXML
-    private Label addressField;
+    private Label recipientNameField;
 
     @FXML
-    private Label subtotalLabel;
+    private Label regularDeliveryShipFeeLabel;
 
     @FXML
-    private Label vatLabel;
+    private Label regularDeliverySubtotalLabel;
+
+    @FXML
+    private VBox regularDeliveryVBox;
+
+    @FXML
+    private Label regularDeliveryVatLabel;
+
+    @FXML
+    private Label rushDeliveryShipFeeLabel;
+
+    @FXML
+    private Label rushDeliverySubtotalLabel;
+
+    @FXML
+    private VBox rushDeliveryVBox;
+
+    @FXML
+    private Label rushDeliveryVatLabel;
 
     @FXML
     private Label priceLabel;
 
     @FXML
-    private Label shippingFeeLabel;
+    private Button payOrderBtn;
 
     @FXML
-    private VBox itemsVBox;
+    private Button cancelOrderBtn;
 
+    private PlaceOrderController placeOrderController;
 
-    public RushDeliveryInvoiceHandler(Stage stage, String screenPath, Order regularOrder, Order rushOrder) throws IOException {
+    public RushDeliveryInvoiceHandler(Stage stage, String screenPath, Order regularOrder, Order rushOrder, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
 
         File file = new File(Configs.IMAGE_PATH + "/Logo.png");
         Image im = new Image(file.toURI().toString());
         aimsImage.setImage(im);
+        this.placeOrderController = placeOrderController;
 
         DeliveryInfo deliveryInfo = regularOrder.getDeliveryInfo();
 
-        setUpData(regularOrder.getLstOrderMedia(), deliveryInfo);
+        setUpData(regularOrder, rushOrder, deliveryInfo);
 
         // on mouse clicked, we back to home
         aimsImage.setOnMouseClicked(e -> {
             homeScreenHandler.show();
         });
 
-        payOrderButton.setOnMouseClicked(e -> {
+        payOrderBtn.setOnMouseClicked(e -> {
             requestPayOrder();
         });
 
-        cancelOrderButton.setOnMouseClicked(e -> {
+        cancelOrderBtn.setOnMouseClicked(e -> {
             // Go back to home screen
             ConfirmationAlert confirmationAlert = new ConfirmationAlert();
             confirmationAlert.createAlert("Error message: ", null, "Are you sure to cancel the order?");
@@ -98,29 +116,83 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         });
     }
 
-    public void setUpData(List<OrderMedia> lstOrderMedia, DeliveryInfo deliveryInfo) {
+    public void setUpData(Order regularOrder, Order rushOrder, DeliveryInfo deliveryInfo) {
         recipientNameField.setText(deliveryInfo.getName());
         phoneField.setText(deliveryInfo.getPhone());
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
 
-//        subtotalLabel.setText(Utils.getCurrencyFormat(this.invoice.getTotalAmount()));
-//        vatLabel.setText(Utils.getCurrencyFormat(this.invoice.getTotalAmount() * 8 / 100));
-//        priceLabel.setText(Utils.getCurrencyFormat(
-//                this.invoice.getTotalAmount() * 108 / 100 + 25000
-//        ));
+        if(!regularOrder.getLstOrderMedia().isEmpty()) displayItems(regularOrder);
+        displayItems(rushOrder);
 
+        addPaymentOptions();
+
+        // Display invoice for regular order
+        int regSubtotal = 0;
+        if(regularOrder.getLstOrderMedia().isEmpty()) regularDeliveryVBox.setVisible(false);
+        else {
+            regSubtotal = placeOrderController.calculateSubTotal(regularOrder).getSubtotal();
+            regularDeliverySubtotalLabel.setText(
+                    Utils.getCurrencyFormat(regSubtotal)
+            );
+            regularDeliveryVatLabel.setText(Utils.getCurrencyFormat(regSubtotal / 10));
+            regularDeliveryShipFeeLabel.setText(
+                    Utils.getCurrencyFormat(placeOrderController.calculateShippingFee(regularOrder))
+            );
+        }
+
+        // Display invoice for rush order
+        int rushSubtotal = placeOrderController.calculateSubTotal(rushOrder).getSubtotal();
+        rushDeliverySubtotalLabel.setText(
+                Utils.getCurrencyFormat(rushSubtotal)
+        );
+        rushDeliveryVatLabel.setText(Utils.getCurrencyFormat(rushSubtotal / 10));
+        rushDeliveryShipFeeLabel.setText(
+                Utils.getCurrencyFormat(placeOrderController.calculateShippingFee(rushOrder))
+        );
+
+        priceLabel.setText(
+                Utils.getCurrencyFormat(
+                        regSubtotal * 11 / 10 + rushSubtotal * 11 / 10
+                            + placeOrderController.calculateShippingFee(regularOrder)
+                            + placeOrderController.calculateShippingFee(rushOrder)
+                )
+        );
+    }
+
+    public void displayItems(Order order) {
+        Label orderLabel = new Label(); orderLabel.setFont(new Font(24));
+        if(order.getIsRushOrder()) orderLabel.setText("Rush Delivery Items:");
+        else orderLabel.setText("Regular Delivery Items");
+        coverVBox.getChildren().add(orderLabel);
+
+        Pane emptyPane = new Pane(); emptyPane.setPrefWidth(70); emptyPane.setPrefHeight(100);
+        Label lbl1 = new Label("Media"); lbl1.setFont(new Font(18)); lbl1.setPrefWidth(317); lbl1.setPrefHeight(23);
+        Separator sep = new Separator(Orientation.VERTICAL); sep.setPrefHeight(200);
+        Label lbl2 = new Label("Unit price"); lbl2.setFont(new Font(18)); lbl2.setPrefWidth(190); lbl2.setPrefHeight(23);
+        Label lbl3 = new Label("Quantity"); lbl3.setFont(new Font(18)); lbl3.setPrefWidth(174); lbl3.setPrefHeight(23);
+        Label lbl4 = new Label("Total"); lbl4.setFont(new Font(18)); lbl4.setPrefWidth(354); lbl4.setPrefHeight(23);
+        HBox headHBox = new HBox(); headHBox.setStyle("-fx-background-color: fff; -fx-background-radius: 20;"); headHBox.setAlignment(Pos.CENTER_LEFT);
+            headHBox.setPrefHeight(46); headHBox.setPrefWidth(1139);
+        headHBox.getChildren().add(emptyPane); headHBox.getChildren().add(lbl1); headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
+        headHBox.getChildren().add(lbl2); headHBox.getChildren().add(new Separator(Orientation.VERTICAL)); headHBox.getChildren().add(lbl3);
+        headHBox.getChildren().add(new Separator(Orientation.VERTICAL)); headHBox.getChildren().add(lbl4);
+        coverVBox.getChildren().add(headHBox);
+
+        ScrollPane scrollPane = new ScrollPane(); scrollPane.setPrefHeight(100); scrollPane.setPrefWidth(200);
+        VBox itemsVBox = new VBox(); itemsVBox.setPrefHeight(90); itemsVBox.setPrefWidth(900);
         try{
-            for(Object om : lstOrderMedia) {
+            for(Object om : order.getLstOrderMedia()) {
                 OrderMedia orderMedia = (OrderMedia) om;
                 MediaHandler mediaInvoiceScreen = new MediaHandler(Configs.INVOICE_MEDIA_PATH, orderMedia);
                 itemsVBox.getChildren().add(mediaInvoiceScreen.getContent());
                 itemsVBox.getChildren().add(new Separator());
             }
-            addPaymentOptions();
         }
         catch(Exception e) {
             e.printStackTrace();
         }
+        scrollPane.setContent(itemsVBox);
+        coverVBox.getChildren().add(scrollPane);
     }
 
     public void addPaymentOptions() {

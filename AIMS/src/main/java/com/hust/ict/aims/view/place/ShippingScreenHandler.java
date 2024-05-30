@@ -67,10 +67,9 @@ public class ShippingScreenHandler extends BaseScreenHandler {
                 Invoice invoice = placeOrderController.createInvoice(order);
 
                 try {
-                    InvoiceHandler invoiceHandler = new InvoiceHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice);
+                    InvoiceHandler invoiceHandler = new InvoiceHandler(this.stage, Configs.INVOICE_SCREEN_PATH, invoice, placeOrderController);
                     invoiceHandler.setHomeScreenHandler(homeScreenHandler);
                     invoiceHandler.setScreenTitle("Invoice");
-                    invoiceHandler.setBController(placeOrderController);
                     invoiceHandler.show();
                 }
                 catch(Exception exp) {
@@ -94,14 +93,23 @@ public class ShippingScreenHandler extends BaseScreenHandler {
 //                Invoice invoice = placeOrderController.createInvoice(order);
                 try {
                     placeOrderController.placeRushOrder(order);
+                    Order regularOrder = placeOrderController.categorizeRegularOrder(order);
+                    Order rushOrder = placeOrderController.categorizeRushOrder(order);
+                    RushDeliveryInvoiceHandler rushDeliveryInvoiceHandler = new RushDeliveryInvoiceHandler(this.stage, Configs.RUSH_DELIVERY_INVOICE_PATH, regularOrder, rushOrder, placeOrderController);
+                    rushDeliveryInvoiceHandler.setHomeScreenHandler(homeScreenHandler);
+                    rushDeliveryInvoiceHandler.setScreenTitle("Rush Delivery Invoice");
+                    rushDeliveryInvoiceHandler.setBController(placeOrderController);
+                    rushDeliveryInvoiceHandler.show();
                 }
                 catch(RushOrderUnsupportedException exp){
                     ErrorAlert errorAlert = new ErrorAlert();
-                    errorAlert.createAlert("Error message", null, "Rush delivery doesn\'t support current address!");
+                    errorAlert.createAlert("Error message", null, "Rush delivery service doesn\'t support current address or any items in the order!");
                     errorAlert.show();
                     throw new RuntimeException("Rush order unsupported");
                 }
-
+                catch(Exception e1) {
+                    e1.printStackTrace();
+                }
             }
             else {
                 ErrorAlert errorAlert = new ErrorAlert();

@@ -9,6 +9,7 @@ import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.placement.RushOrderUnsupportedException;
 import com.hust.ict.aims.service.CartService;
 import com.hust.ict.aims.utils.ErrorAlert;
+import com.hust.ict.aims.view.place.RushDeliveryInvoiceHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,14 +41,14 @@ public class PlaceOrderController extends BaseController{
             throw new RushOrderUnsupportedException();
         }
 
-        List<OrderMedia> lstOrderMedia = order.getLstOrderMedia();
+        Order rushOrder = categorizeRushOrder(order);
+        if(rushOrder.getLstOrderMedia().isEmpty()) throw new RushOrderUnsupportedException();
+    }
 
-        List<OrderMedia> lstRushOrderMedia = new ArrayList<>();
+    public Order categorizeRegularOrder(Order order) {
         List<OrderMedia> lstRegularOrderMedia = new ArrayList<>();
-
-        for(OrderMedia orderMedia : lstOrderMedia) {
-            if(orderMedia.getMedia().getRushOrderSupport()) lstRushOrderMedia.add(orderMedia);
-            else lstRegularOrderMedia.add(orderMedia);
+        for(OrderMedia orderMedia : order.getLstOrderMedia()) {
+            if(!orderMedia.getMedia().getRushOrderSupport()) lstRegularOrderMedia.add(orderMedia);
         }
 
         Order regularOrder = new Order();
@@ -55,14 +56,23 @@ public class PlaceOrderController extends BaseController{
         regularOrder.setLstOrderMedia(lstRegularOrderMedia);
         regularOrder = calculateSubTotal(regularOrder);
         regularOrder.setShippingFees(calculateShippingFee(regularOrder));
+        regularOrder.setIsRushOrder(false);
+        return regularOrder;
+    }
+
+    public Order categorizeRushOrder(Order order) {
+        List<OrderMedia> lstRushOrderMedia = new ArrayList<>();
+        for(OrderMedia orderMedia : order.getLstOrderMedia()) {
+            if(orderMedia.getMedia().getRushOrderSupport()) lstRushOrderMedia.add(orderMedia);
+        }
 
         Order rushOrder = new Order();
         rushOrder.setDeliveryInfo(order.getDeliveryInfo());
         rushOrder.setLstOrderMedia(lstRushOrderMedia);
         rushOrder = calculateSubTotal(rushOrder);
         rushOrder.setShippingFees(calculateShippingFee(rushOrder));
-
-        displayRushDeliveryInvoice(regularOrder, rushOrder);
+        rushOrder.setIsRushOrder(true);
+        return rushOrder;
     }
 
     public Order calculateSubTotal(Order order) {
@@ -78,10 +88,11 @@ public class PlaceOrderController extends BaseController{
     public int calculateShippingFee(Order order) {
         int shipFee = 0;
         float highest = 0.0f;
+        if(order.getLstOrderMedia().isEmpty()) return 0;
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
             String dimension = orderMedia.getMedia().getProductDimension();
             String[] dimensions = dimension.split("x");
-            // Density of each item is assumed to be 600 kg/cm3
+            // Density of each item is assumed to be 5000 kg/m3
             float mass = Float.valueOf(dimensions[0]) * Float.valueOf(dimensions[1]) * Float.valueOf(dimensions[2]) * 0.0006f;
             highest = Math.max(highest, mass);
         }
@@ -96,7 +107,8 @@ public class PlaceOrderController extends BaseController{
         if(order.getIsRushOrder())
             shipFee += (order.getLstOrderMedia().size() * 10000);
         else
-            if(order.getSubtotal() > 100000) shipFee -= 25000;
+        if(order.getSubtotal() > 100000) shipFee -= 25000;
+        if(shipFee < 0) shipFee = 0;
         return shipFee;
     }
 
@@ -110,6 +122,7 @@ public class PlaceOrderController extends BaseController{
                     cartMedia.getQuantity());
             order.getLstOrderMedia().add(orderMedia);
         }
+        order.setIsRushOrder(false);
         return order;
     }
 
@@ -118,6 +131,6 @@ public class PlaceOrderController extends BaseController{
     }
 
     public void displayRushDeliveryInvoice(Order regularOrder, Order rushOrder) {
-
+//        RushDeliveryInvoiceHandler rushDeliveryInvoiceHandler = new RushDeliveryInvoiceHandler();
     }
 }

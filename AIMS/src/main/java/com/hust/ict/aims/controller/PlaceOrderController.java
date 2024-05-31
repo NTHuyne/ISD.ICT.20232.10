@@ -130,7 +130,7 @@ public class PlaceOrderController extends BaseController{
         return new Invoice(order);
     }
 
-    public void displayRushDeliveryInvoice(Order regularOrder, Order rushOrder) {
-//        RushDeliveryInvoiceHandler rushDeliveryInvoiceHandler = new RushDeliveryInvoiceHandler();
+    public void requestToPayOrder() {
+
     }
 }

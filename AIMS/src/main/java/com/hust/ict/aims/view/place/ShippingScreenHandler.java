@@ -48,8 +48,8 @@ public class ShippingScreenHandler extends BaseScreenHandler {
 
     public ShippingScreenHandler(Stage stage, String screenPath, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
-        File file = new File(Configs.IMAGE_PATH + "/Logo.png");
-        Image im = new Image(file.toURI().toString());
+        String imagePath = "/assets/images/Logo.png";
+        Image im = new Image(getClass().getResourceAsStream(imagePath));
         aimsImage.setImage(im);
 
         provinceField.getItems().addAll(Configs.PROVINCES);

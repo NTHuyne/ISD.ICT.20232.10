@@ -88,8 +88,8 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
     public RushDeliveryInvoiceHandler(Stage stage, String screenPath, Order regularOrder, Order rushOrder, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
 
-        File file = new File(Configs.IMAGE_PATH + "/Logo.png");
-        Image im = new Image(file.toURI().toString());
+        String imagePath = "/assets/images/Logo.png";
+        Image im = new Image(getClass().getResourceAsStream(imagePath));
         aimsImage.setImage(im);
         this.placeOrderController = placeOrderController;
 

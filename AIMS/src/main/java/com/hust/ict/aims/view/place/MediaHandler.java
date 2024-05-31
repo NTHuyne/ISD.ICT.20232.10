@@ -7,6 +7,7 @@ import com.hust.ict.aims.view.FXMLScreenHandler;
 import com.hust.ict.aims.view.home.HomeScreenHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
@@ -41,7 +42,21 @@ public class MediaHandler extends FXMLScreenHandler {
 
     public void setMedia(OrderMedia media) {
         this.media = media;
-//        mediaImage
+        String imageUrl = media.getMedia().getImageUrl();
+        Image image = null;
+
+        try {
+            image = new Image(getClass().getResourceAsStream("/assets/images/" + imageUrl));
+            if (image.isError()) {
+                throw new IOException("Image file not found: " + imageUrl);
+            }
+            mediaImage.setImage(image);
+        } catch (Exception e) {
+            LOGGER.warning("Image file not found: " + imageUrl + ". Using default image.");
+            image = new Image(getClass().getResourceAsStream("/assets/images/2.png"));
+            mediaImage.setImage(image);
+        }
+
         mediaTitle.setText(media.getMedia().getTitle());
         mediaQuantity.setText(String.valueOf(media.getQuantity()));
         mediaUnitPrice.setText(Utils.getCurrencyFormat(media.getMedia().getPrice()));

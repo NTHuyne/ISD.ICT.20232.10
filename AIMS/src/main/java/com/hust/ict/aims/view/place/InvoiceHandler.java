@@ -80,8 +80,8 @@ public class InvoiceHandler extends BaseScreenHandler {
     public InvoiceHandler(Stage stage, String screenPath, Invoice invoice, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
         this.invoice = invoice;
-        File file = new File(Configs.IMAGE_PATH + "/Logo.png");
-        Image im = new Image(file.toURI().toString());
+        String imagePath = "/assets/images/Logo.png";
+        Image im = new Image(getClass().getResourceAsStream(imagePath));
         aimsImage.setImage(im);
 
         this.placeOrderController = placeOrderController;

@@ -10,7 +10,7 @@ public class Configs {
 	public static float PERCENT_VAT = 10;
 
 	// static resource
-	public static final String IMAGE_PATH = "../../../.../resources/assets/images";
+	public static final String IMAGE_PATH = "/assets/images";
 	public static final String CART_SCREEN_PATH = "/fxml/cart.fxml";
 	public static final String INVOICE_SCREEN_PATH = "/fxml/invoice.fxml";
 	public static final String SHIPPING_SCREEN_PATH = "/fxml/shipping.fxml";

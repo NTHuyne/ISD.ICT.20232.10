@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
@@ -15,43 +17,80 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="430.0" style="-fx-border-radius: 50px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <HBox prefHeight="80.0" prefWidth="600.0">
+<AnchorPane prefHeight="788.0" prefWidth="1326.0" style="-fx-border-radius: 50px;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <HBox prefHeight="80.0" prefWidth="1326.0">
       <children>
-         <ImageView fx:id="aimsImage" fitHeight="80.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+         <ImageView fx:id="aimsImage" fitHeight="80.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../assets/images/Logo.png" />
             </image>
+            <cursor>
+               <Cursor fx:constant="HAND" />
+            </cursor>
          </ImageView>
-         <Separator orientation="VERTICAL" prefHeight="64.0" prefWidth="34.0" />
-         <Label text="Delivery Information" textFill="#f33061">
+         <Separator orientation="VERTICAL" prefHeight="80.0" prefWidth="56.0" />
+         <Label prefHeight="80.0" prefWidth="416.0" text="Delivery Information Form" textFill="#f33061">
             <font>
                <Font size="36.0" />
             </font>
          </Label>
       </children>
+      <padding>
+         <Insets left="40.0" />
+      </padding>
    </HBox>
-    <GridPane hgap="10" layoutX="120.0" layoutY="91.0" vgap="10">
+    <GridPane hgap="10" layoutX="191.0" layoutY="114.0" prefHeight="453.0" prefWidth="944.0" vgap="10">
         <!--                <ColumnConstraints percentWidth="50"/>-->
         <!--                <ColumnConstraints percentWidth="50"/>-->
 
-        <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
 
-        <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
 
-        <Label text="Province:" GridPane.rowIndex="2" />
-      <ChoiceBox fx:id="provinceField" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="Province:" GridPane.rowIndex="2">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+      <ChoiceBox fx:id="provinceField" prefHeight="33.0" prefWidth="331.0" style="-fx-font-size: 16px;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor></ChoiceBox>
 
-        <Label text="Address:" GridPane.rowIndex="3" />
-        <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="Address:" GridPane.rowIndex="3">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
 
-        <Label alignment="TOP_LEFT" text="Shipping instructions:" GridPane.rowIndex="4" />
-        <TextField fx:id="instructionsField" prefHeight="80.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label alignment="TOP_LEFT" text="Instruction:" GridPane.rowIndex="4">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font></Label>
+        <TextField fx:id="instructionsField" alignment="TOP_LEFT" prefHeight="323.0" prefWidth="845.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextField>
         <columnConstraints>
-            <ColumnConstraints />
-            <ColumnConstraints />
+            <ColumnConstraints maxWidth="128.0" minWidth="94.0" prefWidth="128.0" />
+            <ColumnConstraints maxWidth="840.0" minWidth="806.0" prefWidth="806.0" />
         </columnConstraints>
         <rowConstraints>
             <RowConstraints />
@@ -67,14 +106,20 @@
             <VBox />
         </VBox>
     </VBox>
-    <Button fx:id="submitDeliveryInfoButton" layoutX="189.0" layoutY="351.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: red; -fx-border-radius: 50;" text="Submit" textFill="#fdfafa">
+    <Button fx:id="submitDeliveryInfoButton" layoutX="416.0" layoutY="654.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" style="-fx-background-color: red; -fx-border-radius: 50;" text="Submit" textFill="#fdfafa">
         <font>
-            <Font name="System Bold" size="12.0" />
+            <Font name="System Bold" size="16.0" />
         </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
     </Button>
-   <Button fx:id="placeRushOrderButton" layoutX="327.0" layoutY="351.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" style="-fx-background-color: green; -fx-border-radius: 50;" text="Place rush order" textFill="#fdfafa">
+   <Button fx:id="placeRushOrderButton" layoutX="817.0" layoutY="654.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" style="-fx-background-color: green; -fx-border-radius: 50;" text="Place rush order" textFill="#fdfafa">
       <font>
-         <Font name="System Bold" size="12.0" />
+         <Font name="System Bold" size="16.0" />
       </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
    </Button>
 </AnchorPane>

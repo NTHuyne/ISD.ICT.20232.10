@@ -16,7 +16,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.scene.Cursor?>
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
         <top>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -25,6 +26,9 @@
                         <image>
                             <!--                  <Image url="@AIMS%20Logo.png" />-->
                         </image>
+                        <cursor>
+                            <Cursor fx:constant="HAND" />
+                        </cursor>
                     </ImageView>
                     <Separator maxHeight="-Infinity" maxWidth="-Infinity" orientation="VERTICAL" prefHeight="64.0" prefWidth="34.0" />
                     <Label fx:id="pageTitle" contentDisplay="CENTER" prefHeight="86.0" prefWidth="318.0" text="Invoice" textAlignment="CENTER" textFill="#f33061">
@@ -39,7 +43,7 @@
         <center>
             <VBox fx:id="coverVBox" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER">
                 <children>
-               <Label text="Delivery Information:">
+               <Label prefHeight="80.0" prefWidth="286.0" text="Delivery Information:">
                   <font>
                      <Font size="31.0" />
                   </font>
@@ -255,11 +259,17 @@
                                 <font>
                                     <Font name="SVN-Linux Libertine bold italic" size="24.0" />
                                 </font>
+                                <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                </cursor>
                             </Button>
                      <Button fx:id="cancelOrderButton" contentDisplay="CENTER" layoutX="69.0" layoutY="130.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="211.0" style="-fx-background-color: white; -fx-background-radius: 10;" text="Cancel order">
                         <font>
                            <Font name="SVN-Linux Libertine bold italic" size="24.0" />
                         </font>
+                         <cursor>
+                             <Cursor fx:constant="HAND" />
+                         </cursor>
                      </Button>
                   </children>
                     </Pane>

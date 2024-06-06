@@ -2,6 +2,10 @@ package com.hust.ict.aims.entity.order;
 
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +16,8 @@ public class Order {
     private List<OrderMedia> lstOrderMedia = new ArrayList<>();
     private DeliveryInfo deliveryInfo;
     private boolean isRushOrder;
+    private LocalDate localDate;
+    private LocalTime localTime;
 
     public Order(){
     }
@@ -65,4 +71,12 @@ public class Order {
     public boolean getIsRushOrder() { return isRushOrder; }
 
     public void setIsRushOrder(boolean isRushOrder) { this.isRushOrder = isRushOrder; }
+
+    public LocalDate getLocalDate() { return this.localDate; }
+
+    public void setLocalDate(LocalDate localDate) { this.localDate = localDate; }
+
+    public LocalTime getLocalTime() { return this.localTime; }
+
+    public void setLocalTime(LocalTime localTime) { this.localTime = localTime; }
 }

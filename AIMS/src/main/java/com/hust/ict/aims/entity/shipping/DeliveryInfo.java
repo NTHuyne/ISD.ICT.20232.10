@@ -5,6 +5,7 @@ public class DeliveryInfo {
     private String phone;
     private String province;
     private String address;
+    private String email;
     private String shippingInstructions;
 
     public DeliveryInfo (){
@@ -16,6 +17,15 @@ public class DeliveryInfo {
         this.setProvince(province);
         this.setAddress(address);
         this.setShippingInstructions(shippingInstructions);
+    }
+
+    public DeliveryInfo(String name, String phone, String province, String address, String shippingInstructions, String email) {
+        this.setName(name);
+        this.setPhone(phone);
+        this.setProvince(province);
+        this.setAddress(address);
+        this.setShippingInstructions(shippingInstructions);
+        this.setEmail(email);
     }
 
     public String getName() {
@@ -49,6 +59,10 @@ public class DeliveryInfo {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public String getShippingInstructions() {
         return shippingInstructions;

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+    <top>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fx:id="aimsImage" fitHeight="103.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../assets/images/Logo.png" />
+                  <HBox.margin>
+                     <Insets left="30.0" right="30.0" />
+                  </HBox.margin>
+                </ImageView>
+                <Separator maxHeight="-Infinity" maxWidth="-Infinity" orientation="VERTICAL" prefHeight="102.0" prefWidth="23.0" />
+                <Label contentDisplay="CENTER" prefHeight="86.0" prefWidth="380.0" text="SHOPPING CART" textAlignment="CENTER" textFill="#f33061">
+                    <font>
+                        <Font name="UTM Eremitage" size="36.0" />
+                    </font>
+                  <HBox.margin>
+                     <Insets left="30.0" />
+                  </HBox.margin>2
+                </Label>
+                <Pane prefHeight="103.0" prefWidth="733.0" />
+                <HBox alignment="CENTER_RIGHT" prefHeight="103.0" prefWidth="335.0">
+                    <children>
+<!--                        <ImageView fx:id="image" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">-->
+<!--                            <image>-->
+<!--                                &lt;!&ndash;                        <Image url="@avtaims/avtaims.png" />&ndash;&gt;-->
+<!--                            </image>-->
+<!--                        </ImageView>-->
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="1139.0" style="-fx-background-color: fff; -fx-background-radius: 20;">
+                    <children>
+                        <Pane prefHeight="46.0" prefWidth="242.0" />
+                        <Label prefHeight="27.0" prefWidth="293.0" text="Media" textAlignment="CENTER">
+                            <font>
+                                <Font name="SVN-Linux Libertine" size="18.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="27.0" prefWidth="92.0" text="Unit Price" textAlignment="CENTER">
+                            <font>
+                                <Font name="SVN-Linux Libertine" size="18.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="27.0" prefWidth="204.0" text="Quantity" textAlignment="CENTER">
+                            <font>
+                                <Font name="SVN-Linux Libertine" size="18.0" />
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" prefHeight="27.0" prefWidth="231.0" text="Options" textAlignment="CENTER">
+                            <font>
+                                <Font name="SVN-Linux Libertine" size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <ScrollPane fitToWidth="true" prefHeight="389.0">
+                    <VBox fx:id="vboxCart" maxWidth="Infinity" prefHeight="390.0" prefWidth="1139.0" />
+                </ScrollPane>
+                <HBox alignment="BASELINE_CENTER" prefHeight="40.0" prefWidth="1166.0">
+                    <children>
+                        <Separator maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="859.0">
+                            <HBox.margin>
+                                <Insets top="10.0" />
+                            </HBox.margin>
+                            <effect>
+                                <Lighting>
+                                    <bumpInput>
+                                        <Shadow />
+                                    </bumpInput>
+<!--                                    <light>-->
+<!--                                        <Light.Distant />-->
+<!--                                    </light>-->
+                                </Lighting>
+                            </effect>
+                        </Separator>
+                    </children>
+                </HBox>
+                <VBox alignment="CENTER" prefHeight="119.0" prefWidth="1166.0" style="-fx-background-color: fff; -fx-background-radius: 15;">
+                    <children>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                            <children>
+                                <Label alignment="TOP_RIGHT" prefHeight="29.0" prefWidth="166.0" text="Subtotal: ">
+                                    <font>
+                                        <Font name="SVN-Linux Libertine" size="24.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="subtotalLabel" prefHeight="28.0" prefWidth="164.0" text="0" textFill="#f33061">
+                                    <font>
+                                        <Font name="SVN-Linux Libertine bold" size="24.0" />
+                                    </font>
+                                </Label>
+                        <Label alignment="TOP_RIGHT" layoutX="673.0" layoutY="30.0" prefHeight="28.0" prefWidth="339.0" text="VAT: ">
+                           <font>
+                              <Font name="SVN-Linux Libertine" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="VATLabel" layoutX="673.0" layoutY="30.0" prefHeight="28.0" prefWidth="164.0" text="10%" textFill="#f33061">
+                           <font>
+                              <Font name="SVN-Linux Libertine bold" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="TOP_RIGHT" layoutX="170.0" layoutY="30.0" prefHeight="28.0" prefWidth="339.0" text="Total: ">
+                           <font>
+                              <Font name="SVN-Linux Libertine" size="24.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="totalLabel" layoutX="744.0" layoutY="30.0" prefHeight="28.0" prefWidth="164.0" text="0" textFill="#f33061">
+                           <font>
+                              <Font name="SVN-Linux Libertine bold" size="24.0" />
+                           </font>
+                        </Label>
+                            </children>
+                        </HBox>
+                        <Button fx:id="placeOrderBtn" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="58.0" prefWidth="204.0" style="-fx-background-color: f33061; -fx-background-radius: 10;" text="Place Order" textFill="WHITE">
+                            <font>
+                                <Font name="SVN-Linux Libertine bold" size="18.0" />
+                            </font>
+                            <VBox.margin>
+                                <Insets bottom="15.0" />
+                            </VBox.margin>
+                        <cursor>
+                           <Cursor fx:constant="HAND" />
+                        </cursor>
+                        </Button>
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </center>
+    <right>
+        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER" />
+    </right>
+    <left>
+        <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER" />
+    </left>
+</BorderPane>
+</AnchorPane>

@@ -7,6 +7,7 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
+import com.hust.ict.aims.utils.InformationAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 import javafx.fxml.FXML;
@@ -26,6 +27,10 @@ import org.controlsfx.control.spreadsheet.Grid;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 
 public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
@@ -49,6 +54,9 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
 
     @FXML
     private Label recipientNameField;
+
+    @FXML
+    private Label emailField;
 
     @FXML
     private Label regularDeliveryShipFeeLabel;
@@ -103,6 +111,12 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         });
 
         payOrderBtn.setOnMouseClicked(e -> {
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(rushOrder.getLocalDate(), rushOrder.getLocalTime(),
+                    ZoneId.of("Asia/Ho_Chi_Minh"));
+            InformationAlert infoAlert = new InformationAlert();
+            infoAlert.createAlert("Notification", null, "Your rush delivery will arrive at "+
+                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).format(zonedDateTime));
+            infoAlert.show();
             requestPayOrder();
         });
 
@@ -120,6 +134,7 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         recipientNameField.setText(deliveryInfo.getName());
         phoneField.setText(deliveryInfo.getPhone());
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
+        emailField.setText(deliveryInfo.getEmail());
 
         if(!regularOrder.getLstOrderMedia().isEmpty()) displayItems(regularOrder);
         displayItems(rushOrder);

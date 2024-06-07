@@ -65,6 +65,11 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
+      <Label text="Email: *" GridPane.rowIndex="4">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
       <ChoiceBox fx:id="provinceField" prefHeight="33.0" prefWidth="331.0" style="-fx-font-size: 16px;" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <cursor>
             <Cursor fx:constant="HAND" />
@@ -74,16 +79,20 @@
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
+      <TextField fx:id="emailField" prefHeight="43.0" prefWidth="806.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
         <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <font>
             <Font size="16.0" />
          </font></TextField>
 
-        <Label alignment="TOP_LEFT" text="Instruction:" GridPane.rowIndex="4">
+        <Label alignment="TOP_LEFT" text="Instruction:" GridPane.rowIndex="5">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
-        <TextField fx:id="instructionsField" alignment="TOP_LEFT" prefHeight="323.0" prefWidth="845.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <TextField fx:id="instructionsField" alignment="TOP_LEFT" prefHeight="323.0" prefWidth="845.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <font>
             <Font size="16.0" />
          </font>
@@ -97,7 +106,8 @@
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
-            <RowConstraints />
+            <RowConstraints maxHeight="52.399993896484375" minHeight="32.800006103515614" prefHeight="32.80000610351564" />
+         <RowConstraints maxHeight="222.59999389648436" minHeight="201.60000610351562" prefHeight="222.39999389648438" />
         </rowConstraints>
     </GridPane>
 

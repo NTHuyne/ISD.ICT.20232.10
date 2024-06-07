@@ -59,6 +59,9 @@ public class InvoiceHandler extends BaseScreenHandler {
     private Label addressField;
 
     @FXML
+    private Label emailField;
+
+    @FXML
     private Label subtotalLabel;
 
     @FXML
@@ -114,6 +117,7 @@ public class InvoiceHandler extends BaseScreenHandler {
         recipientNameField.setText(deliveryInfo.getName());
         phoneField.setText(deliveryInfo.getPhone());
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
+        emailField.setText(deliveryInfo.getEmail());
 
         int subTotal = placeOrderController.calculateSubTotal(this.invoice.getOrder()).getSubtotal();
         subtotalLabel.setText(Utils.getCurrencyFormat(subTotal));

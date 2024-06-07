@@ -60,7 +60,7 @@ public class ShippingScreenHandler extends BaseScreenHandler {
         });
 
         submitDeliveryInfoButton.setOnMouseClicked(e -> {
-            if(!nameField.getText().isEmpty() && !phoneField.getText().isEmpty() &&
+            if(!nameField.getText().isEmpty() && validatePhoneField(phoneField) &&
                 !addressField.getText().isEmpty() && !provinceField.getValue().isEmpty()) {
                 DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), instructionsField.getText());
                 Order order = placeOrderController.createOrder(deliveryInfo);
@@ -77,6 +77,12 @@ public class ShippingScreenHandler extends BaseScreenHandler {
                 }
             }
             else {
+                if(!validatePhoneField(phoneField)) {
+                    ErrorAlert errorAlert = new ErrorAlert();
+                    errorAlert.createAlert("Error Message", null, "Invalid phone number!");
+                    errorAlert.show();
+                    throw new RuntimeException("Some field were left blank! Please re-enter delivery information");
+                }
                 ErrorAlert errorAlert = new ErrorAlert();
                 errorAlert.createAlert("Error Message", null, "Some fields were left blank!");
                 errorAlert.show();
@@ -86,20 +92,18 @@ public class ShippingScreenHandler extends BaseScreenHandler {
 
         placeRushOrderButton.setOnMouseClicked(e -> {
             // place rush order
-            if(!nameField.getText().isEmpty() && !phoneField.getText().isEmpty() &&
+            if(!nameField.getText().isEmpty() && validatePhoneField(phoneField) &&
                     !addressField.getText().isEmpty() && !provinceField.getValue().isEmpty()) {
                 DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), instructionsField.getText());
                 Order order = placeOrderController.createOrder(deliveryInfo);
-//                Invoice invoice = placeOrderController.createInvoice(order);
                 try {
                     placeOrderController.placeRushOrder(order);
-                    Order regularOrder = placeOrderController.categorizeRegularOrder(order);
-                    Order rushOrder = placeOrderController.categorizeRushOrder(order);
-                    RushDeliveryInvoiceHandler rushDeliveryInvoiceHandler = new RushDeliveryInvoiceHandler(this.stage, Configs.RUSH_DELIVERY_INVOICE_PATH, regularOrder, rushOrder, placeOrderController);
-                    rushDeliveryInvoiceHandler.setHomeScreenHandler(homeScreenHandler);
-                    rushDeliveryInvoiceHandler.setScreenTitle("Rush Delivery Invoice");
-                    rushDeliveryInvoiceHandler.setBController(placeOrderController);
-                    rushDeliveryInvoiceHandler.show();
+                    RushDeliveryShippingScreenHandler rushDeliveryShippingScreen = new RushDeliveryShippingScreenHandler(this.stage, Configs.RUSH_ORDER_SHIPPING_SCREEN_PATH, placeOrderController, order);
+                    rushDeliveryShippingScreen.setPreviousScreen(this);
+                    rushDeliveryShippingScreen.setHomeScreenHandler(homeScreenHandler);
+                    rushDeliveryShippingScreen.setScreenTitle("Rush Delivery Shipping Form");
+                    rushDeliveryShippingScreen.setBController(placeOrderController);
+                    rushDeliveryShippingScreen.show();
                 }
                 catch(RushOrderUnsupportedException exp){
                     ErrorAlert errorAlert = new ErrorAlert();
@@ -120,4 +124,15 @@ public class ShippingScreenHandler extends BaseScreenHandler {
         });
     }
 
+    public boolean validatePhoneField(TextField phoneField) {
+        if(phoneField.getText().isEmpty()) return false;
+        String phone = phoneField.getText();
+        if(phone.length() != 10) return false;
+        if(phone.charAt(0) != '0') return false;
+        else if(phone.charAt(1) == '0') return false;
+        for(int i=1; i<phone.length(); i++) {
+            if(phone.charAt(i) < 48 && phone.charAt(i) > 57) return false;
+        }
+        return true;
+    }
 }

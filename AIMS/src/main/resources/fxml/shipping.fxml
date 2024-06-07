@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="788.0" prefWidth="1326.0" style="-fx-border-radius: 50px;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="788.0" prefWidth="1326.0" style="-fx-border-radius: 50px;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <HBox prefHeight="80.0" prefWidth="1326.0">
       <children>
          <ImageView fx:id="aimsImage" fitHeight="80.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
@@ -43,7 +43,7 @@
         <!--                <ColumnConstraints percentWidth="50"/>-->
         <!--                <ColumnConstraints percentWidth="50"/>-->
 
-        <Label text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+        <Label text="Name: *" GridPane.columnIndex="0" GridPane.rowIndex="0">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
@@ -52,7 +52,7 @@
             <Font size="16.0" />
          </font></TextField>
 
-        <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <Label text="Phone: *" GridPane.columnIndex="0" GridPane.rowIndex="1">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
@@ -61,7 +61,7 @@
             <Font size="16.0" />
          </font></TextField>
 
-        <Label text="Province:" GridPane.rowIndex="2">
+        <Label text="Province: *" GridPane.rowIndex="2">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
@@ -70,7 +70,7 @@
             <Cursor fx:constant="HAND" />
          </cursor></ChoiceBox>
 
-        <Label text="Address:" GridPane.rowIndex="3">
+        <Label text="Address: *" GridPane.rowIndex="3">
          <font>
             <Font name="System Bold" size="18.0" />
          </font></Label>
@@ -106,7 +106,7 @@
             <VBox />
         </VBox>
     </VBox>
-    <Button fx:id="submitDeliveryInfoButton" layoutX="416.0" layoutY="654.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" style="-fx-background-color: red; -fx-border-radius: 50;" text="Submit" textFill="#fdfafa">
+    <Button fx:id="submitDeliveryInfoButton" layoutX="415.0" layoutY="673.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" style="-fx-background-color: red; -fx-border-radius: 50;" text="Submit" textFill="#fdfafa">
         <font>
             <Font name="System Bold" size="16.0" />
         </font>
@@ -114,7 +114,7 @@
          <Cursor fx:constant="HAND" />
       </cursor>
     </Button>
-   <Button fx:id="placeRushOrderButton" layoutX="817.0" layoutY="654.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" style="-fx-background-color: green; -fx-border-radius: 50;" text="Place rush order" textFill="#fdfafa">
+   <Button fx:id="placeRushOrderButton" layoutX="813.0" layoutY="673.0" mnemonicParsing="false" prefHeight="53.0" prefWidth="166.0" style="-fx-background-color: green; -fx-border-radius: 50;" text="Place rush order" textFill="#fdfafa">
       <font>
          <Font name="System Bold" size="16.0" />
       </font>
@@ -122,4 +122,9 @@
          <Cursor fx:constant="HAND" />
       </cursor>
    </Button>
+   <Label layoutX="249.0" layoutY="599.0" text="*The fields that are marked with an asterisk are mandatory to fill in">
+      <font>
+         <Font name="System Bold Italic" size="14.0" />
+      </font>
+   </Label>
 </AnchorPane>

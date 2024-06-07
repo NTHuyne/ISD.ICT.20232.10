@@ -12,15 +12,12 @@ import com.hust.ict.aims.view.home.HomeScreenHandler;
 
 public class Main extends Application {
 	@Override
-	 public void start(Stage primaryStage) {
-	        try {
-	            HomeScreenHandler homeHandler = new HomeScreenHandler(primaryStage, Configs.HOME_PATH);
-	            homeHandler.setScreenTitle("Home Screen");
-//	                    homeHandler.setImage();
-	            homeHandler.show();
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
+	 public void start(Stage stage) throws IOException {
+		FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/fxml/login.fxml"));
+		Scene scene = new Scene(fxmlLoader.load());
+		stage.setTitle("AIMS");
+		stage.setScene(scene);
+		stage.show();
 	    }
 
     public static void main(String[] args) {

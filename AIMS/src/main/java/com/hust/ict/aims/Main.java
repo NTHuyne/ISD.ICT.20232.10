@@ -1,24 +1,21 @@
 package com.hust.ict.aims;
 
-import java.io.IOException;
-
+import com.hust.ict.aims.view.login.LoginHandler;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 import com.hust.ict.aims.utils.Configs;
-import com.hust.ict.aims.view.home.HomeScreenHandler;
 
 public class Main extends Application {
 	@Override
-	 public void start(Stage stage) throws IOException {
-		FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/fxml/login.fxml"));
-		Scene scene = new Scene(fxmlLoader.load());
-		stage.setTitle("AIMS");
-		stage.setScene(scene);
-		stage.show();
-	    }
+	 public void start(Stage stage) {
+		try {
+			LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
+			loginHandler.setScreenTitle("Login");
+			loginHandler.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
     public static void main(String[] args) {
         launch();

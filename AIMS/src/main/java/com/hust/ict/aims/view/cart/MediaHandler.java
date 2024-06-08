@@ -67,11 +67,20 @@ public class MediaHandler extends FXMLScreenHandler {
         price.setText(Utils.getCurrencyFormat(cartMedia.getPrice()));
         quantity.setText(String.valueOf(cartMedia.getQuantity()));
 
-        Image im = new Image(getClass().getResourceAsStream("/assets/images/" + cartMedia.getMedia().getImageUrl()));
-        image.setImage(im);
-        image.setPreserveRatio(false);
-        image.setFitHeight(110);
-        image.setFitWidth(92);
+        try {
+            Image im = new Image(getClass().getResourceAsStream("/assets/images/" + cartMedia.getMedia().getImageUrl()));
+            image.setImage(im);
+            image.setPreserveRatio(false);
+            image.setFitHeight(110);
+            image.setFitWidth(92);
+        } catch (Exception e){
+            LOGGER.warning("Image file not found: " + cartMedia.getMedia().getImageUrl() + ". Using default image.");
+            Image im = new Image(getClass().getResourceAsStream("/assets/images/2.png"));
+            image.setImage(im);
+            image.setPreserveRatio(false);
+            image.setFitHeight(110);
+            image.setFitWidth(92);
+        }
 
         deleteBtn.setFont(Configs.REGULAR_FONT);
         deleteBtn.setOnMouseClicked(e -> {

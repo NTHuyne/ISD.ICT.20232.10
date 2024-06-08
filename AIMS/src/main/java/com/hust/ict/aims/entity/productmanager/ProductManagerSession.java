@@ -2,7 +2,6 @@ package com.hust.ict.aims.entity.productmanager;
 
 public class ProductManagerSession {
     public static String username;
-//    public static String imageUrl;
     public static String date;
     public static String path;
 
@@ -13,14 +12,6 @@ public class ProductManagerSession {
     public static void setUsername(String username) {
         ProductManagerSession.username = username;
     }
-
-//    public static String getImageUrl() {
-//        return imageUrl;
-//    }
-
-//    public static void setImageUrl(String imageUrl) {
-//        ProductManagerSession.imageUrl = imageUrl;
-//    }
 
     public static String getDate() {
         return date;

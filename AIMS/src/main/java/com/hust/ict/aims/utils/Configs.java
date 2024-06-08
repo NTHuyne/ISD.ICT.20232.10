@@ -22,6 +22,7 @@ public class Configs {
 	public static final String INVOICE_MEDIA_PATH = "/fxml/media_invoice.fxml";
 	public static final String RUSH_DELIVERY_INVOICE_PATH = "/fxml/rush_delivery_invoice.fxml";
 	public static final String LOGIN_PATH = "/fxml/login.fxml";
+	public static final String PRODUCT_MANAGER_PATH = "/fxml/productmanager.fxml";
 
 
 	public static Font REGULAR_FONT = Font.font("Segoe UI", FontWeight.NORMAL, FontPosture.REGULAR, 24);

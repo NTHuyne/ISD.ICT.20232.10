@@ -1,54 +1,37 @@
 package com.hust.ict.aims.entity.payment;
 
-import com.hust.ict.aims.entity.invoice.Invoice;
-
-import java.math.BigInteger;
-import java.util.Date;
+import java.time.Instant;
 
 public class PaymentTransaction {
-    private BigInteger id;
-    private Date createAt;
-    private Date paymentTime;
+    private String transactionId;
+    private String bankTransactionId;	// BankTransactionId
+	private int paymentAmount;
+    private Instant paymentTime;
     private String content;
-    private VnPay vnpay;
-    private String method;
-    private String status;
-    private Invoice invoice;
+    private String cardType;
+    private String status;		// TODO: change to enum?
 
-    public PaymentTransaction(BigInteger id, Date createAt, Date paymentTime, String content, VnPay vnpay, String method, String status, Invoice invoice) {
-        this.setId(id);
-        this.setCreateAt(createAt);
-        this.setPaymentTime(paymentTime);
-        this.setContent(content);
-        this.setVnpay(vnpay);
-        this.setMethod(method);
-        this.setStatus(status);
-        this.setInvoice(invoice);
-    }
+	public PaymentTransaction(String transactionId, String bankTransactionId, int paymentAmount, Instant paymentTime,
+			String content, String cardType, String status) {
+		super();
+		this.transactionId = transactionId;
+		this.bankTransactionId = bankTransactionId;
+		this.paymentAmount = paymentAmount;
+		this.paymentTime = paymentTime;
+		this.content = content;
+		this.cardType = cardType;
+		this.status = status;
+	}
 
-    public PaymentTransaction() {}
 
-    public BigInteger getId() {
-        return id;
-    }
+	public PaymentTransaction() {}
 
-    public void setId(BigInteger id) {
-        this.id = id;
-    }
 
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Date getPaymentTime() {
+    public Instant getPaymentTime() {
         return paymentTime;
     }
 
-    public void setPaymentTime(Date paymentTime) {
+    public void setPaymentTime(Instant paymentTime) {
         this.paymentTime = paymentTime;
     }
 
@@ -60,21 +43,6 @@ public class PaymentTransaction {
         this.content = content;
     }
 
-    public VnPay getVnpay() {
-        return vnpay;
-    }
-
-    public void setVnpay(VnPay vnpay) {
-        this.vnpay = vnpay;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
 
     public String getStatus() {
         return status;
@@ -84,11 +52,43 @@ public class PaymentTransaction {
         this.status = status;
     }
 
-    public Invoice getInvoice() {
-        return invoice;
-    }
+	public String getCardType() {
+		return cardType;
+	}
 
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
-    }
+	public void setCardType(String cardType) {
+		this.cardType = cardType;
+	}
+
+
+
+	public String getTransactionId() {
+		return transactionId;
+	}
+
+
+
+	public void setTransactionId(String transactionId) {
+		this.transactionId = transactionId;
+	}
+
+
+	public int getPaymentAmount() {
+		return paymentAmount;
+	}
+
+
+	public void setPaymentAmount(int paymentAmount) {
+		this.paymentAmount = paymentAmount;
+	}
+
+
+	public String getBankTransactionId() {
+		return bankTransactionId;
+	}
+
+
+	public void setBankTransactionId(String bankTransactionId) {
+		this.bankTransactionId = bankTransactionId;
+	}
 }

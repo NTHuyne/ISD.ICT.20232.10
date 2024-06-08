@@ -1,4 +1,4 @@
-package com.hust.ict.aims.subsystem.vnpay;
+package com.hust.ict.aims.subsystem.payment.vnpay;
 
 public interface IBrowserDisplay {
 	public void displayURL(String url);

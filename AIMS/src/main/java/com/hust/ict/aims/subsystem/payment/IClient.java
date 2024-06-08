@@ -1,4 +1,4 @@
-package com.hust.ict.aims.subsystem;
+package com.hust.ict.aims.subsystem.payment;
 
 import com.hust.ict.aims.entity.payment.PaymentTransaction;
 import com.hust.ict.aims.exception.PaymentException;

@@ -1,12 +1,9 @@
-package com.hust.ict.aims.subsystem.vnpay;
+package com.hust.ict.aims.subsystem.payment.vnpay;
 
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import net.freeutils.httpserver.HTTPServer;
 import net.freeutils.httpserver.HTTPServer.ContextHandler;

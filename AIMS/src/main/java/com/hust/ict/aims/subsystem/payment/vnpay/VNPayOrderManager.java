@@ -1,9 +1,9 @@
-package com.hust.ict.aims.subsystem.vnpay;
+package com.hust.ict.aims.subsystem.payment.vnpay;
 
 import java.io.UnsupportedEncodingException;
 
-import com.hust.ict.aims.subsystem.IClient;
-import com.hust.ict.aims.subsystem.IPayment;
+import com.hust.ict.aims.subsystem.payment.IClient;
+import com.hust.ict.aims.subsystem.payment.IPayment;
 
 public class VNPayOrderManager implements IPayment {
 	private IClient client;

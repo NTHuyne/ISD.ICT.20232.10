@@ -1,8 +1,8 @@
-INSERT INTO User (username, password, isAdmin)
-VALUES ('admin', '1234', 1);
+INSERT INTO User (username, password, isAdmin, email)
+VALUES ('admin', '1234', 1, 'tronghuychuyenlik24@gmail.com');
 
-INSERT INTO User (username, password, isAdmin)
-VALUES ('user', '1234', 0);
+INSERT INTO User (username, password, isAdmin, email)
+VALUES ('user', '1234', 0, 'Huy.NT210541@sis.hust.edu.vn');
 
 -- Insert data into Media table
 INSERT INTO Media (category, price, value, title, description, quantity, importDate, rushOrderSupported, imageUrl, productDimension, barcode)

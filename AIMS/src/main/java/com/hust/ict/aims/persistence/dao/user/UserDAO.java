@@ -23,6 +23,7 @@ public class UserDAO {
                 user.setUsername(res.getString("username"));
                 user.setPassword(res.getString("password"));
                 user.setIsAdmin(res.getBoolean("isAdmin"));
+                user.setEmail(res.getString("email"));
                 users.add(user);
             }
 
@@ -48,6 +49,7 @@ public class UserDAO {
                 user.setUsername(res.getString("username"));
                 user.setPassword(res.getString("password"));
                 user.setIsAdmin(res.getBoolean("isAdmin"));
+                user.setEmail(res.getString("email"));
             }
         }catch (SQLException e){
             e.printStackTrace();

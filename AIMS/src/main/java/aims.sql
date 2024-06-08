@@ -8,6 +8,7 @@ CREATE TABLE User(
     username				VARCHAR(50)		NOT NULL,
     password				VARCHAR(50)		NOT NULL,
     isAdmin					BOOLEAN			NOT NULL,
+    email                   VARCHAR(50)     NOT NULL,
     PRIMARY KEY (id)
 );
 

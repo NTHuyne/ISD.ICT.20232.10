@@ -67,6 +67,7 @@ public class LoginHandler extends BaseScreenHandler {
             try {
                 User user = loginController.validateLogin(username.getText(), password.getText(), new UserDAO());
                 ProductManagerSession.username = user.getUsername();
+                ProductManagerSession.email = user.getEmail();
                 if (user.getIsAdmin()){
                     System.out.println("Admin logged in");
                 }

@@ -49,6 +49,9 @@ public class ProductManagerController implements Initializable, DataChangedListe
     private MediaService mediaService;
 
     @FXML
+    private Label productManagerEmail;
+
+    @FXML
     private Button dashboard_btn;
 
     @FXML
@@ -454,6 +457,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
         String user = ProductManagerSession.username;
         user = user.substring(0, 1).toUpperCase() + user.substring(1);
         username.setText(user);
+        productManagerEmail.setText(ProductManagerSession.email);
     }
 
 }

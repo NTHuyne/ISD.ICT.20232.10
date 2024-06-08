@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hust.ict.aims.controller.productmanager.ProductManagerController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hust.ict.aims.controller.productmanager.ProductManagerController">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -46,6 +46,7 @@
                               <Button fx:id="medias_btn" layoutX="8.0" layoutY="232.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="MEDIAS" />
                               <Button fx:id="users_btn" layoutX="8.0" layoutY="292.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="ORDERS" />
                               <Button fx:id="logout_btn" layoutX="8.0" layoutY="736.0" mnemonicParsing="false" onAction="#logout" prefHeight="40.0" prefWidth="200.0" text="Logout" />
+                              <Label fx:id="productManagerEmail" layoutX="14.0" layoutY="132.0" prefHeight="28.0" prefWidth="188.0" text="ABC" />
                            </children></AnchorPane>
                      </children>
                   </AnchorPane>

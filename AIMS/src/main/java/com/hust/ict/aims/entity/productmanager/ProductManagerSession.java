@@ -4,6 +4,7 @@ public class ProductManagerSession {
     public static String username;
     public static String date;
     public static String path;
+    public static String email;
 
     public static String getUsername() {
         return username;
@@ -30,4 +31,12 @@ public class ProductManagerSession {
     }
 
     public static Integer id;
+
+    public static String getEmail() {
+        return email;
+    }
+
+    public static void setEmail(String email) {
+        ProductManagerSession.email = email;
+    }
 }

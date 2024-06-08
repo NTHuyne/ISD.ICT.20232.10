@@ -1,20 +1,21 @@
 package com.hust.ict.aims.entity.user;
 
 public class User {
-
-
     private int id;
     private String username;
     private String password;
     private Boolean isAdmin;
 
+    private String email;
+
     public User(){
     }
 
-    public User(String username, String password, Boolean isAdmin) {
+    public User(String username, String password, Boolean isAdmin, String email) {
         this.username = username;
         this.password = password;
         this.isAdmin = isAdmin;
+        this.email = email;
     }
 
 
@@ -49,5 +50,13 @@ public class User {
 
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

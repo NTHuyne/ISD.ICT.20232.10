@@ -13,19 +13,20 @@ public class MediaScreenFactory {
             return null;
         }
 
-        switch (category.toUpperCase()) {
-            case "BOOK":
+        return switch (category.toUpperCase()) {
+            case "BOOK" -> {
                 BookService bookService = new BookService();
-                return new BookScreen(media, data, bookService);
-            case "CD":
-            case "LP":
+                yield new BookScreen(media, data, bookService);
+            }
+            case "CD", "LP" -> {
                 CDAndLPService cdAndLpService = new CDAndLPService();
-                return new CDAndLPScreen(media, data, cdAndLpService);
-            case "DVD":
+                yield new CDAndLPScreen(media, data, cdAndLpService);
+            }
+            case "DVD" -> {
                 DVDService dvdService = new DVDService();
-                return new DVDScreen(media, data, dvdService);
-            default:
-                return null;
-        }
+                yield new DVDScreen(media, data, dvdService);
+            }
+            default -> null;
+        };
     }
 }

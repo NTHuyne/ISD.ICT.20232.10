@@ -90,7 +90,7 @@ public class MediaDetailHandler extends BaseScreenHandler {
             rushOrder = "No";
         }
         detailedMediaRushOrder.setText(rushOrder);
-        if (media.getCategory().equals("Book")) {
+        if (media instanceof Book) {
             info1.setText("Authors");
             info2.setText("Publisher");
             info3.setText("Pages");
@@ -102,24 +102,24 @@ public class MediaDetailHandler extends BaseScreenHandler {
             detailedInfo4.setText(media1.getLanguage());
         }
 
-        if (media.getCategory().equals("DVD")) {
+        if (media instanceof Dvd) {
             info1.setText("Dvd Type");
             info2.setText("Director");
             info3.setText("Studio");
             info4.setText("Language");
-            Dvd media1 = (Dvd) HomeController.getDvdById(media.getId());
+            Dvd media1 = (Dvd) media;
             detailedInfo1.setText(media1.getDvdType());
             detailedInfo2.setText(media1.getDirector());
             detailedInfo3.setText(media1.getStudio());
             detailedInfo4.setText(media1.getLanguage());
         }
 
-        if (media.getCategory().equals("CD") || media.getCategory().equals("LP")) {
+        if (media instanceof CdAndLp) {
             info1.setText("Artists");
             info2.setText("Record Label");
             info3.setText("Track List");
             info4.setText("Music Type");
-            CdAndLp media1 = (CdAndLp) HomeController.getCdById(media.getId());
+            CdAndLp media1 = (CdAndLp) media;
             detailedInfo1.setText(media1.getArtists());
             detailedInfo2.setText(media1.getRecordLabel());
             detailedInfo3.setText(media1.getTrackList());

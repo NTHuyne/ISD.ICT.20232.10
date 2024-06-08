@@ -95,7 +95,7 @@ public class MediaDetailHandler extends BaseScreenHandler {
             info2.setText("Publisher");
             info3.setText("Pages");
             info4.setText("Language");
-            Book media1 = (Book) HomeController.getBookById(media.getId());
+            Book media1 = (Book) media;
             detailedInfo1.setText(media1.getAuthors());
             detailedInfo2.setText(media1.getPublisher());
             detailedInfo3.setText(String.valueOf(media1.getPages()));

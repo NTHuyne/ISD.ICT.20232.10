@@ -33,8 +33,8 @@ public class BookDAO extends MediaDAO {
         if(res.next()) {
 
             // from Media table
-            String category = res.getString("category");
-            int price = res.getInt("price");
+            String category = 
+            int price = ;
             int value = res.getInt("value");
             String title = res.getString("title");
             String description = res.getString("description");
@@ -53,8 +53,25 @@ public class BookDAO extends MediaDAO {
             int pages = res.getInt("pages");
             String language = res.getString("language");
             String bookCategory = res.getString("bookCategory");
-            book = new Book(id, category, price, value, title, description, quantity, importDate, barcode, productDimension, imageUrl,
-                    authors, hardCover, publisher, publicationDate, pages, language, bookCategory);
+            
+            book = new Book(id, 
+            		res.getString("category"), 
+            		res.getInt("price"), 
+            		value, 
+            		res.getString("title"), 
+            		res.getString("description"), 
+            		quantity, 
+            		importDate,
+            		barcode, 
+            		productDimension, 
+            		imageUrl,
+                    authors, 
+                    hardCover, 
+                    publisher, 
+                    publicationDate, 
+                    pages, 
+                    language, 
+                    bookCategory);
         } else {
             throw new SQLException();
         }

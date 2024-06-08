@@ -7,42 +7,21 @@ public class CdAndLp extends Media{
     private String recordLabel;
     private String trackList;
     private Date releaseDate;
-    private String musicType;
+    private String genre;
+    private Boolean isCD;
 
-    public CdAndLp(){
-        super();
-    }
+	public CdAndLp(Media otherMedia, String artists, String recordLabel, String trackList, Date releaseDate,
+			String genre, Boolean isCD) {
+		super(otherMedia);
+		this.artists = artists;
+		this.recordLabel = recordLabel;
+		this.trackList = trackList;
+		this.releaseDate = releaseDate;
+		this.genre = genre;
+		this.isCD = isCD;
+	}
 
-    public CdAndLp(Integer id, String category, int price, int value, String title, String description, int quantity, Date importDate, Boolean rushOrderSupport, String barcode, String productDimension, String imageUrl, String artists, String recordLabel, String trackList, Date releaseDate, String musicType) {
-        super(id, category, price, value, title, description, quantity, importDate, rushOrderSupport, barcode, productDimension, imageUrl);
-        this.setArtists(artists);
-        this.setRecordLabel(recordLabel);
-        this.setTrackList(trackList);
-        this.setReleaseDate(releaseDate);
-        this.setMusicType(musicType);
-    }
-
-    public CdAndLp(Integer id, String category, int price, int value, String title, String description, int quantity, Date importDate, String barcode, String productDimension, String imageUrl, String artists, String recordLabel, String trackList, String musicType) {
-        super(id, category, price, value, title, description, quantity, importDate, barcode, productDimension, imageUrl);
-        this.setArtists(artists);
-        this.setRecordLabel(recordLabel);
-        this.setTrackList(trackList);
-        this.setMusicType(musicType);
-    }
-
-    public CdAndLp(Media media, String trackList, String musicType, String artists, String recordLabel, Date releaseDate) {
-        super(media.getId(), media.getCategory(), media.getPrice(),
-                media.getValue(), media.getTitle(),  media.getDescription(),
-                media.getQuantity(), media.getImportDate(),  media.getRushOrderSupport(),
-                media.getProductDimension(), media.getBarcode(), media.getImageUrl());
-        this.setArtists(artists);
-        this.setRecordLabel(recordLabel);
-        this.setTrackList(trackList);
-        this.setReleaseDate(releaseDate);
-        this.setMusicType(musicType);
-    }
-
-    public String getArtists() {
+	public String getArtists() {
         return artists;
     }
 
@@ -74,11 +53,28 @@ public class CdAndLp extends Media{
         this.releaseDate = releaseDate;
     }
 
-    public String getMusicType() {
-        return musicType;
-    }
+	public String getGenre() {
+		return genre;
+	}
 
-    public void setMusicType(String musicType) {
-        this.musicType = musicType;
-    }
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+	
+	public Boolean getIsCD() {
+		return isCD;
+	}
+
+	public void setIsCD(Boolean isCD) {
+		this.isCD = isCD;
+	}
+
+	@Override
+	public String getMediaTypeName() {
+		if (this.isCD) {
+			return "CD";
+		} else {
+			return "LP";
+		}
+	}
 }

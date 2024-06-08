@@ -32,7 +32,7 @@ public class BookScreen implements MediaScreen {
     }
 
     @FXML
-    private TextField book_author, book_hardCover, book_publisher, book_language, book_category, book_pages;
+    private TextField book_author, book_coverType, book_publisher, book_language, book_genre, book_pages;
     @FXML
     private DatePicker book_publicationDate;
     @FXML
@@ -47,7 +47,7 @@ public class BookScreen implements MediaScreen {
             loader.setControllerFactory(c -> this); // Use this instance as the controller
             Parent root = loader.load();
 
-            if (media != null && media.getId() != 0) {
+            if (media != null && media.getMediaId() != 0) {
                 // We are editing an existing book
                 addBookBtn.setText("Update");
                 bookDetailLabel.setText("Edit Book Detail");
@@ -57,7 +57,7 @@ public class BookScreen implements MediaScreen {
             }
 
             Stage stage = new Stage();
-            stage.setTitle(media.getId() == 0 ? "Add Book Details" : "Update Book Details");
+            stage.setTitle(media.getMediaId() == 0 ? "Add Book Details" : "Update Book Details");
             stage.setScene(new Scene(root));
             stage.show();
 
@@ -69,21 +69,21 @@ public class BookScreen implements MediaScreen {
     private void setBookFields() {
         try {
             // Assuming media.getId() returns the ID of the book you want to fetch
-            Book book = bookService.fetchBookFromDatabase(media.getId());
+            Book book = bookService.fetchBookFromDatabase(media.getMediaId());
 
             if (book != null) {
                 book_author.setText(book.getAuthors());
-                book_hardCover.setText(book.getHardCover());
+                book_coverType.setText(book.getCoverType());
                 book_publisher.setText(book.getPublisher());
                 book_language.setText(book.getLanguage());
-                book_category.setText(book.getBookCategory());
+                book_genre.setText(book.getGenre());
                 book_pages.setText(String.valueOf(book.getPages()));
                 if (book.getPublicationDate() != null) {
                     LocalDate localDate = new java.sql.Date(book.getPublicationDate().getTime()).toLocalDate();
                     book_publicationDate.setValue(localDate);
                 }
             } else {
-                System.out.println("No book found with ID: " + media.getId());
+                System.out.println("No book found with ID: " + media.getMediaId());
                 // Handle case where no book is found
             }
         } catch(Exception e){
@@ -94,18 +94,18 @@ public class BookScreen implements MediaScreen {
     @FXML
     private void addBookBtnAction() {
         String author = book_author.getText();
-        String hardCover = book_hardCover.getText();
+        String coverType = book_coverType.getText();
         String publisher = book_publisher.getText();
         String language = book_language.getText();
-        String category = book_category.getText();
+        String genre = book_genre.getText();
         int pages = Integer.parseInt(book_pages.getText());
         LocalDate localDate = book_publicationDate.getValue();
 
         if (author.isEmpty()
-                || hardCover.isEmpty()
+                || coverType.isEmpty()
                 || publisher.isEmpty()
                 || language.isEmpty()
-                || category.isEmpty()
+                || genre.isEmpty()
                 || book_pages.getText().isEmpty()
                 || localDate == null) {
 
@@ -120,16 +120,16 @@ public class BookScreen implements MediaScreen {
             Book newBook = new Book(
                     media,
                     author,
-                    hardCover,
+                    coverType,
                     publisher,
-                    language,
-                    category,
+                    publicationDate,
                     pages,
-                    publicationDate
+                    language,
+                    genre
             );
 
             // Check if it's a new book or an update
-            if (media.getId() == 0) {
+            if (media.getMediaId() == 0) {
                 // It's a new book
                 bookService.addMedia(newBook);
             } else {

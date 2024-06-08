@@ -40,7 +40,7 @@ public class Cart {
 
     public CartMedia checkMediaInCart(Media media){
         for (CartMedia cartMedia : lstCartMedia) {
-            if (cartMedia.getMedia().getId() == media.getId()) return cartMedia;
+            if (cartMedia.getMedia().getMediaId() == media.getMediaId()) return cartMedia;
         }
         return null;
     }

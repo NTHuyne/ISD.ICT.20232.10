@@ -9,10 +9,9 @@ public class PaymentTransaction {
     private Instant paymentTime;
     private String content;
     private String cardType;
-    private String status;		// TODO: change to enum?
 
 	public PaymentTransaction(String transactionId, String bankTransactionId, int paymentAmount, Instant paymentTime,
-			String content, String cardType, String status) {
+			String content, String cardType) {
 		super();
 		this.transactionId = transactionId;
 		this.bankTransactionId = bankTransactionId;
@@ -20,7 +19,6 @@ public class PaymentTransaction {
 		this.paymentTime = paymentTime;
 		this.content = content;
 		this.cardType = cardType;
-		this.status = status;
 	}
 
 
@@ -41,15 +39,6 @@ public class PaymentTransaction {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
 	public String getCardType() {

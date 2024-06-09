@@ -1,7 +1,5 @@
 package com.hust.ict.aims.view.home;
 
-import com.hust.ict.aims.controller.HomeController;
-import com.hust.ict.aims.persistence.dao.media.BookDAO;
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
@@ -82,7 +80,7 @@ public class MediaDetailHandler extends BaseScreenHandler {
         detailedMediaTitle.setText(media.getTitle());
         detailedMediaPrice.setText(Utils.getCurrencyFormat(media.getPrice()));
         detailedMediaDescription.setText(media.getDescription());
-        detailedMediaCategory.setText(media.getCategory());
+        detailedMediaCategory.setText(media.getMediaTypeName());
         String rushOrder;
         if (media.getRushOrderSupport() == true) {
             rushOrder = "Yes";
@@ -123,7 +121,7 @@ public class MediaDetailHandler extends BaseScreenHandler {
             detailedInfo1.setText(media1.getArtists());
             detailedInfo2.setText(media1.getRecordLabel());
             detailedInfo3.setText(media1.getTrackList());
-            detailedInfo4.setText(media1.getMusicType());
+            detailedInfo4.setText(media1.getGenre());
         }
     }
 

@@ -1,80 +1,165 @@
 package com.hust.ict.aims.persistence.dao.media;
 
-
-
-import com.hust.ict.aims.persistence.database.ConnectJDBC;
+import com.hust.ict.aims.utils.ErrorAlert;
+import com.hust.ict.aims.utils.InformationAlert;
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.Media;
 
-import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author
  */
-public class BookDAO extends MediaDAO {
+public class BookDAO extends MediaAccessDAO {
+    private Book createBookFromResultSet(ResultSet res) throws SQLException {
+    	return new Book(
+			createMediaFromResultSet(res), 
+        	res.getString("authors"),
+        	res.getString("coverType"),
+        	res.getString("publisher"),
+        	res.getDate("publicationDate"),
+        	res.getInt("pages"),
+        	res.getString("language"),
+        	res.getString("genre")
+        );
+    }
+    
     @Override
-    public Media getMediaById(int id) throws SQLException {
-        String sql = "SELECT * FROM "+
-                "Book " +
-                "INNER JOIN Media " +
-                "ON Media.id = Book.id " +
-                "where Media.id = " + id + ";";
-        Connection conn = null;
-        // Connnect to database
-        conn = ConnectJDBC.getConnection();
+    public List<Media> getAllMedia() throws SQLException {
+        List<Media> medialist = new ArrayList<Media>();
+        
+        String sql = "SELECT * "
+        		+ "FROM Book INNER JOIN Media "
+        		+ "ON Media.media_id = Book.media_id;";
+        
         // Create statement
-        Statement stmt = conn.createStatement();
+        Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(sql);
-        Book book = new Book();
-        if(res.next()) {
-
-            // from Media table
-            String category = 
-            int price = ;
-            int value = res.getInt("value");
-            String title = res.getString("title");
-            String description = res.getString("description");
-            int quantity = res.getInt("quantity");
-            String barcode = res.getString("barcode");
-            Date importDate = res.getDate("importDate");
-//            Boolean rushOrderSupport = res.getBoolean("rushOrderSupport");
-            String imageUrl = res.getString("imageUrl");
-            String productDimension = res.getString("productDimension");
-
-            // from Book table
-            String authors = res.getString("authors");
-            String hardCover = res.getString("hardCover");
-            String publisher = res.getString("publisher");
-            Date publicationDate = res.getDate("publicationDate");
-            int pages = res.getInt("pages");
-            String language = res.getString("language");
-            String bookCategory = res.getString("bookCategory");
+        
+        while (res.next()) {
+            Book book = this.createBookFromResultSet(res);
             
-            book = new Book(id, 
-            		res.getString("category"), 
-            		res.getInt("price"), 
-            		value, 
-            		res.getString("title"), 
-            		res.getString("description"), 
-            		quantity, 
-            		importDate,
-            		barcode, 
-            		productDimension, 
-            		imageUrl,
-                    authors, 
-                    hardCover, 
-                    publisher, 
-                    publicationDate, 
-                    pages, 
-                    language, 
-                    bookCategory);
-        } else {
-            throw new SQLException();
+            medialist.add(book);
         }
-        return book;
+        
+        return medialist;
+    }
+
+    public Book getBookById(int cdAndLpId) {
+        // Assuming 'connection' is your established JDBC connection
+        String sql = "SELECT * FROM Book INNER JOIN Media ON Media.media_id = Book.media_id WHERE media_id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, cdAndLpId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return this.createBookFromResultSet(resultSet);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching DVD");
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    
+    
+    // Book (authors, coverType, publisher, publicationDate, pages, language, genre, media_id)
+    private void prepareStatementFromBook(PreparedStatement bookStatement, Book book) throws SQLException {
+        bookStatement.setString(1, book.getAuthors());
+        bookStatement.setString(2, book.getCoverType());
+        bookStatement.setString(3, book.getPublisher());
+
+        if (book.getPublicationDate() != null) {
+            bookStatement.setDate(4, new java.sql.Date(book.getPublicationDate().getTime()));
+        } else {
+            bookStatement.setNull(4, java.sql.Types.DATE);
+        }
+
+        bookStatement.setInt(5, book.getPages());
+        bookStatement.setString(6, book.getLanguage());
+        bookStatement.setString(7, book.getGenre());
+        bookStatement.setInt(8, book.getMediaId());
+    }
+    
+    @Override
+    public void addMedia(Media media) throws SQLException {
+        if (isTitleTaken(media.getTitle())) {
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, "Media title is already taken");
+            errorAlert.show();
+            throw new IllegalArgumentException(media.getTitle() + " is already taken");
+        }
+
+        // Bắt đầu giao dịch
+        connection.setAutoCommit(false);
+
+        try {
+            // Xử lý thêm Book, bao gồm thông tin của Media
+            Book book = (Book) media;
+
+            book.setMediaId(this.addTempMedia(media));
+
+            // Thêm thông tin vào bảng Book
+            String bookSql = "INSERT INTO Book (authors, coverType, publisher, publicationDate, pages, language, genre, media_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement bookStatement = connection.prepareStatement(bookSql)) {
+                this.prepareStatementFromBook(bookStatement, book);
+
+                bookStatement.executeUpdate();
+            }
+            
+            System.out.println("Successfully added book: " + media);
+
+            InformationAlert alert = new InformationAlert();
+            alert.createAlert("Information Message", null, "Successfully added book" );
+            alert.show();
+
+            connection.commit(); // Hoàn thành giao dịch
+        } catch (SQLException e) {
+            connection.rollback(); // Hủy bỏ giao dịch
+            throw e;
+        } finally {
+            connection.setAutoCommit(true); // Khôi phục auto-commit
+        }
+    }
+    
+    @Override
+    public void updateMedia(Media media) throws SQLException {
+        // Start transaction
+        connection.setAutoCommit(false);
+
+        try {
+            Book book = (Book) media;
+
+            // Update Media table
+            this.updateTempMedia(media);
+            
+            // Update Book table
+            String bookSql = "UPDATE Book SET authors = ?, coverType = ?, publisher = ?, publicationDate = ?, pages = ?, language = ?, genre = ? WHERE media_id = ?";
+            try (PreparedStatement bookStatement = connection.prepareStatement(bookSql)) {
+            	this.prepareStatementFromBook(bookStatement, book);
+
+                bookStatement.executeUpdate();
+            }
+
+            System.out.println("Successfully updated book: " + media);
+            InformationAlert alert = new InformationAlert();
+            alert.createAlert("Information Message", null, "Successfully updated book" );
+            alert.show();
+
+            connection.commit(); // Commit transaction
+        } catch (SQLException e) {
+            connection.rollback(); // Roll back transaction
+            throw e;
+        } finally {
+            connection.setAutoCommit(true); // Restore auto-commit
+//            System.out.println("Updating media with ID: " + media.getId());
+        }
     }
 }

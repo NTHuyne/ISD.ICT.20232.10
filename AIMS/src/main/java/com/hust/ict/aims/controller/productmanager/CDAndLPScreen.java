@@ -2,8 +2,7 @@ package com.hust.ict.aims.controller.productmanager;
 
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.CDAndLPService;
-import com.hust.ict.aims.service.productmanager.MediaService;
+import com.hust.ict.aims.persistence.dao.media.CDDAO;
 import com.hust.ict.aims.utils.ErrorAlert;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,15 +18,15 @@ public class CDAndLPScreen implements MediaScreen {
 
     private Media media;
     private DataChangedListener dataChangedListener;
-    CDAndLPService cdAndLpService;
+    CDDAO cdAndLpDAO;
 
     public CDAndLPScreen() {
     }
 
-    public CDAndLPScreen(Media media, DataChangedListener dataChangedListener, CDAndLPService cdAndLpService) {
+    public CDAndLPScreen(Media media, DataChangedListener dataChangedListener, CDDAO cdAndLpDAO) {
         this.media = media;
         this.dataChangedListener = dataChangedListener;
-        this.cdAndLpService = cdAndLpService;
+        this.cdAndLpDAO = cdAndLpDAO;
     }
 
     @FXML
@@ -70,7 +69,7 @@ public class CDAndLPScreen implements MediaScreen {
     private void setDVDFields() {
         try {
             // Assuming media.getId() returns the ID of the DVD you want to fetch
-            CdAndLp cdAndLp = cdAndLpService.fetchCDAndLPFromDatabase(media.getMediaId());
+            CdAndLp cdAndLp = cdAndLpDAO.getCDAndLPById(media.getMediaId());
 
             if (cdAndLp != null) {
                 cdAndLp_artists.setText(cdAndLp.getArtists());
@@ -124,9 +123,9 @@ public class CDAndLPScreen implements MediaScreen {
             );
 
             if (media.getMediaId() == 0) {
-                cdAndLpService.addMedia(newCdAndLp);
+                cdAndLpDAO.addMedia(newCdAndLp);
             } else {
-                cdAndLpService.updateMedia(newCdAndLp);
+                cdAndLpDAO.updateMedia(newCdAndLp);
             }
 
             dataChangedListener.onDataChanged();

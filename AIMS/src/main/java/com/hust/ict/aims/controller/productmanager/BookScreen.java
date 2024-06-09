@@ -2,8 +2,7 @@ package com.hust.ict.aims.controller.productmanager;
 
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.BookService;
-import com.hust.ict.aims.service.productmanager.MediaService;
+import com.hust.ict.aims.persistence.dao.media.BookDAO;
 import com.hust.ict.aims.utils.ErrorAlert;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,16 +18,16 @@ public class BookScreen implements MediaScreen {
 
     private Media media;
     private DataChangedListener dataChangedListener;
-    BookService bookService;
+    private BookDAO bookDAO;
 
 
     public BookScreen() {
     }
 
-    public BookScreen(Media media, DataChangedListener dataChangedListener, BookService bookService) {
+    public BookScreen(Media media, DataChangedListener dataChangedListener, BookDAO bookDAO) {
         this.media = media;
         this.dataChangedListener = dataChangedListener;
-        this.bookService = bookService;
+        this.bookDAO = bookDAO;
     }
 
     @FXML
@@ -69,7 +68,7 @@ public class BookScreen implements MediaScreen {
     private void setBookFields() {
         try {
             // Assuming media.getId() returns the ID of the book you want to fetch
-            Book book = bookService.fetchBookFromDatabase(media.getMediaId());
+            Book book = bookDAO.getBookById(media.getMediaId());
 
             if (book != null) {
                 book_author.setText(book.getAuthors());
@@ -131,10 +130,10 @@ public class BookScreen implements MediaScreen {
             // Check if it's a new book or an update
             if (media.getMediaId() == 0) {
                 // It's a new book
-                bookService.addMedia(newBook);
+                bookDAO.addMedia(newBook);
             } else {
                 // It's an existing book
-                bookService.updateMedia(newBook);
+            	bookDAO.updateMedia(newBook);
             }
 
             dataChangedListener.onDataChanged();

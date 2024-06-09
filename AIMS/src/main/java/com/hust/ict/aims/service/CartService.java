@@ -18,7 +18,7 @@ public class CartService {
         for (CartMedia object : lstCartMedia) {
             CartMedia cartMedia = object;
             int requiredQuantity = cartMedia.getQuantity();
-            int availQuantity = cartMedia.getMedia().getQuantity();
+            int availQuantity = cartMedia.getMedia().getTotalQuantity();
             if (requiredQuantity > availQuantity) check = false;
         }
         if(!check) throw new RuntimeException("Some media not available");

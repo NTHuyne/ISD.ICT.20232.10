@@ -178,7 +178,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
 
             homeItems.forEach(me -> {
                 MediaHandler media = (MediaHandler) me;
-                if (media.getMedia().getCategory().equalsIgnoreCase(text)) {
+                if (media.getMedia().getMediaTypeName().equalsIgnoreCase(text)) {
                     filteredItems.add(media);
                 }
             });

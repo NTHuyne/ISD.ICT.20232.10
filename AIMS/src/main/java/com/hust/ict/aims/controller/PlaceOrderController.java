@@ -8,9 +8,6 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.placement.RushOrderUnsupportedException;
 import com.hust.ict.aims.service.CartService;
-import com.hust.ict.aims.utils.ErrorAlert;
-import com.hust.ict.aims.view.place.RushDeliveryInvoiceHandler;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,22 +1,21 @@
 package com.hust.ict.aims.controller.productmanager;
 
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.CDAndLPService;
+import com.hust.ict.aims.persistence.dao.media.CDDAO;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 public class CDAndLPScreenCreator implements MediaScreenCreator {
-    private CDAndLPService cdAndLPService;
+    private CDDAO cdAndLPDAO;
 
     public CDAndLPScreenCreator() {
-        this.cdAndLPService = new CDAndLPService(); // Giả sử BookService là một service để xử lý logic liên quan đến sách.
+        this.cdAndLPDAO = new CDDAO(); // Giả sử BookDAO là một service để xử lý logic liên quan đến sách.
     }
 
     @Override
     public MediaScreen getMediaScreen(Media media, DataChangedListener data) {
-        return new CDAndLPScreen(media, data, cdAndLPService); // Giả sử BookScreen là một class cụ thể để hiển thị thông tin sách.
+        return new CDAndLPScreen(media, data, cdAndLPDAO); // Giả sử BookScreen là một class cụ thể để hiển thị thông tin sách.
     }
 
     @Override

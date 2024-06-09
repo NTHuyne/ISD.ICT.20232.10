@@ -14,7 +14,7 @@ public class BaseController {
     }
 
     // Coincidental cohesion
-    public List getListCartMedia(){
+    public List<CartMedia> getListCartMedia(){
         return Cart.getCart().getListMedia();
     }
 }

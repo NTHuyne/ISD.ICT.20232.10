@@ -21,34 +21,35 @@ import java.util.List;
  */
 public class OrderDAO {
 
-    public List<Media> getOrder(int id) throws SQLException {
-        Connection conn = null;
-        try {
-            String sql = "select  Media.title, Order_Media.price, Media.category, Order_Media.Quantity\n" +
-                    "from Order_Media\n" +
-                    "LEFT JOIN media\n" +
-                    "on Order_Media.mediaId = media.id\n" +
-                    "where orderId =" + id + ";";
-            conn = ConnectJDBC.getConnection();
-            Statement stmt = conn.createStatement();
-            // Get data
-            ResultSet rs = stmt.executeQuery(sql);
-
-            int i = 1;
-            int sum = 0;
-            List<Media> medium = new ArrayList<>();
-            while (rs.next()) {
-                Media media = new Media(i,
-                        rs.getString("title"),
-                        rs.getInt("price"),
-                        rs.getString("category"),
-                        rs.getInt("quantity"));
-                i++;
-                medium.add(media);
-            }
-            return medium;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    public List<Media> getOrder(int id) throws SQLException {
+//        Connection conn = null;
+//        try {
+//            String sql = "SELECT Media.title, Order_Media.Quantity\n" +
+//                    "FROM Order_Media\n" +
+//                    "LEFT JOIN Media\n" +
+//                    "ON Order_Media.media_id = Media.media_id\n" +
+//                    "where orderId =" + id + ";";
+//            
+//            conn = ConnectJDBC.getConnection();
+//            Statement stmt = conn.createStatement();
+//            // Get data
+//            ResultSet rs = stmt.executeQuery(sql);
+//
+//            int i = 1;
+//            int sum = 0;
+//            List<Media> medium = new ArrayList<>();
+//            while (rs.next()) {
+//                Media media = new Media(i,
+//                        rs.getString("title"),
+//                        rs.getInt("price"),
+//                        rs.getString("category"),
+//                        rs.getInt("quantity"));
+//                i++;
+//                medium.add(media);
+//            }
+//            return medium;
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

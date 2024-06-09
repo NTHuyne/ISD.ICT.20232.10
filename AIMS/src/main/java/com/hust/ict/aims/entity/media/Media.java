@@ -57,7 +57,11 @@ public class Media {
 		return mediaId;
 	}
 
-    public String getTitle() {
+    public void setMediaId(int mediaId) {
+		this.mediaId = mediaId;
+	}
+
+	public String getTitle() {
 		return title;
 	}
 

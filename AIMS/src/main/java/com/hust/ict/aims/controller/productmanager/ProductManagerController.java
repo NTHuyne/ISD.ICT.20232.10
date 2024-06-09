@@ -1,9 +1,8 @@
 package com.hust.ict.aims.controller.productmanager;
 
 import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
-import com.hust.ict.aims.entity.media.CdAndLp;
+import com.hust.ict.aims.persistence.dao.media.MediaDAO;
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.MediaService;
 import com.hust.ict.aims.utils.ConfirmationAlert;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.InformationAlert;
@@ -37,7 +36,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.mediaService = new MediaService();
+        this.mediaDAO = new MediaDAO();
         this.mediaScreenCreator = loadMediaScreenCreator();
 
         displayUsername();
@@ -47,7 +46,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     }
 
-    private MediaService mediaService;
+    private MediaDAO mediaDAO;
 
     @FXML
     private Label productManagerEmail;
@@ -223,7 +222,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 screen.showScreen();
             }
 
-//            mediaService.addMedia(newMedia);
+//            mediaDAO.addMedia(newMedia);
 //            mediaShowData();
             mediasClearBtn();
 
@@ -283,7 +282,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 screen.showScreen();
             }
 
-//            mediaService.updateMedia(updatedMedia);
+//            mediaDAO.updateMedia(updatedMedia);
 //            mediaShowData();
             mediasClearBtn();
         } catch (Exception e){
@@ -311,7 +310,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
         }
 
         try {
-            mediaService.deleteMedia(ProductManagerSession.id);
+            mediaDAO.deleteMedia(ProductManagerSession.id);
             mediaShowData();
             mediasClearBtn();
         } catch (SQLException e) {
@@ -387,7 +386,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
             categoryL.add(data);
         }
 
-        ObservableList listData = FXCollections.observableArrayList(categoryL);
+        ObservableList<String> listData = FXCollections.observableArrayList(categoryL);
         media_category.setItems(listData);
     }
 
@@ -397,12 +396,17 @@ public class ProductManagerController implements Initializable, DataChangedListe
             rushOrderSupportL.add(data);
         }
 
-        ObservableList listData = FXCollections.observableArrayList(rushOrderSupportL);
+        ObservableList<String> listData = FXCollections.observableArrayList(rushOrderSupportL);
         media_rushOrderSupport.setItems(listData);
     }
 
     public void mediaShowData() {
-        mediaListData = mediaService.fetchMediaList();
+        try {
+			mediaListData = FXCollections.observableArrayList(mediaDAO.getAllMedia());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         medias_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         medias_col_title.setCellValueFactory(new PropertyValueFactory<>("title"));

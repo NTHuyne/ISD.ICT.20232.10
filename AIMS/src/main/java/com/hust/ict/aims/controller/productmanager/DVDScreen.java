@@ -2,7 +2,7 @@ package com.hust.ict.aims.controller.productmanager;
 
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.DVDService;
+import com.hust.ict.aims.persistence.dao.media.DVDDAO;
 import com.hust.ict.aims.utils.ErrorAlert;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,15 +18,15 @@ public class DVDScreen implements MediaScreen {
 
     private Media media;
     private DataChangedListener dataChangedListener;
-    DVDService dvdService;
+    DVDDAO dvdDAO;
 
     public DVDScreen() {
     }
 
-    public DVDScreen(Media media, DataChangedListener dataChangedListener, DVDService dvdService) {
+    public DVDScreen(Media media, DataChangedListener dataChangedListener, DVDDAO dvdDAO) {
         this.media = media;
         this.dataChangedListener = dataChangedListener;
-        this.dvdService = dvdService;
+        this.dvdDAO = dvdDAO;
     }
 
     @FXML
@@ -67,7 +67,7 @@ public class DVDScreen implements MediaScreen {
     private void setDVDFields() {
         try {
             // Assuming media.getId() returns the ID of the DVD you want to fetch
-            Dvd dvd = dvdService.fetchDVDFromDatabase(media.getMediaId());
+            Dvd dvd = dvdDAO.getDvdById(media.getMediaId());
 
             if (dvd != null) {
                 dvd_director.setText(dvd.getDirector());
@@ -132,10 +132,10 @@ public class DVDScreen implements MediaScreen {
             // Check if it's a new dvd or an update
             if (media.getMediaId() == 0) {
                 // It's a new dvd
-                dvdService.addMedia(newDvd);
+                dvdDAO.addMedia(newDvd);
             } else {
                 // It's an existing dvd
-                dvdService.updateMedia(newDvd);
+                dvdDAO.updateMedia(newDvd);
             }
 
             dataChangedListener.onDataChanged();

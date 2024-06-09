@@ -23,7 +23,7 @@ public class UserDAO {
             ResultSet res = stmt.executeQuery(query);
             while (res.next()){
                 User user = new User();
-                user.setId(res.getInt("id"));
+                user.setId(res.getInt("user_id"));
                 user.setUsername(res.getString("username"));
                 user.setPassword(res.getString("password"));
                 user.setIsAdmin(res.getBoolean("isAdmin"));
@@ -49,7 +49,7 @@ public class UserDAO {
             ResultSet res = stmt.executeQuery();
             while (res.next()){
                 user = new User();
-                user.setId(res.getInt("id"));
+                user.setId(res.getInt("user_id"));
                 user.setUsername(res.getString("username"));
                 user.setPassword(res.getString("password"));
                 user.setIsAdmin(res.getBoolean("isAdmin"));

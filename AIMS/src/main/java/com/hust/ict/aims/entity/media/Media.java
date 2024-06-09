@@ -10,7 +10,7 @@ public class Media {
     private Double weight;
     private Boolean rushOrderSupport;
     private String imageUrl;
-    
+
     private String barcode;
     private String description;
     private Date importDate;
@@ -51,7 +51,7 @@ public class Media {
 
 	public String getMediaTypeName() {
 		return "Unknown";
-	};
+	}
 
 	public int getMediaId() {
 		return mediaId;
@@ -140,5 +140,5 @@ public class Media {
 	public void setProductDimension(String productDimension) {
 		this.productDimension = productDimension;
 	}
- 
+
 }

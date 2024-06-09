@@ -9,11 +9,7 @@ public class LoginController {
 
         User accountDb = userDAO.getUserByUsername(username);
 
-        if (accountDb == null) {
-            throw new LoginAccountException("Login fail - account or password is wrong");
-        }
-
-        if (!password.equals(accountDb.getPassword())) {
+        if ((accountDb == null) || !password.equals(accountDb.getPassword())) {
             throw new LoginAccountException("Login fail - account or password is wrong");
         }
 

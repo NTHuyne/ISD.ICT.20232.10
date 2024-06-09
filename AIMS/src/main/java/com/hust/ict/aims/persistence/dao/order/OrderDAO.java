@@ -1,21 +1,5 @@
 package com.hust.ict.aims.persistence.dao.order;
 
-
-
-
-import com.hust.ict.aims.persistence.database.ConnectJDBC;
-import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.entity.order.Order;
-
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
 /**
  * @author
  */
@@ -29,7 +13,7 @@ public class OrderDAO {
 //                    "LEFT JOIN Media\n" +
 //                    "ON Order_Media.media_id = Media.media_id\n" +
 //                    "where orderId =" + id + ";";
-//            
+//
 //            conn = ConnectJDBC.getConnection();
 //            Statement stmt = conn.createStatement();
 //            // Get data

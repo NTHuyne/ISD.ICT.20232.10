@@ -1,11 +1,5 @@
 package com.hust.ict.aims.persistence.dao.media;
 
-import com.hust.ict.aims.utils.ErrorAlert;
-import com.hust.ict.aims.utils.InformationAlert;
-import com.hust.ict.aims.entity.media.CdAndLp;
-import com.hust.ict.aims.entity.media.Media;
-
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,14 +7,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hust.ict.aims.entity.media.CdAndLp;
+import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.utils.ErrorAlert;
+import com.hust.ict.aims.utils.InformationAlert;
+
 /**
  * @author
  */
 public class CDDAO extends MediaAccessDAO {
-    
+
     private CdAndLp createCDFromResultSet(ResultSet res) throws SQLException {
     	return new CdAndLp(
-			createMediaFromResultSet(res), 
+			createMediaFromResultSet(res),
         	res.getString("artists"),
         	res.getString("recordLabel"),
         	res.getString("trackList"),
@@ -29,29 +28,29 @@ public class CDDAO extends MediaAccessDAO {
         	res.getBoolean("isCD")
         );
     }
-	
+
     @Override
     public List<Media> getAllMedia() throws SQLException {
-        List<Media> medialist = new ArrayList<Media>();
-        
+        List<Media> medialist = new ArrayList<>();
+
         String sql = "SELECT * FROM "+
               "CD_and_LP as CD " +
               "INNER JOIN Media " +
               "ON Media.media_id = CD.media_id ";
-        
+
         // Create statement
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(sql);
-        
+
         while (res.next()) {
             CdAndLp cdAndlp = this.createCDFromResultSet(res);
 
             medialist.add(cdAndlp);
         }
-        
+
         return medialist;
     }
-    
+
     public CdAndLp getCDAndLPById(int cdAndLpId) {
         // Assuming 'connection' is your established JDBC connection
         String sql = "SELECT * FROM CD_and_LP as CD INNER JOIN Media ON Media.media_id = CD.media_id WHERE media_id = ?;";
@@ -116,7 +115,7 @@ public class CDDAO extends MediaAccessDAO {
         cdAndLpStatement.setString(3, cdAndLp.getRecordLabel());
         cdAndLpStatement.setString(4, cdAndLp.getTrackList());
         cdAndLpStatement.setString(5, cdAndLp.getGenre());
-        
+
         if (cdAndLp.getReleaseDate() != null) {
             cdAndLpStatement.setDate(6, new java.sql.Date(cdAndLp.getReleaseDate().getTime()));
         } else {
@@ -140,7 +139,7 @@ public class CDDAO extends MediaAccessDAO {
 
         try {
             CdAndLp cdAndLp = (CdAndLp) media;
-            
+
             // Insert media table
             cdAndLp.setMediaId(this.addTempMedia(media));
 
@@ -148,10 +147,10 @@ public class CDDAO extends MediaAccessDAO {
             // Thêm thông tin vào bảng CD
             String cdSql = "INSERT INTO CD_and_LP (isCD, artists, recordLabel, trackList, genre, releaseDate, media_id) "
             		+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            
+
             try (PreparedStatement cdStatement = connection.prepareStatement(cdSql)) {
             	this.prepareStatementFromCD(cdStatement, cdAndLp);
-            	
+
             	cdStatement.executeUpdate();
             }
 
@@ -177,7 +176,7 @@ public class CDDAO extends MediaAccessDAO {
 
         try {
             CdAndLp cdAndLp = (CdAndLp) media;
-            
+
             // Update Media table
             this.updateTempMedia(media);
 

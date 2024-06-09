@@ -1,5 +1,9 @@
 package com.hust.ict.aims.view.home;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.cart.CartMedia;
 import com.hust.ict.aims.entity.media.Media;
@@ -7,6 +11,7 @@ import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,9 +19,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class MediaHandler extends BaseScreenHandler {
 
@@ -40,8 +42,8 @@ public class MediaHandler extends BaseScreenHandler {
 
     private static Logger LOGGER = Utils.getLogger(MediaHandler.class.getName());
     private Media media;
-    
-    
+
+
     public MediaHandler(String screenPath, Media media, HomeScreenHandler home) throws SQLException, IOException {
         super(screenPath);
         this.media = media;

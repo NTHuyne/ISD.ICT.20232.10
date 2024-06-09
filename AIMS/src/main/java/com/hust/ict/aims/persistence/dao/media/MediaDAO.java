@@ -16,10 +16,10 @@ public class MediaDAO {
 		mergedList.addAll(new DVDDAO().getAllMedia());
 		return mergedList;
 	}
-	
+
     public void deleteMedia(int mediaId) throws SQLException {
     	Connection connection = ConnectJDBC.getConnection();
-    	
+
         String sql = "DELETE FROM Media WHERE media_id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, mediaId);

@@ -1,18 +1,23 @@
 package com.hust.ict.aims.controller.productmanager;
 
+import java.io.IOException;
+import java.time.LocalDate;
+
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.persistence.dao.media.CDDAO;
 import com.hust.ict.aims.utils.ErrorAlert;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.time.LocalDate;
 
 public class CDAndLPScreen implements MediaScreen {
 
@@ -109,7 +114,7 @@ public class CDAndLPScreen implements MediaScreen {
             errorAlert.createAlert("Error Message", null, "Please fill all blank fields");
             errorAlert.show();
         }
-		
+
         try{
             java.util.Date releasedDate = java.sql.Date.valueOf(localDate);
             CdAndLp newCdAndLp = new CdAndLp(

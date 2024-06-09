@@ -11,7 +11,7 @@ public class Dvd extends Media{
     private String subtitles;
     private Date releasedDate;
     private String genre;
-    
+
     public Dvd(Media otherMedia, String dvdType, String director, int runtime, String studio, String language,
 			String subtitles, Date releasedDate, String genre) {
 		super(otherMedia);

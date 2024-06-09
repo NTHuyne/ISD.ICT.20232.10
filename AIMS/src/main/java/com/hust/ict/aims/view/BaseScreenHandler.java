@@ -1,12 +1,13 @@
 package com.hust.ict.aims.view;
 
-import com.hust.ict.aims.controller.BaseController;
-import com.hust.ict.aims.view.home.HomeScreenHandler;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.util.Hashtable;
+
+import com.hust.ict.aims.controller.BaseController;
+import com.hust.ict.aims.view.home.HomeScreenHandler;
+
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public abstract class BaseScreenHandler extends FXMLScreenHandler {
 

@@ -19,9 +19,13 @@ public class CartService {
             CartMedia cartMedia = object;
             int requiredQuantity = cartMedia.getQuantity();
             int availQuantity = cartMedia.getMedia().getTotalQuantity();
-            if (requiredQuantity > availQuantity) check = false;
+            if (requiredQuantity > availQuantity) {
+				check = false;
+			}
         }
-        if(!check) throw new RuntimeException("Some media not available");
+        if(!check) {
+			throw new RuntimeException("Some media not available");
+		}
     }
 
     // functional cohesion

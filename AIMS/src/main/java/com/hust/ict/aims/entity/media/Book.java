@@ -10,7 +10,7 @@ public class Book extends Media {
     private int pages;
     private String language;
     private String genre;
-    
+
 	public Book(Media otherMedia, String authors, String coverType, String publisher, Date publicationDate, int pages,
 			String language, String genre) {
 		super(otherMedia);
@@ -22,7 +22,7 @@ public class Book extends Media {
 		this.language = language;
 		this.genre = genre;
 	}
-	
+
 	public String getAuthors() {
 		return authors;
 	}
@@ -65,7 +65,7 @@ public class Book extends Media {
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
-	
+
 	@Override
 	public String getMediaTypeName() {
 		return "Book";

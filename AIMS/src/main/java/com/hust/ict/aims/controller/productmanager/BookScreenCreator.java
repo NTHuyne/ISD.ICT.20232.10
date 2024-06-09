@@ -1,10 +1,10 @@
 package com.hust.ict.aims.controller.productmanager;
 
-import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.persistence.dao.media.BookDAO;
-
 import java.util.Collection;
 import java.util.Collections;
+
+import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.persistence.dao.media.BookDAO;
 
 public class BookScreenCreator implements MediaScreenCreator {
     private BookDAO bookDAO;

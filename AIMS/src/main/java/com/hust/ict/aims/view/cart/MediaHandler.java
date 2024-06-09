@@ -1,10 +1,15 @@
 package com.hust.ict.aims.view.cart;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.cart.CartMedia;
-import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.utils.Configs;
+import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.FXMLScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -14,10 +19,6 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class MediaHandler extends FXMLScreenHandler {
 
@@ -96,7 +97,7 @@ public class MediaHandler extends FXMLScreenHandler {
 
     private void initializeSpinner(){
         SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, cartMedia.getQuantity());
-        spinner = new Spinner<Integer>(valueFactory);
+        spinner = new Spinner<>(valueFactory);
         spinner.setOnMouseClicked( e -> {
             try {
                 int numOfProd = this.spinner.getValue();

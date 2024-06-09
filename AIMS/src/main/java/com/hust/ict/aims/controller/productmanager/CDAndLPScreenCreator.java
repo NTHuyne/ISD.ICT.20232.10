@@ -1,10 +1,10 @@
 package com.hust.ict.aims.controller.productmanager;
 
-import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.persistence.dao.media.CDDAO;
-
 import java.util.Arrays;
 import java.util.Collection;
+
+import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.persistence.dao.media.CDDAO;
 
 public class CDAndLPScreenCreator implements MediaScreenCreator {
     private CDDAO cdAndLPDAO;

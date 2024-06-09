@@ -1,10 +1,10 @@
 package com.hust.ict.aims.controller;
 
-import com.hust.ict.aims.persistence.dao.media.MediaDAO;
-import com.hust.ict.aims.entity.media.Media;
-
 import java.sql.SQLException;
 import java.util.List;
+
+import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.persistence.dao.media.MediaDAO;
 
 /**
  * This class controls the flow of events in homescreen

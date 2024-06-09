@@ -1,12 +1,5 @@
 package com.hust.ict.aims.persistence.dao.media;
 
-import com.hust.ict.aims.persistence.database.ConnectJDBC;
-import com.hust.ict.aims.utils.ErrorAlert;
-import com.hust.ict.aims.utils.InformationAlert;
-import com.hust.ict.aims.entity.media.Dvd;
-import com.hust.ict.aims.entity.media.Media;
-
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,13 +8,19 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hust.ict.aims.entity.media.Dvd;
+import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.persistence.database.ConnectJDBC;
+import com.hust.ict.aims.utils.ErrorAlert;
+import com.hust.ict.aims.utils.InformationAlert;
+
 /**
  * @author
  */
 public class DVDDAO extends MediaAccessDAO {
     private Dvd createDVDFromResultSet(ResultSet res) throws SQLException {
     	return new Dvd(
-			createMediaFromResultSet(res), 
+			createMediaFromResultSet(res),
         	res.getString("dvdType"),
         	res.getString("director"),
         	res.getInt("runtime"),
@@ -32,28 +31,28 @@ public class DVDDAO extends MediaAccessDAO {
         	res.getString("genre")
         );
     }
-    
+
 	@Override
     public List<Media> getAllMedia() throws SQLException {
-        List<Media> medialist = new ArrayList<Media>();
-        
+        List<Media> medialist = new ArrayList<>();
+
         String sql = "SELECT * FROM "+
               "DVD INNER JOIN Media " +
               "ON Media.media_id = DVD.media_id ";
-        
+
         Connection conn = null;
         // Connnect to database
         conn = ConnectJDBC.getConnection();
         // Create statement
         Statement stmt = conn.createStatement();
         ResultSet res = stmt.executeQuery(sql);
-        
+
         while (res.next()) {
             Dvd dvd = this.createDVDFromResultSet(res);
 
             medialist.add(dvd);
         }
-        
+
         return medialist;
     }
 //    @Override
@@ -119,8 +118,8 @@ public class DVDDAO extends MediaAccessDAO {
         return null;
     }
 
-    
-    
+
+
     // DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id)
     private void prepareStatementFromDVD(PreparedStatement dvdStatement, Dvd dvd) throws SQLException {
         dvdStatement.setString(1, dvd.getDvdType());
@@ -129,19 +128,19 @@ public class DVDDAO extends MediaAccessDAO {
         dvdStatement.setString(4, dvd.getStudio());
         dvdStatement.setString(5, dvd.getLanguage());
         dvdStatement.setString(6, dvd.getSubtitles());
-        
+
         if (dvd.getReleasedDate() != null) {
         	dvdStatement.setDate(7, new java.sql.Date(dvd.getReleasedDate().getTime()));
         } else {
         	dvdStatement.setNull(7, java.sql.Types.DATE);
         }
-        
+
         dvdStatement.setString(8, dvd.getGenre());
-        
+
         dvdStatement.setInt(9, dvd.getMediaId());
     }
-    
-    
+
+
     @Override
     public void addMedia(Media media) throws SQLException {
         if (isTitleTaken(media.getTitle())) {
@@ -167,7 +166,7 @@ public class DVDDAO extends MediaAccessDAO {
 
                 dvdStatement.executeUpdate();
             }
-            
+
             System.out.println("Successfully added DVD: " + media);
 
             InformationAlert alert = new InformationAlert();
@@ -194,7 +193,7 @@ public class DVDDAO extends MediaAccessDAO {
 
             // Update Media table
             this.updateTempMedia(media);
-            
+
          // DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id)
             String dvdSql = "UPDATE DVD SET dvdType = ?, director = ?, runtime = ?, studio = ?, language = ?, subtitles = ?, releasedDate = ?, genre = ? WHERE media_id = ?";
             try (PreparedStatement dvdStatement = connection.prepareStatement(dvdSql)) {

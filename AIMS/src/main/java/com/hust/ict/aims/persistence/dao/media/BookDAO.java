@@ -1,10 +1,5 @@
 package com.hust.ict.aims.persistence.dao.media;
 
-import com.hust.ict.aims.utils.ErrorAlert;
-import com.hust.ict.aims.utils.InformationAlert;
-import com.hust.ict.aims.entity.media.Book;
-import com.hust.ict.aims.entity.media.Media;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,13 +7,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hust.ict.aims.entity.media.Book;
+import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.utils.ErrorAlert;
+import com.hust.ict.aims.utils.InformationAlert;
+
 /**
  * @author
  */
 public class BookDAO extends MediaAccessDAO {
     private Book createBookFromResultSet(ResultSet res) throws SQLException {
     	return new Book(
-			createMediaFromResultSet(res), 
+			createMediaFromResultSet(res),
         	res.getString("authors"),
         	res.getString("coverType"),
         	res.getString("publisher"),
@@ -28,25 +28,25 @@ public class BookDAO extends MediaAccessDAO {
         	res.getString("genre")
         );
     }
-    
+
     @Override
     public List<Media> getAllMedia() throws SQLException {
-        List<Media> medialist = new ArrayList<Media>();
-        
+        List<Media> medialist = new ArrayList<>();
+
         String sql = "SELECT * "
         		+ "FROM Book INNER JOIN Media "
         		+ "ON Media.media_id = Book.media_id;";
-        
+
         // Create statement
         Statement stmt = connection.createStatement();
         ResultSet res = stmt.executeQuery(sql);
-        
+
         while (res.next()) {
             Book book = this.createBookFromResultSet(res);
-            
+
             medialist.add(book);
         }
-        
+
         return medialist;
     }
 
@@ -67,9 +67,9 @@ public class BookDAO extends MediaAccessDAO {
         }
         return null;
     }
-    
-    
-    
+
+
+
     // Book (authors, coverType, publisher, publicationDate, pages, language, genre, media_id)
     private void prepareStatementFromBook(PreparedStatement bookStatement, Book book) throws SQLException {
         bookStatement.setString(1, book.getAuthors());
@@ -87,7 +87,7 @@ public class BookDAO extends MediaAccessDAO {
         bookStatement.setString(7, book.getGenre());
         bookStatement.setInt(8, book.getMediaId());
     }
-    
+
     @Override
     public void addMedia(Media media) throws SQLException {
         if (isTitleTaken(media.getTitle())) {
@@ -113,7 +113,7 @@ public class BookDAO extends MediaAccessDAO {
 
                 bookStatement.executeUpdate();
             }
-            
+
             System.out.println("Successfully added book: " + media);
 
             InformationAlert alert = new InformationAlert();
@@ -128,7 +128,7 @@ public class BookDAO extends MediaAccessDAO {
             connection.setAutoCommit(true); // Khôi phục auto-commit
         }
     }
-    
+
     @Override
     public void updateMedia(Media media) throws SQLException {
         // Start transaction
@@ -139,7 +139,7 @@ public class BookDAO extends MediaAccessDAO {
 
             // Update Media table
             this.updateTempMedia(media);
-            
+
             // Update Book table
             String bookSql = "UPDATE Book SET authors = ?, coverType = ?, publisher = ?, publicationDate = ?, pages = ?, language = ?, genre = ? WHERE media_id = ?";
             try (PreparedStatement bookStatement = connection.prepareStatement(bookSql)) {

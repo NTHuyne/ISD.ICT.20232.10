@@ -60,7 +60,7 @@ public class CdAndLp extends Media{
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
-	
+
 	public Boolean getIsCD() {
 		return isCD;
 	}

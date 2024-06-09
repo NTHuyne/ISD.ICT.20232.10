@@ -1,21 +1,22 @@
 package com.hust.ict.aims.view.home;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class MediaDetailHandler extends BaseScreenHandler {
     private static final Logger LOGGER = Utils.getLogger(MediaDetailHandler.class.getName());
@@ -82,7 +83,7 @@ public class MediaDetailHandler extends BaseScreenHandler {
         detailedMediaDescription.setText(media.getDescription());
         detailedMediaCategory.setText(media.getMediaTypeName());
         String rushOrder;
-        if (media.getRushOrderSupport() == true) {
+        if (media.getRushOrderSupport()) {
             rushOrder = "Yes";
         } else {
             rushOrder = "No";

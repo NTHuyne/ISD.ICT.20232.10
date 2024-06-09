@@ -1,39 +1,45 @@
 package com.hust.ict.aims.controller.productmanager;
 
+import java.io.IOException;
+import java.time.LocalDate;
+
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.CDAndLPService;
-import com.hust.ict.aims.service.productmanager.MediaService;
+import com.hust.ict.aims.persistence.dao.media.CDDAO;
 import com.hust.ict.aims.utils.ErrorAlert;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.time.LocalDate;
 
 public class CDAndLPScreen implements MediaScreen {
 
     private Media media;
     private DataChangedListener dataChangedListener;
-    CDAndLPService cdAndLpService;
+    CDDAO cdAndLpDAO;
 
     public CDAndLPScreen() {
     }
 
-    public CDAndLPScreen(Media media, DataChangedListener dataChangedListener, CDAndLPService cdAndLpService) {
+    public CDAndLPScreen(Media media, DataChangedListener dataChangedListener, CDDAO cdAndLpDAO) {
         this.media = media;
         this.dataChangedListener = dataChangedListener;
-        this.cdAndLpService = cdAndLpService;
+        this.cdAndLpDAO = cdAndLpDAO;
     }
 
     @FXML
-    private TextField cdAndLp_artists, cdAndLp_recordLabel, cdAndLp_trackList, cdAndLp_musicType;
+    private TextField cdAndLp_artists, cdAndLp_recordLabel, cdAndLp_trackList, cdAndLp_genre;
     @FXML
     private DatePicker cdAndLp_releaseDate;
+    @FXML
+    private CheckBox cdAndLp_isCD;
     @FXML
     private Button addCDAndLPBtn;
     @FXML
@@ -46,7 +52,7 @@ public class CDAndLPScreen implements MediaScreen {
             loader.setControllerFactory(c -> this); // Use this instance as the controller
             Parent root = loader.load();
 
-            if (media != null && media.getId() != 0) {
+            if (media != null && media.getMediaId() != 0) {
                 // We are editing an existing book
                 addCDAndLPBtn.setText("Update");
                 CDAndLPDetailLabel.setText("Edit CD/ LP Detail");
@@ -56,7 +62,7 @@ public class CDAndLPScreen implements MediaScreen {
             }
 
             Stage stage = new Stage();
-            stage.setTitle(media.getId() == 0 ? "Add CD/ LP Details" : "Update CD/ LP Details");
+            stage.setTitle(media.getMediaId() == 0 ? "Add CD/ LP Details" : "Update CD/ LP Details");
             stage.setScene(new Scene(root));
             stage.show();
 
@@ -68,19 +74,20 @@ public class CDAndLPScreen implements MediaScreen {
     private void setDVDFields() {
         try {
             // Assuming media.getId() returns the ID of the DVD you want to fetch
-            CdAndLp cdAndLp = cdAndLpService.fetchCDAndLPFromDatabase(media.getId());
+            CdAndLp cdAndLp = cdAndLpDAO.getCDAndLPById(media.getMediaId());
 
             if (cdAndLp != null) {
                 cdAndLp_artists.setText(cdAndLp.getArtists());
-                cdAndLp_musicType.setText(cdAndLp.getMusicType());
+                cdAndLp_genre.setText(cdAndLp.getGenre());
                 cdAndLp_recordLabel.setText(cdAndLp.getRecordLabel());
                 cdAndLp_trackList.setText(cdAndLp.getTrackList());
+                cdAndLp_isCD.setSelected(cdAndLp.getIsCD());
                 if (cdAndLp.getReleaseDate() != null) {
                     LocalDate localDate = new java.sql.Date(cdAndLp.getReleaseDate().getTime()).toLocalDate();
                     cdAndLp_releaseDate.setValue(localDate);
                 }
             } else {
-                System.out.println("No CD/ LP found with ID: " + media.getId());
+                System.out.println("No CD/ LP found with ID: " + media.getMediaId());
                 // Handle case where no DVD is found
             }
         } catch(Exception e){
@@ -91,13 +98,14 @@ public class CDAndLPScreen implements MediaScreen {
     @FXML
     private void addCDAndLPBtnAction() {
         String trackList = cdAndLp_trackList.getText();
-        String musicType = cdAndLp_musicType.getText();
+        String genre = cdAndLp_genre.getText();
         String artists = cdAndLp_artists.getText();
         String recordLabel = cdAndLp_recordLabel.getText();
         LocalDate localDate = cdAndLp_releaseDate.getValue();
+        Boolean isCD = cdAndLp_isCD.isSelected(); // TODO:
 
         if (trackList.isEmpty()
-                || musicType.isEmpty()
+                || genre.isEmpty()
                 || artists.isEmpty()
                 || recordLabel.isEmpty()
                 || localDate == null) {
@@ -111,17 +119,18 @@ public class CDAndLPScreen implements MediaScreen {
             java.util.Date releasedDate = java.sql.Date.valueOf(localDate);
             CdAndLp newCdAndLp = new CdAndLp(
                     media,
-                    trackList,
-                    musicType,
                     artists,
                     recordLabel,
-                    releasedDate
+                    trackList,
+                    releasedDate,
+                    genre,
+                    isCD
             );
 
-            if (media.getId() == 0) {
-                cdAndLpService.addMedia(newCdAndLp);
+            if (media.getMediaId() == 0) {
+                cdAndLpDAO.addMedia(newCdAndLp);
             } else {
-                cdAndLpService.updateMedia(newCdAndLp);
+                cdAndLpDAO.updateMedia(newCdAndLp);
             }
 
             dataChangedListener.onDataChanged();

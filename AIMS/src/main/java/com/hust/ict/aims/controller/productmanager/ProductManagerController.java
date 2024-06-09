@@ -1,11 +1,24 @@
 package com.hust.ict.aims.controller.productmanager;
 
-import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
+import java.io.File;
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.ServiceLoader;
+
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.MediaService;
+import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
+import com.hust.ict.aims.persistence.dao.media.MediaDAO;
 import com.hust.ict.aims.utils.ConfirmationAlert;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.InformationAlert;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,19 +26,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.net.URL;
-import java.sql.*;
-import java.util.*;
-import java.util.Date;
 
 public class ProductManagerController implements Initializable, DataChangedListener {
 
@@ -36,7 +51,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.mediaService = new MediaService();
+        this.mediaDAO = new MediaDAO();
         this.mediaScreenCreator = loadMediaScreenCreator();
 
         displayUsername();
@@ -46,7 +61,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     }
 
-    private MediaService mediaService;
+    private MediaDAO mediaDAO;
 
     @FXML
     private Label productManagerEmail;
@@ -77,9 +92,6 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     @FXML
     private TextField media_quantity;
-
-    @FXML
-    private TextField media_value;
 
     @FXML
     private Button medias_addBtn;
@@ -182,7 +194,6 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 || media_rushOrderSupport.getSelectionModel().getSelectedItem() == null
                 || media_barcode.getText().isEmpty()
                 || media_quantity.getText().isEmpty()
-                || media_value.getText().isEmpty()
                 || media_price.getText().isEmpty()
                 || media_productDimension.getText().isEmpty()
                 || media_description.getText().isEmpty()
@@ -195,15 +206,15 @@ public class ProductManagerController implements Initializable, DataChangedListe
         try{
             Media newMedia = new Media();
             newMedia.setTitle(media_title.getText());
-            newMedia.setCategory(media_category.getValue().toString());
+            // newMedia.setCategory(media_category.getValue().toString());
+            // TODO: to fix this?
 
-            String rushOrderSupportValue = (String) media_rushOrderSupport.getSelectionModel().getSelectedItem();
+            String rushOrderSupportValue = media_rushOrderSupport.getSelectionModel().getSelectedItem();
             boolean rushOrderSupported = "Yes".equals(rushOrderSupportValue);
-            newMedia.setRushOrderSupport(rushOrderSupported);
+            newMedia.setRushOrderSupported(rushOrderSupported);
 
             newMedia.setBarcode(media_barcode.getText());
-            newMedia.setQuantity(Integer.parseInt(media_quantity.getText()));
-            newMedia.setValue(Integer.parseInt(media_value.getText()));
+            newMedia.setTotalQuantity(Integer.parseInt(media_quantity.getText()));
             newMedia.setPrice(Integer.parseInt(media_price.getText()));
             newMedia.setProductDimension(media_productDimension.getText());
             newMedia.setDescription(media_description.getText());
@@ -226,7 +237,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 screen.showScreen();
             }
 
-//            mediaService.addMedia(newMedia);
+//            mediaDAO.addMedia(newMedia);
 //            mediaShowData();
             mediasClearBtn();
 
@@ -241,7 +252,6 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 || media_rushOrderSupport.getSelectionModel().getSelectedItem() == null
                 || media_barcode.getText().isEmpty()
                 || media_quantity.getText().isEmpty()
-                || media_value.getText().isEmpty()
                 || media_price.getText().isEmpty()
                 || media_productDimension.getText().isEmpty()
                 || media_description.getText().isEmpty()
@@ -254,17 +264,18 @@ public class ProductManagerController implements Initializable, DataChangedListe
         }
         try{
             Media updatedMedia = new Media();
-            updatedMedia.setId(ProductManagerSession.id);
+            // Why update ID?
+            // updatedMedia.setMediaId(ProductManagerSession.id);
             updatedMedia.setTitle(media_title.getText());
-            updatedMedia.setCategory(media_category.getValue().toString());
+            // updatedMedia.setCategory(media_category.getValue().toString());
+            // TODO: FIX THIS??
 
-            String rushOrderSupportValue = (String) media_rushOrderSupport.getSelectionModel().getSelectedItem();
+            String rushOrderSupportValue = media_rushOrderSupport.getSelectionModel().getSelectedItem();
             boolean rushOrderSupported = "Yes".equals(rushOrderSupportValue);
-            updatedMedia.setRushOrderSupport(rushOrderSupported);
+            updatedMedia.setRushOrderSupported(rushOrderSupported);
 
             updatedMedia.setBarcode(media_barcode.getText());
-            updatedMedia.setQuantity(Integer.parseInt(media_quantity.getText()));
-            updatedMedia.setValue(Integer.parseInt(media_value.getText()));
+            updatedMedia.setTotalQuantity(Integer.parseInt(media_quantity.getText()));
             updatedMedia.setPrice(Integer.parseInt(media_price.getText()));
             updatedMedia.setProductDimension(media_productDimension.getText());
             updatedMedia.setDescription(media_description.getText());
@@ -286,7 +297,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 screen.showScreen();
             }
 
-//            mediaService.updateMedia(updatedMedia);
+//            mediaDAO.updateMedia(updatedMedia);
 //            mediaShowData();
             mediasClearBtn();
         } catch (Exception e){
@@ -314,7 +325,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
         }
 
         try {
-            mediaService.deleteMedia(ProductManagerSession.id);
+            mediaDAO.deleteMedia(ProductManagerSession.id);
             mediaShowData();
             mediasClearBtn();
         } catch (SQLException e) {
@@ -331,7 +342,6 @@ public class ProductManagerController implements Initializable, DataChangedListe
         media_rushOrderSupport.getSelectionModel().clearSelection();
         media_barcode.setText("");
         media_quantity.setText("");
-        media_value.setText("");
         media_price.setText("");
         media_productDimension.setText("");
         media_description.setText("");
@@ -345,18 +355,19 @@ public class ProductManagerController implements Initializable, DataChangedListe
         Media media = medias_tableView.getSelectionModel().getSelectedItem();
         int num = medias_tableView.getSelectionModel().getSelectedIndex();
 
-        if ((num-1) < -1) return;
+        if ((num-1) < -1) {
+			return;
+		}
 
         media_title.setText(media.getTitle());
         media_barcode.setText(media.getBarcode());
-        media_quantity.setText(String.valueOf(media.getQuantity()));
-        media_value.setText(String.valueOf(media.getValue()));
+        media_quantity.setText(String.valueOf(media.getTotalQuantity()));
         media_price.setText(String.valueOf(media.getPrice()));
         media_productDimension.setText(media.getProductDimension());
         media_description.setText(media.getDescription());
 
         // Set the ComboBox values and disable them
-        media_category.setValue(media.getCategory());
+        media_category.setValue(media.getMediaTypeName());
         media_category.setDisable(true);
 
 //        String rushOrderSupportValue = media.getRushOrderSupport() ? "Yes" : "No";
@@ -367,7 +378,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
         String path = "File:" + media.getImageUrl();
         ProductManagerSession.date = String.valueOf(media.getImportDate());
-        ProductManagerSession.id = media.getId();
+        ProductManagerSession.id = media.getMediaId();
 
         image = new Image(path, 150, 150, false, true);
         medias_imageView.setImage(image);
@@ -392,7 +403,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
             categoryL.add(data);
         }
 
-        ObservableList listData = FXCollections.observableArrayList(categoryL);
+        ObservableList<String> listData = FXCollections.observableArrayList(categoryL);
         media_category.setItems(listData);
     }
 
@@ -402,12 +413,17 @@ public class ProductManagerController implements Initializable, DataChangedListe
             rushOrderSupportL.add(data);
         }
 
-        ObservableList listData = FXCollections.observableArrayList(rushOrderSupportL);
+        ObservableList<String> listData = FXCollections.observableArrayList(rushOrderSupportL);
         media_rushOrderSupport.setItems(listData);
     }
 
     public void mediaShowData() {
-        mediaListData = mediaService.fetchMediaList();
+        try {
+			mediaListData = FXCollections.observableArrayList(mediaDAO.getAllMedia());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
         medias_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         medias_col_title.setCellValueFactory(new PropertyValueFactory<>("title"));

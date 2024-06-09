@@ -16,7 +16,7 @@ public class VNPayDisplay {
 	private static int chosenPort = Integer.valueOf(ReadPropertyValues.getProperty("server.port"));
 	private static String chosenPath = ReadPropertyValues.getProperty("server.getpath");
 	private static String serverHost = ReadPropertyValues.getProperty("server.host");
-	
+
 	private void displayURL(String url) {
         Desktop desk = Desktop.getDesktop();
 
@@ -27,32 +27,33 @@ public class VNPayDisplay {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void configureURLReceivingServer() {
 		// Initialize server on port
 		// https://github.com/curtcox/JLHTTP/blob/main/faq.md
-		
+
 		server = new HTTPServer(chosenPort);
 		System.out.println("Server initialized: " + serverHost + chosenPort + chosenPath);
-		
+
 		// default virtual host
-		VirtualHost host = server.getVirtualHost(null);  
+		VirtualHost host = server.getVirtualHost(null);
 		host.addContext(chosenPath, new ContextHandler() {
-		    public int serve(Request req, Response resp) throws IOException {
+		    @Override
+			public int serve(Request req, Response resp) throws IOException {
 		    	System.out.println("Received response.");
 		        resp.getHeaders().add("Content-Type", "text/plain");
 		        resp.send(200, "Hello, World!");
-		        
+
 		        for (Map.Entry<String, String> entry : req.getParams().entrySet()) {
 		            System.out.println(entry.getKey() + " = " + entry.getValue());
 		        }
-		        
+
 		        server.stop();
 		        System.out.println("Server terminating...");
 		        return 0;
 		    }
 		});
-		
+
 		try {
 			server.start();
 		} catch (IOException e) {

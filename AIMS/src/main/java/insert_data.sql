@@ -21,8 +21,8 @@ INSERT INTO Book (media_id, authors, coverType, publisher, publicationDate, page
 VALUES (1, 'Author Name', 'Hardcover', 'Publisher Name', '2022-01-01', 300, 'English', 'Fiction');
 
 -- Insert data into CD_and_LP table
-INSERT INTO CD_and_LP (media_id, artists, recordLabel, trackList, genre, releaseDate)
-VALUES (2, 'Artist Name', 'Record Label', 'Track 1, Track 2, Track 3', 'Pop', '2022-01-01');
+INSERT INTO CD_and_LP (media_id, isCD, artists, recordLabel, trackList, genre, releaseDate)
+VALUES (2, true, 'Artist Name', 'Record Label', 'Track 1, Track 2, Track 3', 'Pop', '2022-01-01');
 
 -- Insert data into DVD table
 INSERT INTO DVD (media_id, dvdType, director, runtime, studio, language, subtitles, releasedDate, genre)

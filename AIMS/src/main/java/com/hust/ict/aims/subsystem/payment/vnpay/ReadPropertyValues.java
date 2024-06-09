@@ -10,11 +10,11 @@ public class ReadPropertyValues {
 
 	// Singleton
 	private static final ReadPropertyValues instance = new ReadPropertyValues();
-	
+
 	public static synchronized String getProperty(String name) {
 		return prop.getProperty(name);
 	}
-	
+
 	private ReadPropertyValues() {
 		System.out.println("ReadPropertyValues: Initialized Properties");
 		try {
@@ -25,7 +25,7 @@ public class ReadPropertyValues {
 			} else {
 				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
 			}
-			
+
 			inputStream.close();
 		} catch (Exception e) {
 			e.printStackTrace();

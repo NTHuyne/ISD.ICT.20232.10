@@ -1,24 +1,23 @@
 package com.hust.ict.aims.view.place;
 
+import java.io.IOException;
+
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
-import com.hust.ict.aims.entity.order.OrderMedia;
+import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.placement.RushOrderUnsupportedException;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
 
 public class ShippingScreenHandler extends BaseScreenHandler {
 
@@ -148,31 +147,52 @@ public class ShippingScreenHandler extends BaseScreenHandler {
     }
 
     public boolean validatePhoneField(TextField phoneField) {
-        if(phoneField.getText().isEmpty()) return false;
+        if(phoneField.getText().isEmpty()) {
+			return false;
+		}
         String phone = phoneField.getText();
-        if(phone.length() != 10) return false;
-        if(phone.charAt(0) != '0') return false;
-        else if(phone.charAt(1) == '0') return false;
+        if(phone.length() != 10) {
+			return false;
+		}
+        if(phone.charAt(0) != '0') {
+			return false;
+		} else if(phone.charAt(1) == '0') {
+			return false;
+		}
         for(int i=1; i<phone.length(); i++) {
-            if(phone.charAt(i) < 48 && phone.charAt(i) > 57) return false;
+            if(phone.charAt(i) < 48 && phone.charAt(i) > 57) {
+				return false;
+			}
         }
         return true;
     }
 
     public boolean validateEmailField(TextField emailField) {
-        if(emailField.getText().isEmpty()) return false;
+        if(emailField.getText().isEmpty()) {
+			return false;
+		}
         String email = emailField.getText();
-        if(!email.contains("@")) return false;
-        if(!email.contains(".com") && !email.contains(".org") && !email.contains(".edu")) return false;
+        if(!email.contains("@") || (!email.contains(".com") && !email.contains(".org") && !email.contains(".edu"))) {
+			return false;
+		}
 
         // Allow only 1 @ character in email
         int count = 0;
-        for(int i=0; i<email.length(); i++)
-            if(email.charAt(i) == '@') count++;
-        if(count > 1) return false;
+        for(int i=0; i<email.length(); i++) {
+			if(email.charAt(i) == '@') {
+				count++;
+			}
+		}
+        if(count > 1) {
+			return false;
+		}
         int idx_at = email.indexOf('@');
-        if(idx_at == 0) return false;
-        if(email.charAt(idx_at+1) == '.') return false;
+        if(idx_at == 0) {
+			return false;
+		}
+        if(email.charAt(idx_at+1) == '.') {
+			return false;
+		}
         return true;
     }
 }

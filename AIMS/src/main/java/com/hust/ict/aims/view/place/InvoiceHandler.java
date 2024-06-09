@@ -1,21 +1,20 @@
 package com.hust.ict.aims.view.place;
 
-import com.hust.ict.aims.controller.BaseController;
+import java.io.IOException;
+
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
-import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
-import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,10 +26,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 public class InvoiceHandler extends BaseScreenHandler {
 
@@ -107,8 +102,9 @@ public class InvoiceHandler extends BaseScreenHandler {
             ConfirmationAlert confirmationAlert = new ConfirmationAlert();
             confirmationAlert.createAlert("Error message: ", null, "Are you sure to cancel the order?");
             confirmationAlert.show();
-            if(confirmationAlert.isConfirmed())
-                homeScreenHandler.show();
+            if(confirmationAlert.isConfirmed()) {
+				homeScreenHandler.show();
+			}
         });
 
     }

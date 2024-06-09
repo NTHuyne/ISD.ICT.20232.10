@@ -47,6 +47,7 @@ CREATE TABLE Book (
 -- Table: Cd and LP
 CREATE TABLE CD_and_LP (
 	media_id				INTEGER			NOT NULL,
+    isCD					BOOLEAN			NOT NULL,
 	artists					VARCHAR(50) 	NOT NULL,
 	recordLabel 			VARCHAR(50) 	NOT NULL,
 	trackList				VARCHAR(200)	NOT NULL,

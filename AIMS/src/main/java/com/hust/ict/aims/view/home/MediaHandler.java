@@ -1,5 +1,9 @@
 package com.hust.ict.aims.view.home;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.cart.CartMedia;
 import com.hust.ict.aims.entity.media.Media;
@@ -7,6 +11,7 @@ import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -14,11 +19,6 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class MediaHandler extends BaseScreenHandler {
 
@@ -42,15 +42,14 @@ public class MediaHandler extends BaseScreenHandler {
 
     private static Logger LOGGER = Utils.getLogger(MediaHandler.class.getName());
     private Media media;
-    private HomeScreenHandler home;
+
 
     public MediaHandler(String screenPath, Media media, HomeScreenHandler home) throws SQLException, IOException {
         super(screenPath);
         this.media = media;
-        this.home = home;
         addToCartBtn.setOnMouseClicked(event -> {
             try {
-                if (spinnerChangeNumber.getValue() > media.getQuantity()) {
+                if (spinnerChangeNumber.getValue() > media.getTotalQuantity()) {
                     throw new RuntimeException("Media Not Available!");
                 }
                 Cart cart = Cart.getCart();
@@ -65,12 +64,12 @@ public class MediaHandler extends BaseScreenHandler {
                 }
 
                 // subtract the quantity and redisplay
-                media.setQuantity(media.getQuantity() - spinnerChangeNumber.getValue());
-                mediaAvail.setText(String.valueOf(media.getQuantity()));
+                media.setTotalQuantity(media.getTotalQuantity() - spinnerChangeNumber.getValue());
+                mediaAvail.setText(String.valueOf(media.getTotalQuantity()));
                 home.getNumMediaCartLabel().setText(String.valueOf(cart.getTotalMedia() + " media"));
             } catch (Exception exp) {
                 try {
-                    String message = "Not enough media:\nRequired: " + spinnerChangeNumber.getValue() + "\nAvail: " + media.getQuantity();
+                    String message = "Not enough media:\nRequired: " + spinnerChangeNumber.getValue() + "\nAvail: " + media.getTotalQuantity();
                     LOGGER.severe(message);
                     ErrorAlert errorAlert = new ErrorAlert();
                     errorAlert.createAlert("Error Message", null, message);
@@ -124,7 +123,7 @@ public class MediaHandler extends BaseScreenHandler {
 
         mediaTitle.setText(media.getTitle());
         mediaPrice.setText(Utils.getCurrencyFormat(media.getPrice()));
-        mediaAvail.setText(Integer.toString(media.getQuantity()));
+        mediaAvail.setText(Integer.toString(media.getTotalQuantity()));
         spinnerChangeNumber.setValueFactory(
                 new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, 1)
         );

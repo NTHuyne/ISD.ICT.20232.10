@@ -1,5 +1,12 @@
 package com.hust.ict.aims.view.home;
 
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.hust.ict.aims.controller.HomeController;
 import com.hust.ict.aims.controller.ViewCartController;
 import com.hust.ict.aims.entity.cart.Cart;
@@ -8,9 +15,15 @@ import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 import com.hust.ict.aims.view.cart.CartScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitMenuButton;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -18,14 +31,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-
-import java.net.URL;
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.*;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 
 public class HomeScreenHandler extends BaseScreenHandler {
@@ -70,7 +75,8 @@ public class HomeScreenHandler extends BaseScreenHandler {
         return this.numMediaInCart;
     }
 
-    public HomeController getBController() {
+    @Override
+	public HomeController getBController() {
         return (HomeController) super.getBController();
     }
     @Override
@@ -84,7 +90,8 @@ public class HomeScreenHandler extends BaseScreenHandler {
     public void setupData() {
         setBController(new HomeController());
         try{
-            List medium = getBController().getAllMedia();
+            getBController();
+			List medium = HomeController.getAllMedia();
             homeItems = new ArrayList<>();
             for (Object object : medium) {
                 Media media = (Media) object;
@@ -178,7 +185,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
 
             homeItems.forEach(me -> {
                 MediaHandler media = (MediaHandler) me;
-                if (media.getMedia().getCategory().equalsIgnoreCase(text)) {
+                if (media.getMedia().getMediaTypeName().equalsIgnoreCase(text)) {
                     filteredItems.add(media);
                 }
             });

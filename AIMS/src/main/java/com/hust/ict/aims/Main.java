@@ -1,9 +1,10 @@
 package com.hust.ict.aims;
 
+import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.view.login.LoginHandler;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
-import com.hust.ict.aims.utils.Configs;
 
 public class Main extends Application {
 	@Override

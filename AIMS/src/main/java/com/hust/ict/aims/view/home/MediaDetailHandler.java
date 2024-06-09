@@ -83,7 +83,7 @@ public class MediaDetailHandler extends BaseScreenHandler {
         detailedMediaDescription.setText(media.getDescription());
         detailedMediaCategory.setText(media.getMediaTypeName());
         String rushOrder;
-        if (media.getRushOrderSupport()) {
+        if (media.isRushOrderSupported()) {
             rushOrder = "Yes";
         } else {
             rushOrder = "No";

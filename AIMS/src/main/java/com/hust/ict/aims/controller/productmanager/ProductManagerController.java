@@ -211,7 +211,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
             String rushOrderSupportValue = media_rushOrderSupport.getSelectionModel().getSelectedItem();
             boolean rushOrderSupported = "Yes".equals(rushOrderSupportValue);
-            newMedia.setRushOrderSupport(rushOrderSupported);
+            newMedia.setRushOrderSupported(rushOrderSupported);
 
             newMedia.setBarcode(media_barcode.getText());
             newMedia.setTotalQuantity(Integer.parseInt(media_quantity.getText()));
@@ -272,7 +272,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
             String rushOrderSupportValue = media_rushOrderSupport.getSelectionModel().getSelectedItem();
             boolean rushOrderSupported = "Yes".equals(rushOrderSupportValue);
-            updatedMedia.setRushOrderSupport(rushOrderSupported);
+            updatedMedia.setRushOrderSupported(rushOrderSupported);
 
             updatedMedia.setBarcode(media_barcode.getText());
             updatedMedia.setTotalQuantity(Integer.parseInt(media_quantity.getText()));

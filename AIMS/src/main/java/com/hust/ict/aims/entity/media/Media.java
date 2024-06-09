@@ -8,7 +8,7 @@ public class Media {
     private int price;
     private int totalQuantity;
     private Double weight;
-    private Boolean rushOrderSupport;
+    private Boolean rushOrderSupported;
     private String imageUrl;
 
     private String barcode;
@@ -26,7 +26,7 @@ public class Media {
 		this.price = otherMedia.getPrice();
 		this.totalQuantity = otherMedia.getTotalQuantity();
 		this.weight = otherMedia.getWeight();
-		this.rushOrderSupport = otherMedia.getRushOrderSupport();
+		this.rushOrderSupported = otherMedia.isRushOrderSupported();
 		this.imageUrl = otherMedia.getImageUrl();
 		this.barcode = otherMedia.getBarcode();
 		this.description = otherMedia.getDescription();
@@ -41,7 +41,7 @@ public class Media {
 		this.price = price;
 		this.totalQuantity = totalQuantity;
 		this.weight = weight;
-		this.rushOrderSupport = rushOrderSupport;
+		this.rushOrderSupported = rushOrderSupport;
 		this.imageUrl = imageUrl;
 		this.barcode = barcode;
 		this.description = description;
@@ -93,12 +93,12 @@ public class Media {
 		this.weight = weight;
 	}
 
-	public Boolean getRushOrderSupport() {
-		return rushOrderSupport;
+	public Boolean isRushOrderSupported() {
+		return rushOrderSupported;
 	}
 
-	public void setRushOrderSupport(Boolean rushOrderSupport) {
-		this.rushOrderSupport = rushOrderSupport;
+	public void setRushOrderSupported(Boolean rushOrderSupported) {
+		this.rushOrderSupported = rushOrderSupported;
 	}
 
 	public String getImageUrl() {

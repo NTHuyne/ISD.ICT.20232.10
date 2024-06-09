@@ -35,7 +35,7 @@ public abstract class MediaAccessDAO {
         	res.getInt("price"),
         	res.getInt("totalQuantity"),
         	res.getDouble("weight"),
-        	res.getBoolean("rushOrderSupport"),
+        	res.getBoolean("rushOrderSupported"),
         	res.getString("imageUrl"),
         	res.getString("barcode"),
         	res.getString("description"),
@@ -57,7 +57,7 @@ public abstract class MediaAccessDAO {
         java.sql.Date importDate = new java.sql.Date(new Date().getTime());
         mediaStatement.setDate(6, importDate);
 
-        boolean rushOrderSupported = (media.getRushOrderSupport() != null) ? media.getRushOrderSupport() : false;
+        boolean rushOrderSupported = (media.isRushOrderSupported() != null) ? media.isRushOrderSupported() : false;
         mediaStatement.setBoolean(7, rushOrderSupported);
         mediaStatement.setString(8, media.getImageUrl());
         mediaStatement.setString(9, media.getProductDimension());

@@ -48,7 +48,7 @@ public class PlaceOrderController extends BaseController{
     public Order categorizeRegularOrder(Order order) {
         List<OrderMedia> lstRegularOrderMedia = new ArrayList<>();
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            if(!orderMedia.getMedia().getRushOrderSupport()) {
+            if(!orderMedia.getMedia().isRushOrderSupported()) {
 				lstRegularOrderMedia.add(orderMedia);
 			}
         }
@@ -65,7 +65,7 @@ public class PlaceOrderController extends BaseController{
     public Order categorizeRushOrder(Order order) {
         List<OrderMedia> lstRushOrderMedia = new ArrayList<>();
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            if(orderMedia.getMedia().getRushOrderSupport()) {
+            if(orderMedia.getMedia().isRushOrderSupported()) {
 				lstRushOrderMedia.add(orderMedia);
 			}
         }

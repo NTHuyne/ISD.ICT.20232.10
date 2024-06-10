@@ -1,4 +1,4 @@
-package com.hust.ict.aims.subsystem.vnpay;
+package com.hust.ict.aims.subsystem.payment.vnpay;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

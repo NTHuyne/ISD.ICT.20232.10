@@ -1,5 +1,7 @@
 package com.hust.ict.aims.view.place;
 
+import java.io.IOException;
+
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
@@ -13,6 +15,7 @@ import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -57,6 +60,9 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
 
     @FXML
     private Label addressField;
+
+    @FXML
+    private Label emailField;
 
     @FXML
     private Label subtotalLabel;
@@ -111,8 +117,9 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
             ConfirmationAlert confirmationAlert = new ConfirmationAlert();
             confirmationAlert.createAlert("Error message: ", null, "Are you sure to cancel the order?");
             confirmationAlert.show();
-            if(confirmationAlert.isConfirmed())
-                homeScreenHandler.show();
+            if(confirmationAlert.isConfirmed()) {
+				homeScreenHandler.show();
+			}
         });
 
     }
@@ -123,6 +130,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
         recipientNameField.setText(deliveryInfo.getName());
         phoneField.setText(deliveryInfo.getPhone());
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
+        emailField.setText(deliveryInfo.getEmail());
 
         // TODO: IMPORTANT! Calculate total fee somewhere else and update invoice accordingly
         int subTotal = placeOrderController.calculateSubTotal(this.invoice.getOrder()).getSubtotal();

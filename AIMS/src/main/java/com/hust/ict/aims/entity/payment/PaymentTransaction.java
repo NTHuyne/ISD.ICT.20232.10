@@ -2,6 +2,8 @@ package com.hust.ict.aims.entity.payment;
 
 import java.time.Instant;
 
+import com.hust.ict.aims.entity.invoice.Invoice;
+
 public class PaymentTransaction {
     private String transactionId;
     private String bankTransactionId;	// BankTransactionId

@@ -1,4 +1,4 @@
-package com.hust.ict.aims.subsystem.vnpay;
+package com.hust.ict.aims.subsystem.payment.vnpay;
 
 import java.awt.Desktop;
 import java.io.IOException;

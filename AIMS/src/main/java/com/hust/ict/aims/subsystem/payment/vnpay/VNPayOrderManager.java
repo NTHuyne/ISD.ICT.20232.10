@@ -1,4 +1,4 @@
-package com.hust.ict.aims.subsystem.vnpay;
+package com.hust.ict.aims.subsystem.payment.vnpay;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class VNPayOrderManager implements IPayment, IParamsProcessor {
 			String queryURL = newRequest.buildQueryURL();
 			System.out.println(queryURL);
 			vnpayDisplay.sendPayOrder(queryURL);
-			
+
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

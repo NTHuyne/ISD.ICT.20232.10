@@ -1,5 +1,10 @@
 package com.hust.ict.aims.view.cart;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Logger;
+
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.controller.ViewCartController;
 import com.hust.ict.aims.entity.cart.CartMedia;
@@ -10,19 +15,13 @@ import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 import com.hust.ict.aims.view.home.HomeScreenHandler;
 import com.hust.ict.aims.view.place.ShippingScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class CartScreenHandler extends BaseScreenHandler {
 
@@ -81,7 +80,8 @@ public class CartScreenHandler extends BaseScreenHandler {
     }
 
 
-    public ViewCartController getBController(){
+    @Override
+	public ViewCartController getBController(){
         return (ViewCartController) super.getBController();
     }
 

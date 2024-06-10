@@ -1,32 +1,39 @@
 package com.hust.ict.aims.view.place;
 
+import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 import com.hust.ict.aims.controller.PlaceOrderController;
-import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
+import com.hust.ict.aims.utils.InformationAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
-import javafx.geometry.*;
-import javafx.scene.control.*;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.controlsfx.control.spreadsheet.Grid;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
     @FXML
@@ -49,6 +56,9 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
 
     @FXML
     private Label recipientNameField;
+
+    @FXML
+    private Label emailField;
 
     @FXML
     private Label regularDeliveryShipFeeLabel;
@@ -103,6 +113,12 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         });
 
         payOrderBtn.setOnMouseClicked(e -> {
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(rushOrder.getLocalDate(), rushOrder.getLocalTime(),
+                    ZoneId.of("Asia/Ho_Chi_Minh"));
+            InformationAlert infoAlert = new InformationAlert();
+            infoAlert.createAlert("Notification", null, "Your rush delivery will arrive at "+
+                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).format(zonedDateTime));
+            infoAlert.show();
             requestPayOrder();
         });
 
@@ -111,8 +127,9 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
             ConfirmationAlert confirmationAlert = new ConfirmationAlert();
             confirmationAlert.createAlert("Error message: ", null, "Are you sure to cancel the order?");
             confirmationAlert.show();
-            if(confirmationAlert.isConfirmed())
-                homeScreenHandler.show();
+            if(confirmationAlert.isConfirmed()) {
+				homeScreenHandler.show();
+			}
         });
     }
 
@@ -120,16 +137,20 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         recipientNameField.setText(deliveryInfo.getName());
         phoneField.setText(deliveryInfo.getPhone());
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
+        emailField.setText(deliveryInfo.getEmail());
 
-        if(!regularOrder.getLstOrderMedia().isEmpty()) displayItems(regularOrder);
+        if(!regularOrder.getLstOrderMedia().isEmpty()) {
+			displayItems(regularOrder);
+		}
         displayItems(rushOrder);
 
         addPaymentOptions();
 
         // Display invoice for regular order
         int regSubtotal = 0;
-        if(regularOrder.getLstOrderMedia().isEmpty()) regularDeliveryVBox.setVisible(false);
-        else {
+        if(regularOrder.getLstOrderMedia().isEmpty()) {
+			regularDeliveryVBox.setVisible(false);
+		} else {
             regSubtotal = placeOrderController.calculateSubTotal(regularOrder).getSubtotal();
             regularDeliverySubtotalLabel.setText(
                     Utils.getCurrencyFormat(regSubtotal)
@@ -161,8 +182,11 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
 
     public void displayItems(Order order) {
         Label orderLabel = new Label(); orderLabel.setFont(new Font(24));
-        if(order.getIsRushOrder()) orderLabel.setText("Rush Delivery Items:");
-        else orderLabel.setText("Regular Delivery Items");
+        if(order.getIsRushOrder()) {
+			orderLabel.setText("Rush Delivery Items:");
+		} else {
+			orderLabel.setText("Regular Delivery Items");
+		}
         coverVBox.getChildren().add(orderLabel);
 
         Pane emptyPane = new Pane(); emptyPane.setPrefWidth(70); emptyPane.setPrefHeight(100);

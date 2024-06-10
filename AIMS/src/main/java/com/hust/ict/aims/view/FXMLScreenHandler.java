@@ -1,12 +1,12 @@
 package com.hust.ict.aims.view;
 
+import java.io.File;
+import java.io.IOException;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-
-import java.io.File;
-import java.io.IOException;
 
 public class FXMLScreenHandler {
     protected FXMLLoader loader;

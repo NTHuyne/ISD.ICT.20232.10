@@ -1,4 +1,4 @@
-package com.hust.ict.aims.subsystem.vnpay;
+package com.hust.ict.aims.subsystem.payment.vnpay;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -18,7 +18,7 @@ public class ReadPropertyValues {
 	public static synchronized String getProperty(String name) {
 		return prop.getProperty(name);
 	}
-	
+
 	private ReadPropertyValues() {
 		System.out.println("ReadPropertyValues: Initialized Properties");
 		try {
@@ -29,7 +29,7 @@ public class ReadPropertyValues {
 			} else {
 				throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
 			}
-			
+
 			inputStream.close();
 		} catch (Exception e) {
 			e.printStackTrace();

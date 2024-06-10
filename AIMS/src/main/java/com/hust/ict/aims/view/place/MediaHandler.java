@@ -1,18 +1,18 @@
 package com.hust.ict.aims.view.place;
 
-import com.hust.ict.aims.entity.media.Media;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.FXMLScreenHandler;
 import com.hust.ict.aims.view.home.HomeScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class MediaHandler extends FXMLScreenHandler {
 

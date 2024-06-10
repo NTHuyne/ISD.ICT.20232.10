@@ -1,5 +1,8 @@
 package com.hust.ict.aims.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.cart.CartMedia;
 import com.hust.ict.aims.entity.invoice.Invoice;
@@ -8,11 +11,6 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.placement.RushOrderUnsupportedException;
 import com.hust.ict.aims.service.CartService;
-import com.hust.ict.aims.utils.ErrorAlert;
-import com.hust.ict.aims.view.place.RushDeliveryInvoiceHandler;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PlaceOrderController extends BaseController{
     private CartService cartService;
@@ -42,13 +40,17 @@ public class PlaceOrderController extends BaseController{
         }
 
         Order rushOrder = categorizeRushOrder(order);
-        if(rushOrder.getLstOrderMedia().isEmpty()) throw new RushOrderUnsupportedException();
+        if(rushOrder.getLstOrderMedia().isEmpty()) {
+			throw new RushOrderUnsupportedException();
+		}
     }
 
     public Order categorizeRegularOrder(Order order) {
         List<OrderMedia> lstRegularOrderMedia = new ArrayList<>();
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            if(!orderMedia.getMedia().getRushOrderSupport()) lstRegularOrderMedia.add(orderMedia);
+            if(!orderMedia.getMedia().isRushOrderSupported()) {
+				lstRegularOrderMedia.add(orderMedia);
+			}
         }
 
         Order regularOrder = new Order();
@@ -63,7 +65,9 @@ public class PlaceOrderController extends BaseController{
     public Order categorizeRushOrder(Order order) {
         List<OrderMedia> lstRushOrderMedia = new ArrayList<>();
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            if(orderMedia.getMedia().getRushOrderSupport()) lstRushOrderMedia.add(orderMedia);
+            if(orderMedia.getMedia().isRushOrderSupported()) {
+				lstRushOrderMedia.add(orderMedia);
+			}
         }
 
         Order rushOrder = new Order();
@@ -88,7 +92,9 @@ public class PlaceOrderController extends BaseController{
     public int calculateShippingFee(Order order) {
         int shipFee = 0;
         float highest = 0.0f;
-        if(order.getLstOrderMedia().isEmpty()) return 0;
+        if(order.getLstOrderMedia().isEmpty()) {
+			return 0;
+		}
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
             String dimension = orderMedia.getMedia().getProductDimension();
             String[] dimensions = dimension.split("x");
@@ -98,17 +104,25 @@ public class PlaceOrderController extends BaseController{
         }
         if(order.getDeliveryInfo().getProvince().equals("Hà Nội") || order.getDeliveryInfo().getProvince().equals("Hồ Chí Minh")) {
             shipFee = 22000;
-            if(highest > 3.0f) shipFee += ((int)Math.ceil((highest - 3)/0.5f) * 2500);
+            if(highest > 3.0f) {
+				shipFee += ((int)Math.ceil((highest - 3)/0.5f) * 2500);
+			}
         }
         else {
             shipFee = 30000;
-            if(highest > 0.5f) shipFee += ((int)Math.ceil((highest - 0.5)/0.5f) * 2500);
+            if(highest > 0.5f) {
+				shipFee += ((int)Math.ceil((highest - 0.5)/0.5f) * 2500);
+			}
         }
-        if(order.getIsRushOrder())
-            shipFee += (order.getLstOrderMedia().size() * 10000);
-        else
-        if(order.getSubtotal() > 100000) shipFee -= 25000;
-        if(shipFee < 0) shipFee = 0;
+        if(order.getIsRushOrder()) {
+			shipFee += (order.getLstOrderMedia().size() * 10000);
+		} else
+        if(order.getSubtotal() > 100000) {
+			shipFee -= 25000;
+		}
+        if(shipFee < 0) {
+			shipFee = 0;
+		}
         return shipFee;
     }
 

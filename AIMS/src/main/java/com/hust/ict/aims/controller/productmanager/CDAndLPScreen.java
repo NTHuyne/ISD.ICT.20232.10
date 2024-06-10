@@ -74,7 +74,7 @@ public class CDAndLPScreen implements MediaScreen {
     private void setDVDFields() {
         try {
             // Assuming media.getId() returns the ID of the DVD you want to fetch
-            CdAndLp cdAndLp = cdAndLpDAO.getCDAndLPById(media.getMediaId());
+            CdAndLp cdAndLp = cdAndLpDAO.getById(media.getMediaId());
 
             if (cdAndLp != null) {
                 cdAndLp_artists.setText(cdAndLp.getArtists());
@@ -128,9 +128,9 @@ public class CDAndLPScreen implements MediaScreen {
             );
 
             if (media.getMediaId() == 0) {
-                cdAndLpDAO.addMedia(newCdAndLp);
+                cdAndLpDAO.add(newCdAndLp);
             } else {
-                cdAndLpDAO.updateMedia(newCdAndLp);
+                cdAndLpDAO.update(newCdAndLp);
             }
 
             dataChangedListener.onDataChanged();

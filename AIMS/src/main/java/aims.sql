@@ -93,7 +93,7 @@ CREATE TABLE OrderInfo(
 	order_id 				INTEGER 		NOT NULL AUTO_INCREMENT,
 	shippingFees			INTEGER			NOT NULL,
 	subtotal				INTEGER			NOT NULL,
-	status					INTEGER			NOT NULL,	-- 1 pending, 2 success?
+	status					VARCHAR(20)		NOT NULL,	-- 1 pending, 2 success?
 
 	delivery_id				INTEGER			NOT NULL,
 	PRIMARY KEY (order_id),

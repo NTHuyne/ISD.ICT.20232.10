@@ -11,7 +11,7 @@ import com.hust.ict.aims.persistence.dao.TemplateDAO;
 
 public class PaymentTransactionDAO extends TemplateDAO<PaymentTransaction> {
 	@Override
-    public PreparedStatement addStatement(PaymentTransaction trans) throws SQLException {
+	protected PreparedStatement addStatement(PaymentTransaction trans) throws SQLException {
         String sql = "INSERT INTO PaymentTransaction (paymentTime, paymentAmount, content, bankTransactionId, cardType) "
         		+ "VALUES (?, ?, ?, ?, ?)";
 
@@ -54,7 +54,7 @@ public class PaymentTransactionDAO extends TemplateDAO<PaymentTransaction> {
     }
 	
     @Override
-    public PreparedStatement deleteStatement(int transId) throws SQLException {
+    protected PreparedStatement deleteStatement(int transId) throws SQLException {
         String sql = "DELETE FROM PaymentTransaction WHERE transaction_id = ?;";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.setInt(1, transId);

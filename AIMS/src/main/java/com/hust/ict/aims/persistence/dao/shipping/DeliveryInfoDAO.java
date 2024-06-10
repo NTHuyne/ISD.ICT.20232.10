@@ -1,8 +1,10 @@
 package com.hust.ict.aims.persistence.dao.shipping;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
 
@@ -28,6 +30,19 @@ public class DeliveryInfoDAO extends TemplateDAO<DeliveryInfo> {
 	protected String getDaoName() {
 		return "deliveryInfo";
 	}
+	
+	@Override
+    protected DeliveryInfo createItemFromResultSet(ResultSet res) throws SQLException {
+    	return new DeliveryInfo(
+    		res.getInt("delivery_id"),
+        	res.getString("name"),
+        	res.getString("phone"),
+        	res.getString("email"),
+        	res.getString("province"),
+        	res.getString("address"),
+        	res.getString("message")
+        );
+    }
 
     @Override
     protected PreparedStatement getAllStatement() throws SQLException {
@@ -37,18 +52,18 @@ public class DeliveryInfoDAO extends TemplateDAO<DeliveryInfo> {
     }
     
     @Override
-    protected PreparedStatement getByIdStatement(int transId) throws SQLException {
+    protected PreparedStatement getByIdStatement(int devId) throws SQLException {
         String sql = "SELECT * FROM DeliveryInfo WHERE delivery_id = ?;";
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, transId);
+        statement.setInt(1, devId);
         return statement;
     }
 	
     @Override
-    public PreparedStatement deleteStatement(int transId) throws SQLException {
+    public PreparedStatement deleteStatement(int devId) throws SQLException {
         String sql = "DELETE FROM DeliveryInfo WHERE delivery_id = ?;";
         PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, transId);
+        statement.setInt(1, devId);
 
         return statement;
     }

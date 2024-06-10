@@ -29,7 +29,7 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
 
 
     @Override
-    public PreparedStatement getAllStatement() throws SQLException {
+    protected PreparedStatement getAllStatement() throws SQLException {
         String sql = "SELECT * FROM "+
                 "DVD INNER JOIN Media " +
                 "ON Media.media_id = DVD.media_id ";
@@ -40,7 +40,7 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
     }
 
     @Override
-    public PreparedStatement getByIdStatement(int dvdId) throws SQLException {
+    protected PreparedStatement getByIdStatement(int dvdId) throws SQLException {
         // Assuming 'connection' is your established JDBC connection
         String sql = "SELECT * FROM DVD INNER JOIN Media ON Media.media_id = DVD.media_id WHERE media_id = ?;";
         PreparedStatement statement = connection.prepareStatement(sql);

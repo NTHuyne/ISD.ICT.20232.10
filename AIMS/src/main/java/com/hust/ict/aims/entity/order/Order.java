@@ -8,11 +8,18 @@ import java.util.List;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 
 public class Order {
+	public enum OrderStatus {
+		PENDING,
+		REJECTED,
+		ACCEPTED
+	}
+	  
     private int id;
     private int shippingFees;
     private int subtotal;
-    private List<OrderMedia> lstOrderMedia = new ArrayList<>();
+    private OrderStatus status = OrderStatus.PENDING;
     private DeliveryInfo deliveryInfo;
+    private List<OrderMedia> lstOrderMedia = new ArrayList<>();
     private boolean isRushOrder;
     private LocalDate localDate;
     private LocalTime localTime;
@@ -77,4 +84,12 @@ public class Order {
     public LocalTime getLocalTime() { return this.localTime; }
 
     public void setLocalTime(LocalTime localTime) { this.localTime = localTime; }
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
 }

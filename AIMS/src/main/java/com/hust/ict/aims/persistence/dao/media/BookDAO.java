@@ -28,7 +28,7 @@ public class BookDAO extends MediaTemplateDAO<Book> {
     }
 
     @Override
-    public PreparedStatement getAllStatement() throws SQLException {
+    protected PreparedStatement getAllStatement() throws SQLException {
         String sql = "SELECT * "
         		+ "FROM Book INNER JOIN Media "
         		+ "ON Media.media_id = Book.media_id;";
@@ -39,7 +39,7 @@ public class BookDAO extends MediaTemplateDAO<Book> {
     }
 
     @Override
-    public PreparedStatement getByIdStatement(int cdAndLpId) throws SQLException {
+    protected PreparedStatement getByIdStatement(int cdAndLpId) throws SQLException {
         // Assuming 'connection' is your established JDBC connection
         String sql = "SELECT * FROM Book INNER JOIN Media ON Media.media_id = Book.media_id WHERE media_id = ?;";
         PreparedStatement statement = connection.prepareStatement(sql);

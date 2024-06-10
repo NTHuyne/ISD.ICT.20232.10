@@ -15,7 +15,11 @@ public abstract class TemplateDAO<T> {
 
     public TemplateDAO() {
         this.connection = ConnectJDBC.getConnection();
-    }	
+    }
+    
+    public TemplateDAO(Connection conn) {
+    	this.connection = conn;
+    }
 	
     protected abstract String getDaoName();
     
@@ -75,6 +79,7 @@ public abstract class TemplateDAO<T> {
 
 	public int add(T item) throws SQLException {
     	PreparedStatement statement = this.addStatement(item);
+//    	System.out.println(statement.toString());
     	
         int affectedRows = statement.executeUpdate();
         if (affectedRows == 0) {

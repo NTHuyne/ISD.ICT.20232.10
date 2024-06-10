@@ -83,7 +83,7 @@ public class PlaceOrderController extends BaseController{
         List<OrderMedia> lstOrderMedia = order.getLstOrderMedia();
         int subTotal = 0;
         for(OrderMedia orderMedia : lstOrderMedia) {
-            subTotal += (orderMedia.getPrice() * orderMedia.getQuantity());
+            subTotal += (orderMedia.getMedia().getPrice() * orderMedia.getQuantity());
         }
         order.setSubtotal(subTotal);
         return order;
@@ -134,8 +134,7 @@ public class PlaceOrderController extends BaseController{
         order.setDeliveryInfo(deliveryInfo);
         for(Object obj : cartService.getListMedia()) {
             CartMedia cartMedia = (CartMedia) obj;
-            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getPrice(),
-                    cartMedia.getQuantity());
+            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity());
             order.getLstOrderMedia().add(orderMedia);
         }
         order.setIsRushOrder(false);

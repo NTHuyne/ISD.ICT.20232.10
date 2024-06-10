@@ -27,13 +27,23 @@ public class Order {
     public Order(){
     }
 
-    public Order(int id, int shippingFees, int subtotal) {
-        this.setId(id);
-        this.setShippingFees(shippingFees);
-        this.setSubtotal(subtotal);
-    }
 
-    public int getId() {
+
+    public Order(int id, int shippingFees, int subtotal, OrderStatus status, DeliveryInfo deliveryInfo, boolean isRushOrder, LocalDate localDate, LocalTime localTime) {
+		super();
+		this.id = id;
+		this.shippingFees = shippingFees;
+		this.subtotal = subtotal;
+		this.status = status;
+		this.deliveryInfo = deliveryInfo;
+		this.isRushOrder = isRushOrder;
+		this.localDate = localDate;
+		this.localTime = localTime;
+	}
+
+
+
+	public int getId() {
         return id;
     }
 

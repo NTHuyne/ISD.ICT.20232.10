@@ -1,26 +1,27 @@
 package com.hust.ict.aims.entity.invoice;
 
 import com.hust.ict.aims.entity.order.Order;
+import com.hust.ict.aims.entity.payment.PaymentTransaction;
 
 public class Invoice {
     private int id;
     private int totalAmount;
     private Order order;
+    private PaymentTransaction transaction;
 
-    public Invoice(int id, int totalAmount, Order order) {
+    public Invoice(int id, int totalAmount, Order order, PaymentTransaction trans) {
         this.id = id;
         this.totalAmount = totalAmount;
         this.order = order;
+        this.transaction = trans;
     }
 
     public Invoice(Order order) {
         this.order = order;
         order.getLstOrderMedia().forEach(item -> {
-            this.totalAmount += item.getPrice();
+            this.totalAmount += item.getMedia().getPrice();
         });
     }
-
-    public Invoice() {}
 
     public int getId() {
         return id;
@@ -45,4 +46,12 @@ public class Invoice {
     public void setOrder(Order order) {
         this.order = order;
     }
+
+	public PaymentTransaction getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(PaymentTransaction transaction) {
+		this.transaction = transaction;
+	}
 }

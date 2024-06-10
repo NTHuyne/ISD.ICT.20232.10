@@ -1,5 +1,6 @@
 package com.hust.ict.aims.persistence.dao.payment;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +11,10 @@ import com.hust.ict.aims.entity.payment.PaymentTransaction;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
 
 public class PaymentTransactionDAO extends TemplateDAO<PaymentTransaction> {
+	public PaymentTransactionDAO(Connection conn) {
+		super(conn);
+	}
+
 	@Override
 	protected PreparedStatement addStatement(PaymentTransaction trans) throws SQLException {
         String sql = "INSERT INTO PaymentTransaction (paymentTime, paymentAmount, content, bankTransactionId, cardType) "

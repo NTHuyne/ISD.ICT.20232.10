@@ -1,5 +1,6 @@
 package com.hust.ict.aims.persistence.dao.shipping;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,11 +10,14 @@ import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
 
 public class DeliveryInfoDAO extends TemplateDAO<DeliveryInfo> {
-
+	public DeliveryInfoDAO(Connection conn) {
+		super(conn);
+	}
+	
     @Override
     protected PreparedStatement addStatement(DeliveryInfo info) throws SQLException {
         String sql = "INSERT INTO DeliveryInfo (name, phone, email, province, address, message)  "
-        		+ "VALUES (?, ?, ?, ?, ?)";
+        		+ "VALUES (?, ?, ?, ?, ?, ?)";
 
         PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         

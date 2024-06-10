@@ -60,7 +60,7 @@ public class MediaHandler extends FXMLScreenHandler {
         mediaTitle.setText(media.getMedia().getTitle());
         mediaQuantity.setText(String.valueOf(media.getQuantity()));
         mediaUnitPrice.setText(Utils.getCurrencyFormat(media.getMedia().getPrice()));
-        mediaTotal.setText(Utils.getCurrencyFormat(media.getPrice() * media.getQuantity()));
+        mediaTotal.setText(Utils.getCurrencyFormat(media.getMedia().getPrice() * media.getQuantity()));
         LOGGER.info("Set Media Title to " + mediaTitle.getText());
         LOGGER.info("Set Media Unit Price to " + mediaUnitPrice.getText());
         LOGGER.info("Set Media Quantity to " + mediaQuantity.getText());

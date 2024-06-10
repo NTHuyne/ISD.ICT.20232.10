@@ -1,6 +1,7 @@
 package com.hust.ict.aims.view.place;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
@@ -9,6 +10,7 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.payment.PaymentTransaction;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.PaymentException;
+import com.hust.ict.aims.persistence.dao.payment.InvoiceDAO;
 import com.hust.ict.aims.subsystem.payment.IClient;
 import com.hust.ict.aims.subsystem.payment.vnpay.VNPayOrderManager;
 import com.hust.ict.aims.utils.Configs;
@@ -137,7 +139,9 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
         int subTotal = placeOrderController.calculateSubTotal(this.invoice.getOrder()).getSubtotal();
         subtotalLabel.setText(Utils.getCurrencyFormat(subTotal));
         vatLabel.setText(Utils.getCurrencyFormat(subTotal * 1 / 10));
-        shippingFeeLabel.setText(Utils.getCurrencyFormat(this.placeOrderController.calculateShippingFee(order)));
+        int shippingFee = this.placeOrderController.calculateShippingFee(order);
+        this.invoice.getOrder().setShippingFees(shippingFee);
+        shippingFeeLabel.setText(Utils.getCurrencyFormat(shippingFee));
         
         totalAllFee = subTotal * 11 / 10 + placeOrderController.calculateShippingFee(order);
         priceLabel.setText(Utils.getCurrencyFormat(totalAllFee));
@@ -210,12 +214,24 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
 		loadingOverlay.setVisible(false);
 		System.out.println("Transaction Success!!!");
 		
-		// Go back to main javafx thread
-		Platform.runLater(() -> {
-	        InformationAlert successAlert = new InformationAlert();
-	        successAlert.createAlert("Transaction Completed", null, "Transaction completed successfully. Awating for product manager to confirm your order.");
-	        successAlert.show();
-	        homeScreenHandler.show();
-		});
+		this.invoice.setTransaction(trans);
+		try {
+			new InvoiceDAO().addFromStart(this.invoice);
+			
+			// Go back to main javafx thread
+			Platform.runLater(() -> {
+		        InformationAlert successAlert = new InformationAlert();
+		        successAlert.createAlert("Transaction Completed", null, "Transaction completed successfully. Awating for product manager to confirm your order.");
+		        successAlert.show();
+		        homeScreenHandler.show();
+			});
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Platform.runLater(() -> {
+				ErrorAlert failAlert = new ErrorAlert();
+				failAlert.createAlert("Transaction Failed", null, "Transaction failed.\nReason: Cannot insert to database?");
+				failAlert.show();
+			});
+		}
 	}
 }

@@ -12,7 +12,7 @@ import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.InformationAlert;
 
 public abstract class MediaTemplateDAO<T extends Media> extends TemplateDAO<T> {
-	protected MediaAccessDAO mediaAccessDAO = new MediaAccessDAO();
+	protected MediaAccessDAO mediaAccessDAO = new MediaAccessDAO(connection);	// Reusing connection
 	
     public List<Media> getAllMedia() throws SQLException {
         List<Media> itemlist = new ArrayList<>();

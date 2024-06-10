@@ -293,7 +293,7 @@
     </BorderPane>
    <AnchorPane fx:id="loadingOverlay" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.3);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-         <ProgressIndicator fx:id="loadingProgress" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0" />
+         <ProgressIndicator fx:id="loadingProgress" minHeight="100.0" minWidth="100.0" AnchorPane.bottomAnchor="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="200.0" />
       </children>
    </AnchorPane>
 </AnchorPane>

@@ -1,5 +1,6 @@
 package com.hust.ict.aims.persistence.dao.media.temp;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +14,10 @@ import com.hust.ict.aims.utils.ConfirmationAlert;
  * @author
  */
 public class MediaAccessDAO extends TemplateDAO<Media> {
+	public MediaAccessDAO(Connection conn) {
+		super(conn);
+	}
+
 	@Override
     public Media createItemFromResultSet(ResultSet res) throws SQLException {
     	return new Media(

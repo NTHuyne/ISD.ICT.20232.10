@@ -25,16 +25,11 @@ public class VNPayOrderManager implements IPayment, IParamsProcessor {
 		PaymentTransaction trans = null;
 		try {
 			trans = newResponse.parseParams(params);
-			new PaymentTransactionDAO().add(trans);
 
 			client.updateTransactionOnSuccess(trans);
 		} catch (PaymentException e) {
 			System.err.println(e.getMessage());
 			client.updateTransactionOnFailure(e);
-		} catch (SQLException e) {
-			System.err.println("SQLException when adding transaction: " + e.getMessage());
-
-			client.updateTransactionOnSuccess(trans);
 		}
 	}
 

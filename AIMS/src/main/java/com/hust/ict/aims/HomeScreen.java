@@ -2,6 +2,7 @@ package com.hust.ict.aims;
 
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.view.home.HomeScreenHandler;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 

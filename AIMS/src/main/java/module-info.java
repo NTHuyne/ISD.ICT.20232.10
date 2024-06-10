@@ -21,8 +21,6 @@ module com.hust.ict.aims {
     exports com.hust.ict.aims.controller.productmanager;
     opens com.hust.ict.aims.service to javafx.fxml;
     exports com.hust.ict.aims.service;
-    opens com.hust.ict.aims.service.productmanager to javafx.fxml;
-    exports com.hust.ict.aims.service.productmanager;
 
     opens com.hust.ict.aims.entity.media to javafx.base;
 

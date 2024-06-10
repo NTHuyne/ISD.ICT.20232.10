@@ -1,9 +1,10 @@
 package com.hust.ict.aims.controller.productmanager;
 
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.BookService;
-import com.hust.ict.aims.service.productmanager.CDAndLPService;
-import com.hust.ict.aims.service.productmanager.DVDService;
+import com.hust.ict.aims.persistence.dao.media.BookDAO;
+import com.hust.ict.aims.persistence.dao.media.CDDAO;
+import com.hust.ict.aims.persistence.dao.media.DVDDAO;
+
 
 // Su dung Factory pattern
 public class MediaScreenFactory {
@@ -15,16 +16,16 @@ public class MediaScreenFactory {
 
         return switch (category.toUpperCase()) {
             case "BOOK" -> {
-                BookService bookService = new BookService();
-                yield new BookScreen(media, data, bookService);
+                BookDAO bookDAO = new BookDAO();
+                yield new BookScreen(media, data, bookDAO);
             }
             case "CD", "LP" -> {
-                CDAndLPService cdAndLpService = new CDAndLPService();
-                yield new CDAndLPScreen(media, data, cdAndLpService);
+                CDDAO cdAndLpDAO = new CDDAO();
+                yield new CDAndLPScreen(media, data, cdAndLpDAO);
             }
             case "DVD" -> {
-                DVDService dvdService = new DVDService();
-                yield new DVDScreen(media, data, dvdService);
+                DVDDAO dvdDAO = new DVDDAO();
+                yield new DVDScreen(media, data, dvdDAO);
             }
             default -> null;
         };

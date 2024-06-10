@@ -1,10 +1,10 @@
 package com.hust.ict.aims.controller;
 
+import java.util.List;
+
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.cart.CartMedia;
 import com.hust.ict.aims.entity.media.Media;
-
-import java.util.List;
 
 public class BaseController {
 
@@ -14,7 +14,7 @@ public class BaseController {
     }
 
     // Coincidental cohesion
-    public List getListCartMedia(){
+    public List<CartMedia> getListCartMedia(){
         return Cart.getCart().getListMedia();
     }
 }

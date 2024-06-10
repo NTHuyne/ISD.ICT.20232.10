@@ -28,7 +28,7 @@ public class VNPayOrderManager implements IPayment {
 			String queryURL = newRequest.buildQueryURL();
 			System.out.println(queryURL);
 			vnpayDisplay.sendPayOrder(queryURL);
-			
+
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

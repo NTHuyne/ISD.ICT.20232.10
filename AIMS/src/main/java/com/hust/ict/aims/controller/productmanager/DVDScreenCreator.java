@@ -1,22 +1,22 @@
 package com.hust.ict.aims.controller.productmanager;
 
 
-import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.service.productmanager.DVDService;
-
 import java.util.Collection;
 import java.util.Collections;
 
+import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.persistence.dao.media.DVDDAO;
+
 public class DVDScreenCreator implements MediaScreenCreator {
-    private DVDService dvdService;
+    private DVDDAO dvdDAO;
 
     public DVDScreenCreator() {
-        this.dvdService = new DVDService();
+        this.dvdDAO = new DVDDAO();
     }
 
     @Override
     public MediaScreen getMediaScreen(Media media, DataChangedListener data) {
-        return new DVDScreen(media, data, dvdService);
+        return new DVDScreen(media, data, dvdDAO);
     }
 
     @Override

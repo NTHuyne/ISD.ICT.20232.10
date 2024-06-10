@@ -1,14 +1,14 @@
 package com.hust.ict.aims.controller;
 
-import com.hust.ict.aims.persistence.dao.media.*;
-import com.hust.ict.aims.entity.media.Media;
-
 import java.sql.SQLException;
 import java.util.List;
 
+import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.persistence.dao.media.MediaDAO;
+
 /**
  * This class controls the flow of events in homescreen
- * @author nguyenlm
+ * @author
  */
 public class HomeController extends BaseController {
 
@@ -18,19 +18,7 @@ public class HomeController extends BaseController {
      * @return List[Media]
      * @throws SQLException
      */
-    public static List getAllMedia() throws SQLException{
+    public static List<Media> getAllMedia() throws SQLException{
         return new MediaDAO().getAllMedia();
-    }
-
-    public static Media getBookById(int id) throws SQLException{
-        return new BookDAO().getMediaById(id);
-    }
-
-    public static Media getDvdById(int id) throws SQLException{
-        return new DVDDAO().getMediaById(id);
-    }
-
-    public static Media getCdById(int id) throws SQLException{
-        return new CDDAO().getMediaById(id);
     }
 }

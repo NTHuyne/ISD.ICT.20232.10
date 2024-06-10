@@ -10,52 +10,22 @@ public class Dvd extends Media{
     private String language;
     private String subtitles;
     private Date releasedDate;
-    private String filmType;
+    private String genre;
 
-    public Dvd() {
-        super();
-    }
+    public Dvd(Media otherMedia, String dvdType, String director, int runtime, String studio, String language,
+			String subtitles, Date releasedDate, String genre) {
+		super(otherMedia);
+		this.dvdType = dvdType;
+		this.director = director;
+		this.runtime = runtime;
+		this.studio = studio;
+		this.language = language;
+		this.subtitles = subtitles;
+		this.releasedDate = releasedDate;
+		this.genre = genre;
+	}
 
-    public Dvd(Integer id, String category, int price, int value, String title, String description, int quantity, Date importDate, Boolean rushOrderSupport, String barcode, String productDimension, String imageUrl, String dvdType, String director, int runtime, String studio, String language, String subtitles, Date releasedDate, String filmType) {
-        super(id, category, price, value, title, description, quantity, importDate, rushOrderSupport, barcode, productDimension, imageUrl);
-        this.setDvdType(dvdType);
-        this.setDirector(director);
-        this.setRuntime(runtime);
-        this.setStudio(studio);
-        this.setLanguage(language);
-        this.setSubtitles(subtitles);
-        this.setReleasedDate(releasedDate);
-        this.setFilmType(filmType);
-    }
-
-    public Dvd(Integer id, String category, int price, int value, String title, String description, int quantity, Date importDate, String barcode, String productDimension, String imageUrl, String dvdType, String director, int runtime, String studio, String language, String subtitles, Date releasedDate, String filmType) {
-        super(id, category, price, value, title, description, quantity, importDate, barcode, productDimension, imageUrl);
-        this.setDvdType(dvdType);
-        this.setDirector(director);
-        this.setRuntime(runtime);
-        this.setStudio(studio);
-        this.setLanguage(language);
-        this.setSubtitles(subtitles);
-        this.setReleasedDate(releasedDate);
-        this.setFilmType(filmType);
-    }
-
-    public Dvd(Media media, String studio, String filmType, String dvdType, String language, String director, String subtitles, int runtime, Date releasedDate) {
-        super(media.getId(), media.getCategory(), media.getPrice(),
-                media.getValue(), media.getTitle(),  media.getDescription(),
-                media.getQuantity(), media.getImportDate(),  media.getRushOrderSupport(),
-                media.getProductDimension(), media.getBarcode(), media.getImageUrl());
-        this.setDirector(director);
-        this.setRuntime(runtime);
-        this.setStudio(studio);
-        this.setLanguage(language);
-        this.setSubtitles(subtitles);
-        this.setFilmType(filmType);
-        this.setDvdType(dvdType);
-        this.setReleasedDate(releasedDate);
-    }
-
-    public String getDvdType() {
+	public String getDvdType() {
         return dvdType;
     }
 
@@ -103,12 +73,12 @@ public class Dvd extends Media{
         this.subtitles = subtitles;
     }
 
-    public String getFilmType() {
-        return filmType;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setFilmType(String filmType) {
-        this.filmType = filmType;
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 
     public Date getReleasedDate() {
@@ -119,4 +89,8 @@ public class Dvd extends Media{
         this.releasedDate = releasedDate;
     }
 
+	@Override
+	public String getMediaTypeName() {
+		return "DVD";
+	}
 }

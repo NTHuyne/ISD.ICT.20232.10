@@ -25,10 +25,10 @@ public class VNPayResponse {
 	private void handleParams(String key, String value) throws PaymentException {
 		switch (key) {
 			case "vnp_TransactionNo": // = 14449369
-				currentTrans.setTransactionId(value);
+				// currentTrans.setTransactionId(value);
 				break;
-			case "vnp_Amount":  //= 1806000
-				currentTrans.setPaymentAmount(Integer.parseInt(value));
+			case "vnp_Amount":  //= 17000000
+				currentTrans.setPaymentAmount(Integer.parseInt(value) / 100);
 				break;
 			case "vnp_BankTranNo": //= 7178171996076149003010
 				currentTrans.setBankTransactionId(value); 
@@ -74,6 +74,7 @@ public class VNPayResponse {
 				break; // = 1d79957b911423a7639e3ef4419f766d77914bef7d3cf1330f89dc19fd36f010e647d6fe28a817a673c09cafecbd7546186d5e6bfa6d40681834fed14fb8d3fc
 			default:
 				System.err.println("Unrecognized param: " + key);
+				break;
 		}
 	}
 	

@@ -9,13 +9,16 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.payment.PaymentTransaction;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.PaymentException;
-import com.hust.ict.aims.subsystem.IClient;
-import com.hust.ict.aims.subsystem.vnpay.VNPayOrderManager;
+import com.hust.ict.aims.subsystem.payment.IClient;
+import com.hust.ict.aims.subsystem.payment.vnpay.VNPayOrderManager;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
+import com.hust.ict.aims.utils.ErrorAlert;
+import com.hust.ict.aims.utils.InformationAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -32,8 +35,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-import java.io.IOException;
 
 public class InvoiceHandler extends BaseScreenHandler implements IClient {
 
@@ -196,11 +197,25 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
 	public void updateTransactionOnFailure(PaymentException exception) {
 		loadingOverlay.setVisible(false);
 		System.out.println("Transaction Failure!");
+		
+		Platform.runLater(() -> {
+			ErrorAlert failAlert = new ErrorAlert();
+			failAlert.createAlert("Transaction Failed", null, "Transaction failed.\nReason: " + exception.getMessage());
+			failAlert.show();
+		});
 	}
 
 	@Override
 	public void updateTransactionOnSuccess(PaymentTransaction trans) {
 		loadingOverlay.setVisible(false);
 		System.out.println("Transaction Success!!!");
+		
+		// Go back to main javafx thread
+		Platform.runLater(() -> {
+	        InformationAlert successAlert = new InformationAlert();
+	        successAlert.createAlert("Transaction Completed", null, "Transaction completed successfully. Awating for product manager to confirm your order.");
+	        successAlert.show();
+	        homeScreenHandler.show();
+		});
 	}
 }

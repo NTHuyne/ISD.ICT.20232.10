@@ -58,7 +58,7 @@ public class VNPayRequest {
 
         vnp_Params.put("vnp_BankCode", "INTCARD");		// International cards
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", orderInfo + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", orderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
 
         vnp_Params.put("vnp_Locale", "vn");

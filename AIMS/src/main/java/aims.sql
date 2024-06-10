@@ -125,7 +125,7 @@ CREATE TABLE RushOrderInfo (
 -- Table: PaymentTransaction
 CREATE TABLE PaymentTransaction(
 	transaction_id 			INTEGER 		NOT NULL AUTO_INCREMENT,
-	paymentTime				DATETIME		NOT NULL,
+	paymentTime				TIMESTAMP		NOT NULL,
 	paymentAmount			INTEGER			NOT NULL,
 	content					VARCHAR(50)		NOT NULL,
 

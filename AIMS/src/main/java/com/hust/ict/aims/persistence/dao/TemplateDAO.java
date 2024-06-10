@@ -69,7 +69,7 @@ public abstract class TemplateDAO<T> {
         if (resultSet.next()) {
             return this.createItemFromResultSet(resultSet);
         } else {
-        	throw new SQLException("Getting failed, no " + getDaoName() + " with ID: " + id);
+        	throw new SQLException("No " + getDaoName() + " found for ID: " + id);
         }
     }
 

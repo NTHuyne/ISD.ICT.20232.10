@@ -3,6 +3,8 @@ package com.hust.ict.aims.persistence.dao.media;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
@@ -68,7 +70,7 @@ public class BookDAO extends MediaTemplateDAO<Book> {
     protected PreparedStatement addStatement(Book book) throws SQLException {
         // Thêm thông tin vào bảng Book
         String bookSql = "INSERT INTO Book (authors, coverType, publisher, publicationDate, pages, language, genre, media_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement bookStatement = connection.prepareStatement(bookSql);
+        PreparedStatement bookStatement = connection.prepareStatement(bookSql, Statement.RETURN_GENERATED_KEYS);;
         this.prepareStatementFromBook(bookStatement, book);
 
         return bookStatement;

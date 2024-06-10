@@ -3,6 +3,8 @@ package com.hust.ict.aims.persistence.dao.media;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
@@ -68,7 +70,7 @@ public class CDDAO extends MediaTemplateDAO<CdAndLp> {
         String cdSql = "INSERT INTO CD_and_LP (isCD, artists, recordLabel, trackList, genre, releaseDate, media_id) "
         		+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        PreparedStatement cdStatement = connection.prepareStatement(cdSql);
+        PreparedStatement cdStatement = connection.prepareStatement(cdSql, Statement.RETURN_GENERATED_KEYS);
         this.prepareStatementFromCD(cdStatement, cdAndLp);
 
         return cdStatement;

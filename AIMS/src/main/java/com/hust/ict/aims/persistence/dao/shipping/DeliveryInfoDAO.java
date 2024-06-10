@@ -1,36 +1,26 @@
 package com.hust.ict.aims.persistence.dao.shipping;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-
-import com.hust.ict.aims.entity.payment.PaymentTransaction;
+import java.sql.Statement;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
-import com.hust.ict.aims.persistence.database.ConnectJDBC;
-import com.hust.ict.aims.utils.InformationAlert;
 
 public class DeliveryInfoDAO extends TemplateDAO<DeliveryInfo> {
-    private final Connection connection;
 
-    public DeliveryInfoDAO() {
-        this.connection = ConnectJDBC.getConnection();
-    }
-    
     @Override
-    protected PreparedStatement addStatement(DeliveryInfo trans) throws SQLException {
-        String sql = "INSERT INTO DeliveryInfo (paymentTime, paymentAmount, content, bankTransactionId, cardType) "
+    protected PreparedStatement addStatement(DeliveryInfo info) throws SQLException {
+        String sql = "INSERT INTO DeliveryInfo (name, phone, email, province, address, message)  "
         		+ "VALUES (?, ?, ?, ?, ?)";
 
-        PreparedStatement stmt = connection.prepareStatement(sql);
+        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         
-    	stmt.setTimestamp(1, Timestamp.from(trans.getPaymentTime()));
-        stmt.setInt(2, trans.getPaymentAmount());
-        stmt.setString(3, trans.getContent());
-        stmt.setString(4, trans.getBankTransactionId());
-        stmt.setString(5, trans.getCardType());
+    	stmt.setString(1, info.getName());
+        stmt.setString(2, info.getPhone());
+        stmt.setString(3, info.getEmail());
+        stmt.setString(4, info.getProvince());
+        stmt.setString(5, info.getAddress());
+        stmt.setString(6, info.getShippingInstructions());
         return stmt;
     }
 
@@ -39,11 +29,27 @@ public class DeliveryInfoDAO extends TemplateDAO<DeliveryInfo> {
 		return "deliveryInfo";
 	}
 
-	@Override
-	protected PreparedStatement deleteStatement(int id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    protected PreparedStatement getAllStatement() throws SQLException {
+        String sql = "SELECT * FROM DeliveryInfo;";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        return statement;
+    }
     
+    @Override
+    protected PreparedStatement getByIdStatement(int transId) throws SQLException {
+        String sql = "SELECT * FROM DeliveryInfo WHERE delivery_id = ?;";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, transId);
+        return statement;
+    }
+	
+    @Override
+    public PreparedStatement deleteStatement(int transId) throws SQLException {
+        String sql = "DELETE FROM DeliveryInfo WHERE delivery_id = ?;";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(1, transId);
 
+        return statement;
+    }
 }

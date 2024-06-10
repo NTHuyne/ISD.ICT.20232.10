@@ -1,34 +1,20 @@
-package com.hust.ict.aims.persistence.dao.media;
+package com.hust.ict.aims.persistence.dao.media.temp;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
-import java.util.List;
-
 import com.hust.ict.aims.entity.media.Media;
-import com.hust.ict.aims.persistence.database.ConnectJDBC;
+import com.hust.ict.aims.persistence.dao.TemplateDAO;
 import com.hust.ict.aims.utils.ConfirmationAlert;
 
 /**
  * @author
  */
-public abstract class MediaAccessDAO {
-	public abstract List<Media> getAllMedia() throws SQLException;
-//	public abstract Media getMediaById(int id) throws SQLException;
-    public abstract void addMedia(Media media) throws SQLException;
-    public abstract void updateMedia(Media media) throws SQLException;
-
-
-    protected final Connection connection;
-
-    public MediaAccessDAO() {
-        this.connection = ConnectJDBC.getConnection();
-    }
-
-    public Media createMediaFromResultSet(ResultSet res) throws SQLException {
+public class MediaAccessDAO extends TemplateDAO<Media> {
+	@Override
+    public Media createItemFromResultSet(ResultSet res) throws SQLException {
     	return new Media(
         	res.getInt("media_id"),
         	res.getString("title"),
@@ -73,8 +59,8 @@ public abstract class MediaAccessDAO {
         }
     }
 
-    // Return generated key
-    public int addTempMedia(Media media) throws SQLException {
+    @Override
+    protected PreparedStatement addStatement(Media media) throws SQLException {
         ConfirmationAlert confirmationAlert = new ConfirmationAlert();
         confirmationAlert.createAlert("Confirmation", null, "Are you sure you want to add this media?");
         confirmationAlert.show();
@@ -89,23 +75,12 @@ public abstract class MediaAccessDAO {
 
         try (PreparedStatement mediaStatement = connection.prepareStatement(mediaInsertSql, Statement.RETURN_GENERATED_KEYS)) {
 	        this.prepareStatementFromMedia(mediaStatement, media);
-
-	        int affectedRows = mediaStatement.executeUpdate();
-	        if (affectedRows == 0) {
-	            throw new SQLException("Creating media failed, no rows affected.");
-	        }
-
-	        // Lấy ID được tạo tự động
-	    	ResultSet generatedKeys = mediaStatement.getGeneratedKeys();
-	        if (generatedKeys.next()) {
-	            return generatedKeys.getInt(1);
-	        } else {
-	            throw new SQLException("Creating CD/LP failed, no ID obtained.");
-	        }
+	        return mediaStatement;
         }
     }
 
-    public void updateTempMedia(Media media) throws SQLException {
+    @Override
+	protected PreparedStatement updateStatement(Media media) throws SQLException {
         ConfirmationAlert confirmationAlert = new ConfirmationAlert();
         confirmationAlert.createAlert("Confirmation", null, "Are you sure you want to update this media?");
         confirmationAlert.show();
@@ -120,11 +95,19 @@ public abstract class MediaAccessDAO {
 	        // Thiết lập các tham số cho Media
 	        this.prepareStatementFromMedia(mediaStatement, media);
 	        mediaStatement.setInt(11, media.getMediaId());
-
-	        int affectedRows = mediaStatement.executeUpdate();
-	        if (affectedRows == 0) {
-	            throw new SQLException("Updating media failed, no rows affected.");
-	        }
+	        
+	        return mediaStatement;
         }
     }
+    
+    // This class is only used for Book, CD and DVD DAOs
+    protected MediaAccessDAO() {
+    	super();
+    }
+
+
+	@Override
+	protected String getDaoName() {
+		return "media";
+	}
 }

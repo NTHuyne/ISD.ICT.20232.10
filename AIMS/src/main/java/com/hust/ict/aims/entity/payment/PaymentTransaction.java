@@ -2,84 +2,63 @@ package com.hust.ict.aims.entity.payment;
 
 import java.time.Instant;
 
-import com.hust.ict.aims.entity.invoice.Invoice;
-
 public class PaymentTransaction {
-    private String transactionId;
-    private String bankTransactionId;	// BankTransactionId
-	private int paymentAmount;
+    private int transactionId;
     private Instant paymentTime;
+	private int paymentAmount;
     private String content;
+    
+    private String bankTransactionId;	// BankTransactionId
     private String cardType;
-
-	public PaymentTransaction(String transactionId, String bankTransactionId, int paymentAmount, Instant paymentTime,
-			String content, String cardType) {
+    
+	public PaymentTransaction(int transactionId, Instant paymentTime, int paymentAmount, String content,
+			String bankTransactionId, String cardType) {
 		super();
 		this.transactionId = transactionId;
-		this.bankTransactionId = bankTransactionId;
-		this.paymentAmount = paymentAmount;
 		this.paymentTime = paymentTime;
+		this.paymentAmount = paymentAmount;
 		this.content = content;
+		this.bankTransactionId = bankTransactionId;
 		this.cardType = cardType;
 	}
-
-
+	
 	public PaymentTransaction() {}
-
-
-    public Instant getPaymentTime() {
-        return paymentTime;
-    }
-
-    public void setPaymentTime(Instant paymentTime) {
-        this.paymentTime = paymentTime;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
+	
+	public int getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
+	}
+	public Instant getPaymentTime() {
+		return paymentTime;
+	}
+	public void setPaymentTime(Instant paymentTime) {
+		this.paymentTime = paymentTime;
+	}
+	public int getPaymentAmount() {
+		return paymentAmount;
+	}
+	public void setPaymentAmount(int paymentAmount) {
+		this.paymentAmount = paymentAmount;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getBankTransactionId() {
+		return bankTransactionId;
+	}
+	public void setBankTransactionId(String bankTransactionId) {
+		this.bankTransactionId = bankTransactionId;
+	}
 	public String getCardType() {
 		return cardType;
 	}
-
 	public void setCardType(String cardType) {
 		this.cardType = cardType;
 	}
 
-
-
-	public String getTransactionId() {
-		return transactionId;
-	}
-
-
-
-	public void setTransactionId(String transactionId) {
-		this.transactionId = transactionId;
-	}
-
-
-	public int getPaymentAmount() {
-		return paymentAmount;
-	}
-
-
-	public void setPaymentAmount(int paymentAmount) {
-		this.paymentAmount = paymentAmount;
-	}
-
-
-	public String getBankTransactionId() {
-		return bankTransactionId;
-	}
-
-
-	public void setBankTransactionId(String bankTransactionId) {
-		this.bankTransactionId = bankTransactionId;
-	}
 }

@@ -71,7 +71,7 @@ public class DVDScreen implements MediaScreen {
     private void setDVDFields() {
         try {
             // Assuming media.getId() returns the ID of the DVD you want to fetch
-            Dvd dvd = dvdDAO.getDvdById(media.getMediaId());
+            Dvd dvd = dvdDAO.getById(media.getMediaId());
 
             if (dvd != null) {
                 dvd_director.setText(dvd.getDirector());
@@ -136,10 +136,10 @@ public class DVDScreen implements MediaScreen {
             // Check if it's a new dvd or an update
             if (media.getMediaId() == 0) {
                 // It's a new dvd
-                dvdDAO.addMedia(newDvd);
+                dvdDAO.add(newDvd);
             } else {
                 // It's an existing dvd
-                dvdDAO.updateMedia(newDvd);
+                dvdDAO.update(newDvd);
             }
 
             dataChangedListener.onDataChanged();

@@ -48,17 +48,17 @@ public class VNPayRequest {
 
         String vnp_TxnRef = getRandomNumber(8);	// TODO: Change this to order_id later?
 
-
+        // TODO: change this to be more correct?
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", vnp_Version);
         vnp_Params.put("vnp_Command", vnp_Command);
         vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", String.valueOf(amount));
+        vnp_Params.put("vnp_Amount", String.valueOf(amount * 100));
         vnp_Params.put("vnp_CurrCode", "VND");
 
         vnp_Params.put("vnp_BankCode", "INTCARD");		// International cards
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", orderInfo + vnp_TxnRef);
+        vnp_Params.put("vnp_OrderInfo", orderInfo);
         vnp_Params.put("vnp_OrderType", orderType);
 
         vnp_Params.put("vnp_Locale", "vn");
@@ -69,6 +69,7 @@ public class VNPayRequest {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         String vnp_CreateDate = now.format(formatter2);
         String vnp_ExpireDate = now.plusMinutes(15).format(formatter2);
+        
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
         vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
 

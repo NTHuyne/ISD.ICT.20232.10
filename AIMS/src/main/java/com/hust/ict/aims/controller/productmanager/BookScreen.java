@@ -72,7 +72,7 @@ public class BookScreen implements MediaScreen {
     private void setBookFields() {
         try {
             // Assuming media.getId() returns the ID of the book you want to fetch
-            Book book = bookDAO.getBookById(media.getMediaId());
+            Book book = bookDAO.getById(media.getMediaId());
 
             if (book != null) {
                 book_author.setText(book.getAuthors());
@@ -134,10 +134,10 @@ public class BookScreen implements MediaScreen {
             // Check if it's a new book or an update
             if (media.getMediaId() == 0) {
                 // It's a new book
-                bookDAO.addMedia(newBook);
+                bookDAO.add(newBook);
             } else {
                 // It's an existing book
-            	bookDAO.updateMedia(newBook);
+            	bookDAO.update(newBook);
             }
 
             dataChangedListener.onDataChanged();

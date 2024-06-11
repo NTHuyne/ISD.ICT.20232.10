@@ -10,6 +10,10 @@ public class ReadPropertyValues {
 
 	// Singleton
 	private static final ReadPropertyValues instance = new ReadPropertyValues();
+	
+	public static ReadPropertyValues getInstance() {
+		return instance;
+	}
 
 	public static synchronized String getProperty(String name) {
 		return prop.getProperty(name);

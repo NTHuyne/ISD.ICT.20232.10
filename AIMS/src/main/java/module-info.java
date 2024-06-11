@@ -9,6 +9,7 @@ module com.hust.ict.aims {
 	requires org.apache.httpcomponents.httpclient;
 	requires java.desktop;
 	requires net.freeutils.jlhttp;
+	requires javafx.graphics;
     requires org.simplejavamail.core;
     requires org.simplejavamail;
     requires jakarta.mail;

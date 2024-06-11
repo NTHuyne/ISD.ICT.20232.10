@@ -65,7 +65,7 @@ public class ShippingScreenHandler extends BaseScreenHandler {
             if(!nameField.getText().isEmpty() && validatePhoneField(phoneField) &&
                 !addressField.getText().isEmpty() && !provinceField.getValue().isEmpty()
                 && validateEmailField(emailField)) {
-                DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), instructionsField.getText(), emailField.getText());
+                DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), emailField.getText(), instructionsField.getText()) ;
                 Order order = placeOrderController.createOrder(deliveryInfo);
                 Invoice invoice = placeOrderController.createInvoice(order);
 
@@ -104,7 +104,7 @@ public class ShippingScreenHandler extends BaseScreenHandler {
             if(!nameField.getText().isEmpty() && validatePhoneField(phoneField) &&
                     !addressField.getText().isEmpty() && !provinceField.getValue().isEmpty()
                     && validateEmailField(emailField)) {
-                DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), instructionsField.getText(), emailField.getText());
+                DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), emailField.getText(), instructionsField.getText());
                 Order order = placeOrderController.createOrder(deliveryInfo);
                 try {
                     placeOrderController.placeRushOrder(order);

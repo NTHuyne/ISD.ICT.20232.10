@@ -61,16 +61,15 @@
                                     <TableView fx:id="medias_tableView" layoutX="10.0" layoutY="6.0" onMouseClicked="#selectMedia" prefHeight="276.0" prefWidth="1138.0">
                                       <columns>
                                         <TableColumn fx:id="medias_col_id" prefWidth="46.0" text="ID" />
-                                          <TableColumn fx:id="medias_col_title" prefWidth="150.71487426757812" text="Title" />
-                                        <TableColumn fx:id="medias_col_category" minWidth="2.0" prefWidth="76.131103515625" text="Category" />
-                                          <TableColumn fx:id="medias_col_value" prefWidth="75.94915771484375" text="Value" />
-                                          <TableColumn fx:id="medias_col_price" prefWidth="75.55078125" text="Price" />
-                                          <TableColumn fx:id="medias_col_quantity" prefWidth="73.6932373046875" text="Quantity" />
-                                          <TableColumn fx:id="medias_col_importDate" prefWidth="110.84869384765625" text="Import date" />
-                                          <TableColumn fx:id="medias_col_rushOrderSupport" prefWidth="65.45269775390625" text="ROS" />
-                                          <TableColumn fx:id="medias_col_barcode" prefWidth="104.550048828125" text="Barcode" />
-                                          <TableColumn fx:id="medias_col_productDimension" prefWidth="109.154052734375" text="Dimension" />
-                                          <TableColumn fx:id="medias_col_desciption" prefWidth="255.0770263671875" text="Description" />
+                                          <TableColumn fx:id="medias_col_title" prefWidth="165.0" text="Title" />
+                                          <TableColumn fx:id="medias_col_category" minWidth="2.0" prefWidth="85.0" text="Category" />
+                                          <TableColumn fx:id="medias_col_price" prefWidth="109.0" text="Price" />
+                                          <TableColumn fx:id="medias_col_quantity" prefWidth="68.0" text="Quantity" />
+                                          <TableColumn fx:id="medias_col_importDate" prefWidth="113.0" text="Import date" />
+                                          <TableColumn fx:id="medias_col_rushOrderSupport" prefWidth="88.0" text="ROS" />
+                                          <TableColumn fx:id="medias_col_barcode" prefWidth="95.0" text="Barcode" />
+                                          <TableColumn fx:id="medias_col_productDimension" prefWidth="98.0" text="Dimension" />
+                                          <TableColumn fx:id="medias_col_desciption" prefWidth="270.0" text="Description" />
                                       </columns>
                                     </TableView>
                                  </children></AnchorPane>
@@ -87,31 +86,25 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <Label layoutX="502.0" layoutY="120.0" text="Value (VND)" AnchorPane.leftAnchor="502.0" AnchorPane.topAnchor="120.0">
+                                    <Label layoutX="502.0" layoutY="124.0" text="Price (VND)" AnchorPane.leftAnchor="502.0">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="media_value" layoutX="589.0" layoutY="117.0" prefHeight="26.0" prefWidth="77.0" promptText="100.000" />
-                                    <Label layoutX="717.0" layoutY="120.0" text="Price (VND)" AnchorPane.leftAnchor="717.0">
-                                       <font>
-                                          <Font size="15.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="media_price" layoutX="802.0" layoutY="117.0" prefHeight="26.0" prefWidth="77.0" promptText="100.000" AnchorPane.leftAnchor="802.0" AnchorPane.topAnchor="117.0" />
+                                    <TextField fx:id="media_price" layoutX="589.0" layoutY="122.0" prefHeight="26.0" prefWidth="77.0" promptText="100.000" AnchorPane.leftAnchor="589.0" AnchorPane.topAnchor="122.0" />
                                     <Label layoutX="502.0" layoutY="65.0" text="Quantity" AnchorPane.leftAnchor="502.0" AnchorPane.topAnchor="65.0">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="media_quantity" layoutX="571.0" layoutY="62.0" prefHeight="26.0" prefWidth="36.0" promptText="0" AnchorPane.leftAnchor="571.0" AnchorPane.topAnchor="62.0" />
+                                    <TextField fx:id="media_quantity" layoutX="589.0" layoutY="63.0" prefHeight="26.0" prefWidth="36.0" promptText="0" AnchorPane.leftAnchor="589.0" AnchorPane.topAnchor="63.0" />
                                     <Label layoutX="513.0" layoutY="231.0" text="Description" AnchorPane.leftAnchor="502.0" AnchorPane.topAnchor="231.0">
                                        <font>
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
                                     <ComboBox fx:id="media_category" layoutX="173.0" layoutY="130.0" prefHeight="26.0" prefWidth="216.0" promptText="Choose category" AnchorPane.leftAnchor="186.0" AnchorPane.topAnchor="130.0" />
-                                    <TextArea fx:id="media_description" layoutX="585.0" layoutY="232.0" prefHeight="169.0" prefWidth="346.0" AnchorPane.leftAnchor="585.0" />
+                                    <TextArea fx:id="media_description" layoutX="589.0" layoutY="231.0" prefHeight="169.0" prefWidth="346.0" AnchorPane.leftAnchor="589.0" />
                                     <Label layoutX="48.0" layoutY="187.0" text="Rush order support" AnchorPane.leftAnchor="48.0">
                                        <font>
                                           <Font size="15.0" />
@@ -129,14 +122,14 @@
                                           <Font size="15.0" />
                                        </font>
                                     </Label>
-                                    <TextField fx:id="media_productDimension" layoutX="583.0" layoutY="178.0" prefHeight="26.0" prefWidth="346.0" />
+                                    <TextField fx:id="media_productDimension" layoutX="589.0" layoutY="180.0" prefHeight="26.0" prefWidth="346.0" />
                                  </children></AnchorPane>
                               <AnchorPane layoutX="984.0" layoutY="328.0" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: d4d4d4;" AnchorPane.rightAnchor="45.0">
                                  <children>
-                                    <ImageView fx:id="medias_imageView" fitHeight="150.0" fitWidth="150.0" layoutX="-1.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="medias_imageView" fitHeight="150.0" fitWidth="150.0" layoutX="6.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
                               </AnchorPane>
-                              <Button fx:id="media_importBtn" layoutX="1010.0" layoutY="511.0" mnemonicParsing="false" onAction="#mediasImportBtn" prefHeight="30.0" prefWidth="100.0" text="Import" />
+                              <Button fx:id="media_importBtn" layoutX="1006.0" layoutY="508.0" mnemonicParsing="false" onAction="#mediasImportBtn" prefHeight="30.0" prefWidth="100.0" text="Import" />
                               <Button fx:id="medias_addBtn" layoutX="372.0" layoutY="734.0" mnemonicParsing="false" onAction="#mediasAddBtn" prefHeight="30.0" prefWidth="100.0" text="Add" AnchorPane.bottomAnchor="36.0" />
                               <Button fx:id="medias_updateBtn" layoutX="489.0" layoutY="734.0" mnemonicParsing="false" onAction="#mediaUpdateBtn" prefHeight="30.0" prefWidth="100.0" text="Update" AnchorPane.bottomAnchor="36.0" />
                               <Button fx:id="medias_clearBtn" layoutX="605.0" layoutY="734.0" mnemonicParsing="false" onAction="#mediasClearBtn" prefHeight="30.0" prefWidth="100.0" text="Clear" AnchorPane.bottomAnchor="36.0" />

@@ -8,11 +8,18 @@ import java.util.List;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 
 public class Order {
+	public enum OrderStatus {
+		PENDING,
+		REJECTED,
+		ACCEPTED
+	}
+	  
     private int id;
     private int shippingFees;
     private int subtotal;
-    private List<OrderMedia> lstOrderMedia = new ArrayList<>();
+    private OrderStatus status = OrderStatus.PENDING;
     private DeliveryInfo deliveryInfo;
+    private List<OrderMedia> lstOrderMedia = new ArrayList<>();
     private boolean isRushOrder;
     private LocalDate localDate;
     private LocalTime localTime;
@@ -20,13 +27,23 @@ public class Order {
     public Order(){
     }
 
-    public Order(int id, int shippingFees, int subtotal) {
-        this.setId(id);
-        this.setShippingFees(shippingFees);
-        this.setSubtotal(subtotal);
-    }
 
-    public int getId() {
+
+    public Order(int id, int shippingFees, int subtotal, OrderStatus status, DeliveryInfo deliveryInfo, boolean isRushOrder, LocalDate localDate, LocalTime localTime) {
+		super();
+		this.id = id;
+		this.shippingFees = shippingFees;
+		this.subtotal = subtotal;
+		this.status = status;
+		this.deliveryInfo = deliveryInfo;
+		this.isRushOrder = isRushOrder;
+		this.localDate = localDate;
+		this.localTime = localTime;
+	}
+
+
+
+	public int getId() {
         return id;
     }
 
@@ -77,4 +94,12 @@ public class Order {
     public LocalTime getLocalTime() { return this.localTime; }
 
     public void setLocalTime(LocalTime localTime) { this.localTime = localTime; }
+
+	public OrderStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(OrderStatus status) {
+		this.status = status;
+	}
 }

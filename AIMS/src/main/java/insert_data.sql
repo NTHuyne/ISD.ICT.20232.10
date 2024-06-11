@@ -34,7 +34,7 @@ INSERT INTO DeliveryInfo (name, phone, email, province, address, message)
 VALUES ('John Doe', '123456789', 'john@example.com', 'Hanoi', '123 ABC Street', 'Do not drop it');
 
 -- Insert data into OrderInfo table
-INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id) VALUES (100, 500, 1, 1);
+INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id) VALUES (100, 500, 'PENDING', 1);
 
 -- Insert data into RushOrderInfo table
 INSERT INTO RushOrderInfo (deliveryTime, instruction, order_id) VALUES ('2022-12-31 23:59:59', 'Handle with care', 1);
@@ -42,3 +42,5 @@ INSERT INTO RushOrderInfo (deliveryTime, instruction, order_id) VALUES ('2022-12
 
 -- Insert data into Order_Media table
 INSERT INTO Order_Media (order_id, media_id, quantity) VALUES (1, 2, 2);
+INSERT INTO Order_Media (order_id, media_id, quantity) VALUES (1, 1, 3);
+INSERT INTO Order_Media (order_id, media_id, quantity) VALUES (1, 3, 7);

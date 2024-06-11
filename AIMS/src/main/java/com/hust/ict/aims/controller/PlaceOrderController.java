@@ -83,7 +83,7 @@ public class PlaceOrderController extends BaseController{
         List<OrderMedia> lstOrderMedia = order.getLstOrderMedia();
         int subTotal = 0;
         for(OrderMedia orderMedia : lstOrderMedia) {
-            subTotal += (orderMedia.getPrice() * orderMedia.getQuantity());
+            subTotal += (orderMedia.getMedia().getPrice() * orderMedia.getQuantity());
         }
         order.setSubtotal(subTotal);
         return order;
@@ -91,16 +91,18 @@ public class PlaceOrderController extends BaseController{
 
     public int calculateShippingFee(Order order) {
         int shipFee = 0;
-        float highest = 0.0f;
+        double highest = 0.0f;
         if(order.getLstOrderMedia().isEmpty()) {
 			return 0;
 		}
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            String dimension = orderMedia.getMedia().getProductDimension();
-            String[] dimensions = dimension.split("x");
+            // String dimension = orderMedia.getMedia().getProductDimension();
+            // String[] dimensions = dimension.split("x");
             // Density of each item is assumed to be 5000 kg/m3
-            float mass = Float.valueOf(dimensions[0]) * Float.valueOf(dimensions[1]) * Float.valueOf(dimensions[2]) * 0.0006f;
-            highest = Math.max(highest, mass);
+            // float mass = Float.valueOf(dimensions[0]) * Float.valueOf(dimensions[1]) * Float.valueOf(dimensions[2]) * 0.0006f;
+        	
+            // Note 11/6/24: Now has weight for media
+            highest = Math.max(highest, orderMedia.getMedia().getWeight());
         }
         if(order.getDeliveryInfo().getProvince().equals("Hà Nội") || order.getDeliveryInfo().getProvince().equals("Hồ Chí Minh")) {
             shipFee = 22000;
@@ -132,8 +134,7 @@ public class PlaceOrderController extends BaseController{
         order.setDeliveryInfo(deliveryInfo);
         for(Object obj : cartService.getListMedia()) {
             CartMedia cartMedia = (CartMedia) obj;
-            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getPrice(),
-                    cartMedia.getQuantity());
+            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity());
             order.getLstOrderMedia().add(orderMedia);
         }
         order.setIsRushOrder(false);

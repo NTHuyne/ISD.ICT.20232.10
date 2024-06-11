@@ -1,6 +1,7 @@
 package com.hust.ict.aims.entity.shipping;
 
 public class DeliveryInfo {
+	private int deliveryId;
     private String name;
     private String phone;
     private String province;
@@ -8,27 +9,32 @@ public class DeliveryInfo {
     private String email;
     private String shippingInstructions;
 
-    public DeliveryInfo (){
-    }
+    public DeliveryInfo(int deliveryId, String name, String phone, String province, String address, String email,
+			String shippingInstructions) {
+		super();
+		this.deliveryId = deliveryId;
+		this.name = name;
+		this.phone = phone;
+		this.province = province;
+		this.address = address;
+		this.email = email;
+		this.shippingInstructions = shippingInstructions;
+	}
 
-    public DeliveryInfo(String name, String phone, String province, String address, String shippingInstructions) {
-        this.setName(name);
-        this.setPhone(phone);
-        this.setProvince(province);
-        this.setAddress(address);
-        this.setShippingInstructions(shippingInstructions);
-    }
+	public DeliveryInfo(String name, String phone, String province, String address, String email,
+			String shippingInstructions) {
+		super();
+		this.name = name;
+		this.phone = phone;
+		this.province = province;
+		this.address = address;
+		this.email = email;
+		this.shippingInstructions = shippingInstructions;
+	}
 
-    public DeliveryInfo(String name, String phone, String province, String address, String shippingInstructions, String email) {
-        this.setName(name);
-        this.setPhone(phone);
-        this.setProvince(province);
-        this.setAddress(address);
-        this.setShippingInstructions(shippingInstructions);
-        this.setEmail(email);
-    }
 
-    public String getName() {
+
+	public String getName() {
         return name;
     }
 
@@ -71,4 +77,12 @@ public class DeliveryInfo {
     public void setShippingInstructions(String shippingInstructions) {
         this.shippingInstructions = shippingInstructions;
     }
+
+	public int getDeliveryId() {
+		return deliveryId;
+	}
+
+	public void setDeliveryId(int deliveryId) {
+		this.deliveryId = deliveryId;
+	}
 }

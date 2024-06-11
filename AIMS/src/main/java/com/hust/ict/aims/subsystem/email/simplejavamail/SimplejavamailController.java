@@ -8,14 +8,14 @@ import org.simplejavamail.mailer.MailerBuilder;
 
 public class SimplejavamailController {
     protected Email prepareEmail(String destEmail, String content, String subject){
-        return EmailBuilder.startingBlank().from("tronghuychuyenlik24@gmail.com").to(destEmail).withPlainText(content).withSubject(subject).buildEmail();
+        return EmailBuilder.startingBlank().from("tronghuy230903@gmail.com").to(destEmail).withPlainText(content).withSubject(subject).buildEmail();
     }
 
     public void sendMail(Email email){
         Mailer mailer = MailerBuilder
                 .withSMTPServer(SimplejavamailConfigs.getInstance().getHost(), SimplejavamailConfigs.getInstance().getPort(), SimplejavamailConfigs.getInstance().getUsername(), SimplejavamailConfigs.getInstance().getPassword())
                 .withTransportStrategy(TransportStrategy.SMTP_TLS)
-                .withSessionTimeout(10 * 1000)
+                .withSessionTimeout(2 * 1000)
                 .clearEmailValidator() // turns off email validation
                 .withProperty("mail.smtp.sendpartial", true)
                 .withDebugLogging(true)

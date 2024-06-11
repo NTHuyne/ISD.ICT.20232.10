@@ -13,9 +13,9 @@ public class SimplejavamailConfigs {
 
     private boolean auth = true;
     private boolean tls = true;
-    private String username = "api";
-    private String password = "adcc04eb145bc69c3c4d6a7947128c4e";
-    private String host = "live.smtp.mailtrap.io";
+    private String username = "tronghuy230903@gmail.com";
+    private String password = "tjfoclaxkycekeem";
+    private String host = "smtp.gmail.com";
     private int port = 587;
 
     public boolean isAuth() {

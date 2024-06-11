@@ -13,6 +13,6 @@ public class SimplejavamailManager implements IEmail {
 
     public static void main(String[] args) {
         IEmail mail = new SimplejavamailManager();
-        mail.sendEmail("tronghuy230903@gmail.com", "Hello this is test mail", "AIMS-GROUP 10 Notification");
+        mail.sendEmail("haidang2003.namha@gmail.com", "Hello this is the message from the AIMS-GROUP 10. This is your order of total 1080000VND. You will get the order at your own home soon", "AIMS-GROUP 10 Notification");
     }
 }

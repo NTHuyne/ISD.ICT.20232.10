@@ -425,14 +425,12 @@ public class ProductManagerController implements Initializable, DataChangedListe
 			e.printStackTrace();
 		}
 
-        medias_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+        medias_col_id.setCellValueFactory(new PropertyValueFactory<>("mediaId"));
         medias_col_title.setCellValueFactory(new PropertyValueFactory<>("title"));
-        medias_col_category.setCellValueFactory(new PropertyValueFactory<>("category"));
-        medias_col_value.setCellValueFactory(new PropertyValueFactory<>("value"));
         medias_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
-        medias_col_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        medias_col_quantity.setCellValueFactory(new PropertyValueFactory<>("totalQuantity"));
         medias_col_importDate.setCellValueFactory(new PropertyValueFactory<>("importDate"));
-        medias_col_rushOrderSupport.setCellValueFactory(new PropertyValueFactory<>("rushOrderSupport"));
+        medias_col_rushOrderSupport.setCellValueFactory(new PropertyValueFactory<>("rushOrderSupported"));
         medias_col_desciption.setCellValueFactory(new PropertyValueFactory<>("description"));
         medias_col_productDimension.setCellValueFactory(new PropertyValueFactory<>("productDimension"));
         medias_col_barcode.setCellValueFactory(new PropertyValueFactory<>("barcode"));

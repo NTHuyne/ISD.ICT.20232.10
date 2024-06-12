@@ -134,7 +134,6 @@ public class PlaceOrderController extends BaseController{
     }
 
     public Order createOrder(DeliveryInfo deliveryInfo) {
-//        this.deliveryInfo = deliveryInfo;
         Order order = new Order();
         order.setDeliveryInfo(deliveryInfo);
         for(Object obj : cartService.getListMedia()) {

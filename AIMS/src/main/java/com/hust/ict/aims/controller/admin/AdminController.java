@@ -130,7 +130,7 @@ public class AdminController implements Initializable {
             Boolean isAdmin = roleComboBox.getValue().equals("Admin");
             User user = userTableView.getSelectionModel().getSelectedItem();
 
-            if(user.getIsAdmin()) {
+            if(user.getIsAdmin() && user.getIsAdmin() != isAdmin) {
                 ErrorAlert errorAlert = new ErrorAlert();
                 errorAlert.createAlert("Error mess", null, "Can not change the role of admin");
                 errorAlert.show();

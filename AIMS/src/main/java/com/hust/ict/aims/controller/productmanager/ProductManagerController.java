@@ -15,10 +15,12 @@ import java.util.ServiceLoader;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
 import com.hust.ict.aims.persistence.dao.media.MediaDAO;
+import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.InformationAlert;
 
+import com.hust.ict.aims.view.login.LoginHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -453,12 +455,10 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 logout_btn.getScene().getWindow().hide();
 
                 // Quay ve login form
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
                 Stage stage = new Stage();
-                Scene sence = new Scene(root);
-                stage.setTitle("AIMS");
-                stage.setScene(sence);
-                stage.show();
+                LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
+                loginHandler.setScreenTitle("Login");
+                loginHandler.show();
             }
 
         } catch (Exception e) {

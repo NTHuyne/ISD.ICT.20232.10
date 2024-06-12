@@ -94,6 +94,14 @@
 		    <version>3.1</version>
 		</dependency>
 
+		<!-- Testing -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-core</artifactId>
+		    <version>5.12.0</version>
+		</dependency>
+
+		<!-- Mailing service -->
 		<dependency>
 			<groupId>org.simplejavamail</groupId>
 			<artifactId>simple-java-mail</artifactId>

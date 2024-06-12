@@ -20,6 +20,10 @@ public class CdAndLp extends Media{
 		this.genre = genre;
 		this.isCD = isCD;
 	}
+	
+	public CdAndLp() {
+		super();
+	}
 
 	public String getArtists() {
         return artists;

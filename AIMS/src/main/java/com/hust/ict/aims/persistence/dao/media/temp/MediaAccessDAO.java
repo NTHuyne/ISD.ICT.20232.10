@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
-import com.hust.ict.aims.utils.ConfirmationAlert;
 
 /**
  * @author
@@ -18,6 +16,7 @@ public class MediaAccessDAO extends TemplateDAO<Media> {
 		super(conn);
 	}
 
+	
 	@Override
     public Media createItemFromResultSet(ResultSet res) throws SQLException {
     	return new Media(
@@ -55,54 +54,23 @@ public class MediaAccessDAO extends TemplateDAO<Media> {
         mediaStatement.setString(10, media.getBarcode());
     }
 
-    public boolean isTitleTaken(String title) throws SQLException {
-        String checkTitleSql = "SELECT title FROM Media WHERE title = ?";
-        try (PreparedStatement statement = connection.prepareStatement(checkTitleSql)) {
-            statement.setString(1, title);
-            ResultSet resultSet = statement.executeQuery();
-            return resultSet.next();
-        }
+    @Override
+    protected String addQuery() {
+    	return "INSERT INTO Media (price, title, totalQuantity, weight, description, importDate, rushOrderSupported, imageUrl, productDimension, barcode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    }
+    @Override
+    protected void addParams(PreparedStatement stmt, Media media) throws SQLException {  
+    	this.prepareStatementFromMedia(stmt, media);
     }
 
     @Override
-    protected PreparedStatement addStatement(Media media) throws SQLException {
-        ConfirmationAlert confirmationAlert = new ConfirmationAlert();
-        confirmationAlert.createAlert("Confirmation", null, "Are you sure you want to add this media?");
-        confirmationAlert.show();
-
-        if (!confirmationAlert.isConfirmed()) {
-            throw new SQLException("Cancel adding media");
-        }
-
-        String mediaInsertSql =
-        	"INSERT INTO Media (price, title, totalQuantity, weight, description, importDate, rushOrderSupported, imageUrl, productDimension, barcode) "
-            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        try (PreparedStatement mediaStatement = connection.prepareStatement(mediaInsertSql, Statement.RETURN_GENERATED_KEYS)) {
-	        this.prepareStatementFromMedia(mediaStatement, media);
-	        return mediaStatement;
-        }
+	protected String updateQuery() {
+    	return "UPDATE Media SET price = ?, title = ?, totalQuantity = ?, weight = ?, description = ?, importDate = ?, rushOrderSupported = ?, imageUrl = ?, productDimension = ?, barcode = ? WHERE media_id = ?";
     }
-
-    @Override
-	protected PreparedStatement updateStatement(Media media) throws SQLException {
-        ConfirmationAlert confirmationAlert = new ConfirmationAlert();
-        confirmationAlert.createAlert("Confirmation", null, "Are you sure you want to update this media?");
-        confirmationAlert.show();
-
-        if (!confirmationAlert.isConfirmed()) {
-            throw new SQLException("Cancel updating media");
-        }
-
-        String mediaSql = "UPDATE Media SET price = ?, title = ?, totalQuantity = ?, weight = ?, description = ?, importDate = ?, rushOrderSupported = ?, imageUrl = ?, productDimension = ?, barcode = ? WHERE media_id = ?";
-
-        try (PreparedStatement mediaStatement = connection.prepareStatement(mediaSql)) {
-	        // Thiết lập các tham số cho Media
-	        this.prepareStatementFromMedia(mediaStatement, media);
-	        mediaStatement.setInt(11, media.getMediaId());
-	        
-	        return mediaStatement;
-        }
+	protected void updateParams(PreparedStatement mediaStatement, Media media) throws SQLException {
+        // Thiết lập các tham số cho Media
+        this.prepareStatementFromMedia(mediaStatement, media);
+        mediaStatement.setInt(11, media.getMediaId());
     }
     
     // This class is only used for Book, CD and DVD DAOs
@@ -110,9 +78,8 @@ public class MediaAccessDAO extends TemplateDAO<Media> {
     	super();
     }
 
-
 	@Override
-	protected String getDaoName() {
+	public String getDaoName() {
 		return "media";
 	}
 }

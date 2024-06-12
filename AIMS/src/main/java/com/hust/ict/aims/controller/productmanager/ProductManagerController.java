@@ -5,15 +5,17 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.ServiceLoader;
-
+import com.hust.ict.aims.entity.media.Book;
+import com.hust.ict.aims.entity.media.CdAndLp;
+import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
+import com.hust.ict.aims.persistence.dao.media.BookDAO;
+import com.hust.ict.aims.persistence.dao.media.CDDAO;
+import com.hust.ict.aims.persistence.dao.media.DVDDAO;
 import com.hust.ict.aims.persistence.dao.media.MediaDAO;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
@@ -21,13 +23,12 @@ import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.InformationAlert;
 
 import com.hust.ict.aims.view.login.LoginHandler;
+
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -54,8 +55,10 @@ public class ProductManagerController implements Initializable, DataChangedListe
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.mediaDAO = new MediaDAO();
-        this.mediaScreenCreator = loadMediaScreenCreator();
-
+        this.bookScreen = new BookScreen(this, new BookDAO());
+        this.cdAndLpScreen = new CDAndLPScreen(this, new CDDAO());
+        this.dvdScreen = new DVDScreen(this, new DVDDAO());
+        
         displayUsername();
         mediasCategoryList();
         mediasRushOrderSupportList();
@@ -63,6 +66,10 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     }
 
+    private BookScreen bookScreen;
+    private CDAndLPScreen cdAndLpScreen;
+    private DVDScreen dvdScreen;
+    
     private MediaDAO mediaDAO;
 
     @FXML
@@ -94,6 +101,9 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     @FXML
     private TextField media_quantity;
+    
+    @FXML
+    private TextField media_weight;
 
     @FXML
     private Button medias_addBtn;
@@ -121,6 +131,9 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     @FXML
     private TableColumn<Media, Integer> medias_col_quantity;
+    
+    @FXML
+    private TableColumn<Media, Integer> medias_col_weight;
 
     @FXML
     private TableColumn<Media, String> medias_col_title;
@@ -177,138 +190,130 @@ public class ProductManagerController implements Initializable, DataChangedListe
     private Image image;
     private ObservableList<Media> mediaListData;
 
-    private Map<String, MediaScreenCreator> mediaScreenCreator;
-
-    private Map<String, MediaScreenCreator> loadMediaScreenCreator() {
-        Map<String, MediaScreenCreator> creators = new HashMap<>();
-        ServiceLoader<MediaScreenCreator> loader = ServiceLoader.load(MediaScreenCreator.class);
-        for (MediaScreenCreator creator : loader) {
-            for (String mediaType : creator.getSupportedMediaType()) {
-                creators.put(mediaType.toUpperCase(), creator);
-            }
-        }
-        return creators;
-    }
-
     public void mediasAddBtn() {
-        if (media_title.getText().isEmpty()
-                || media_category.getSelectionModel().getSelectedItem() == null
-                || media_rushOrderSupport.getSelectionModel().getSelectedItem() == null
-                || media_barcode.getText().isEmpty()
-                || media_quantity.getText().isEmpty()
-                || media_price.getText().isEmpty()
-                || media_productDimension.getText().isEmpty()
-                || media_description.getText().isEmpty()
-                || ProductManagerSession.path == null) {
-
+        if (this.missingMediaField()) {        	
             ErrorAlert errorAlert = new ErrorAlert();
             errorAlert.createAlert("Error Message", null, "Please fill all blank fields");
             errorAlert.show();
         }
-        try{
-            Media newMedia = new Media();
-            newMedia.setTitle(media_title.getText());
-            // newMedia.setCategory(media_category.getValue().toString());
-            // TODO: to fix this?
-
-            String rushOrderSupportValue = media_rushOrderSupport.getSelectionModel().getSelectedItem();
-            boolean rushOrderSupported = "Yes".equals(rushOrderSupportValue);
-            newMedia.setRushOrderSupported(rushOrderSupported);
-
-            newMedia.setBarcode(media_barcode.getText());
-            newMedia.setTotalQuantity(Integer.parseInt(media_quantity.getText()));
-            newMedia.setPrice(Integer.parseInt(media_price.getText()));
-            newMedia.setProductDimension(media_productDimension.getText());
-            newMedia.setDescription(media_description.getText());
-
-            String path = ProductManagerSession.path;
-            path = path.replace("\\", "\\\\");
-            newMedia.setImageUrl(path);
-
-            // Sử dụng Factory Pattern để hiển thị màn hình phù hợp
-            String category = media_category.getValue().toString();
-//            System.out.println(category);
-//            MediaScreen screen = MediaScreenFactory.getMediaScreen(category.toUpperCase(), newMedia, this);
-//            if (screen != null) {
-//                screen.showScreen();
-//            }
-
-            MediaScreenCreator creator = this.mediaScreenCreator.get(category.toUpperCase());
-            if (creator != null) {
-                MediaScreen screen = creator.getMediaScreen(newMedia, this);
-                screen.showScreen();
+        try {
+        	if (mediaDAO.isTitleTaken(media_title.getText())) {
+                throw new IllegalArgumentException(media_title.getText() + " is already taken");
             }
+        	
+            String category = media_category.getValue().toString();
+            // Factory
+            Media newMedia = switch (category.toUpperCase()) {
+	        	case "BOOK"		-> new Book();
+	        	case "CD", "LP"	-> new CdAndLp();
+	        	case "DVD"		-> new Dvd();
+	        	default -> null;
+            };
+            
+            this.assignAllMediaField(newMedia);
 
-//            mediaDAO.addMedia(newMedia);
+            // Old: Sử dụng Factory Pattern để hiển thị màn hình phù hợp
+            // !!! 12-6-24 Sử dụng switch case cho đơn giản
+
+            this.showCorrespondingMediaScreen(newMedia);
+
 //            mediaShowData();
             mediasClearBtn();
 
-        } catch (Exception e){
+        } catch (IllegalArgumentException e){
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
+        } catch (Exception e) {
             e.printStackTrace();
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
+        }
+    }
+    
+    private boolean missingMediaField() {
+    	return media_title.getText().isEmpty()
+                || media_category.getSelectionModel().getSelectedItem() == null
+                || media_rushOrderSupport.getSelectionModel().getSelectedItem() == null
+                || media_barcode.getText().isEmpty()
+                || media_quantity.getText().isEmpty()
+                || media_weight.getText().isEmpty()
+                || media_price.getText().isEmpty()
+                || media_productDimension.getText().isEmpty()
+                || media_description.getText().isEmpty()
+                || ProductManagerSession.path == null;
+    }
+    
+    private void assignAllMediaField(Media media) {
+    	media.setTitle(media_title.getText());
+
+        String rushOrderSupportValue = media_rushOrderSupport.getSelectionModel().getSelectedItem();
+        boolean rushOrderSupported = "Yes".equals(rushOrderSupportValue);
+        media.setRushOrderSupported(rushOrderSupported);
+
+        media.setBarcode(media_barcode.getText());
+        media.setTotalQuantity(Integer.parseInt(media_quantity.getText()));
+        media.setWeight(Double.parseDouble(media_weight.getText()));
+        media.setPrice(Integer.parseInt(media_price.getText()));
+        media.setProductDimension(media_productDimension.getText());
+        media.setDescription(media_description.getText());
+
+        String path = ProductManagerSession.path;
+        path = path.replace("\\", "\\\\");
+        media.setImageUrl(path);
+    }
+    
+    private void showCorrespondingMediaScreen(Media media) {
+        MediaScreen screen = switch (media.getMediaTypeName().toUpperCase()) {
+	        case "BOOK"	-> {
+	        	this.bookScreen.setMedia((Book) media);
+	        	yield this.bookScreen; 
+	        }
+	        case "CD", "LP"	-> {
+	        	this.cdAndLpScreen.setMedia((CdAndLp) media);
+	        	yield this.cdAndLpScreen;
+	        }
+	        case "DVD" -> {
+	        	this.dvdScreen.setMedia((Dvd) media);
+	        	yield this.dvdScreen;
+	        }
+	        default -> null;
+	    };
+        
+        if (screen != null) {
+            screen.showScreen();
         }
     }
 
+    private Media selectedMedia;
     public void mediaUpdateBtn(){
-        if (media_title.getText().isEmpty()
-                || media_category.getSelectionModel().getSelectedItem() == null
-                || media_rushOrderSupport.getSelectionModel().getSelectedItem() == null
-                || media_barcode.getText().isEmpty()
-                || media_quantity.getText().isEmpty()
-                || media_price.getText().isEmpty()
-                || media_productDimension.getText().isEmpty()
-                || media_description.getText().isEmpty()
-                || ProductManagerSession.path == null
-                || ProductManagerSession.id == 0) {
+        if (this.missingMediaField()
+           || selectedMedia == null || selectedMedia.getMediaId() == 0) {
 
             ErrorAlert errorAlert = new ErrorAlert();
             errorAlert.createAlert("Error Message", null, "Please fill all blank fields");
             errorAlert.show();
         }
         try{
-            Media updatedMedia = new Media();
-            // Why update ID?
-            // updatedMedia.setMediaId(ProductManagerSession.id);
-            updatedMedia.setTitle(media_title.getText());
-            // updatedMedia.setCategory(media_category.getValue().toString());
-            // TODO: FIX THIS??
+            Media updatedMedia = selectedMedia;
 
-            String rushOrderSupportValue = media_rushOrderSupport.getSelectionModel().getSelectedItem();
-            boolean rushOrderSupported = "Yes".equals(rushOrderSupportValue);
-            updatedMedia.setRushOrderSupported(rushOrderSupported);
+            this.assignAllMediaField(updatedMedia);
+            this.showCorrespondingMediaScreen(updatedMedia);
 
-            updatedMedia.setBarcode(media_barcode.getText());
-            updatedMedia.setTotalQuantity(Integer.parseInt(media_quantity.getText()));
-            updatedMedia.setPrice(Integer.parseInt(media_price.getText()));
-            updatedMedia.setProductDimension(media_productDimension.getText());
-            updatedMedia.setDescription(media_description.getText());
 
-            String path = ProductManagerSession.path;
-            path = path.replace("\\", "\\\\");
-            updatedMedia.setImageUrl(path);
-
-            String category = media_category.getValue().toString();
-
-//            MediaScreen screen = MediaScreenFactory.getMediaScreen(category.toUpperCase(), updatedMedia, this);
-//            if (screen != null) {
-//                screen.showScreen();
-//            }
-
-            MediaScreenCreator creator = this.mediaScreenCreator.get(category.toUpperCase());
-            if (creator != null) {
-                MediaScreen screen = creator.getMediaScreen(updatedMedia, this);
-                screen.showScreen();
-            }
-
-//            mediaDAO.updateMedia(updatedMedia);
-//            mediaShowData();
+//          mediaShowData();
             mediasClearBtn();
         } catch (Exception e){
             e.printStackTrace();
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
         }
     }
 
     public void mediaDeleteBtn() {
-        if (ProductManagerSession.id == 0) {
+        if (selectedMedia == null || selectedMedia.getMediaId() == 0) {
             ErrorAlert errorAlert = new ErrorAlert();
             errorAlert.createAlert("Error Message", null, "Please select a media to delete");
             errorAlert.show();
@@ -327,7 +332,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
         }
 
         try {
-            mediaDAO.deleteMedia(ProductManagerSession.id);
+            mediaDAO.deleteMedia(selectedMedia.getMediaId());
             mediaShowData();
             mediasClearBtn();
         } catch (SQLException e) {
@@ -344,17 +349,19 @@ public class ProductManagerController implements Initializable, DataChangedListe
         media_rushOrderSupport.getSelectionModel().clearSelection();
         media_barcode.setText("");
         media_quantity.setText("");
+        media_weight.setText("");
         media_price.setText("");
         media_productDimension.setText("");
         media_description.setText("");
         ProductManagerSession.path = "";
-        ProductManagerSession.id = 0;
+        selectedMedia = null;
         medias_imageView.setImage(null);
         media_category.setDisable(false);
     }
 
     public void selectMedia(){
-        Media media = medias_tableView.getSelectionModel().getSelectedItem();
+    	selectedMedia = medias_tableView.getSelectionModel().getSelectedItem();
+    	Media media = selectedMedia;
         int num = medias_tableView.getSelectionModel().getSelectedIndex();
 
         if ((num-1) < -1) {
@@ -364,6 +371,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
         media_title.setText(media.getTitle());
         media_barcode.setText(media.getBarcode());
         media_quantity.setText(String.valueOf(media.getTotalQuantity()));
+        media_weight.setText(String.valueOf(media.getWeight()));
         media_price.setText(String.valueOf(media.getPrice()));
         media_productDimension.setText(media.getProductDimension());
         media_description.setText(media.getDescription());
@@ -372,7 +380,10 @@ public class ProductManagerController implements Initializable, DataChangedListe
         media_category.setValue(media.getMediaTypeName());
         media_category.setDisable(true);
 
-//        String rushOrderSupportValue = media.getRushOrderSupport() ? "Yes" : "No";
+        String rushOrderSupportValue = media.isRushOrderSupported() ? "Yes" : "No";
+        media_rushOrderSupport.getSelectionModel().select(rushOrderSupportValue);
+        
+//        
 //        media_rushOrderSupport.setValue(rushOrderSupportValue);
 //        media_rushOrderSupport.setDisable(true);
 
@@ -380,7 +391,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
         String path = "File:" + media.getImageUrl();
         ProductManagerSession.date = String.valueOf(media.getImportDate());
-        ProductManagerSession.id = media.getMediaId();
+
 
         image = new Image(path, 150, 150, false, true);
         medias_imageView.setImage(image);
@@ -431,12 +442,15 @@ public class ProductManagerController implements Initializable, DataChangedListe
         medias_col_title.setCellValueFactory(new PropertyValueFactory<>("title"));
         medias_col_price.setCellValueFactory(new PropertyValueFactory<>("price"));
         medias_col_quantity.setCellValueFactory(new PropertyValueFactory<>("totalQuantity"));
+        medias_col_weight.setCellValueFactory(new PropertyValueFactory<>("weight"));
         medias_col_importDate.setCellValueFactory(new PropertyValueFactory<>("importDate"));
         medias_col_rushOrderSupport.setCellValueFactory(new PropertyValueFactory<>("rushOrderSupported"));
         medias_col_desciption.setCellValueFactory(new PropertyValueFactory<>("description"));
         medias_col_productDimension.setCellValueFactory(new PropertyValueFactory<>("productDimension"));
         medias_col_barcode.setCellValueFactory(new PropertyValueFactory<>("barcode"));
 
+        medias_col_category.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getMediaTypeName()));
+        
         medias_tableView.setItems(mediaListData);
     }
 
@@ -455,10 +469,10 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 logout_btn.getScene().getWindow().hide();
 
                 // Quay ve login form
-                Stage stage = new Stage();
-                LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
-                loginHandler.setScreenTitle("Login");
-                loginHandler.show();
+//                Stage stage = new Stage();
+//                LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
+//                loginHandler.setScreenTitle("Login");
+//                loginHandler.show();
             }
 
         } catch (Exception e) {

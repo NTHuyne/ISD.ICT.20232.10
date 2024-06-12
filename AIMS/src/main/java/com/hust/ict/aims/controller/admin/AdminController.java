@@ -137,6 +137,13 @@ public class AdminController implements Initializable {
                 throw new RuntimeException();
             }
 
+            if(user.getIsAdmin() && user.getId() != AdminSession.id) {
+                ErrorAlert errorAlert = new ErrorAlert();
+                errorAlert.createAlert("Error mess", null, "Can not change personal info of other administrators");
+                errorAlert.show();
+                throw new RuntimeException();
+            }
+
             user.setUsername(usernameField.getText());
             user.setPassword(passwordField.getText());
             user.setEmail(emailField.getText());

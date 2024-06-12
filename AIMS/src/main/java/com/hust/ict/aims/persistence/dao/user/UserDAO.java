@@ -61,4 +61,36 @@ public class UserDAO {
 
         return user;
     }
+
+    public void updateUser(User user) {
+        Connection conn = null;
+        String query = "UPDATE User SET username = \"" + user.getUsername() +
+                                    "\", password = \"" + user.getPassword() +
+                                    "\", email = \"" + user.getEmail() +
+                                    "\", isAdmin = " + (user.getIsAdmin() ? "TRUE " : "FALSE ") +
+                                    "WHERE user_id = " + user.getId();
+
+        try {
+            conn = ConnectJDBC.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteUser(User user) {
+        Connection conn = null;
+        String query = "DELETE FROM User WHERE user_id = " + user.getId();
+
+        try {
+            conn = ConnectJDBC.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

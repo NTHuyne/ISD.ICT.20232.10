@@ -12,8 +12,6 @@ module com.hust.ict.aims {
 	requires javafx.graphics;
     requires org.simplejavamail.core;
     requires org.simplejavamail;
-    requires jakarta.mail;
-    requires java.mail;
 
     opens com.hust.ict.aims to javafx.fxml;
     opens com.hust.ict.aims.view.home to javafx.fxml;

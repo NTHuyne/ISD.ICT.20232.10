@@ -138,10 +138,12 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
         // TODO: IMPORTANT! Calculate total fee somewhere else and update invoice accordingly
         int subTotal = placeOrderController.calculateSubTotal(this.invoice.getOrder()).getSubtotal();
         subtotalLabel.setText(Utils.getCurrencyFormat(subTotal));
-        vatLabel.setText(Utils.getCurrencyFormat(subTotal * 1 / 10));
+        vatLabel.setText(Utils.getCurrencyFormat(placeOrderController.calculateVAT(
+                this.invoice.getOrder())));
         int shippingFee = this.placeOrderController.calculateShippingFee(order);
         this.invoice.getOrder().setShippingFees(shippingFee);
         shippingFeeLabel.setText(Utils.getCurrencyFormat(shippingFee));
+
         
         totalAllFee = subTotal * 11 / 10 + placeOrderController.calculateShippingFee(order);
         priceLabel.setText(Utils.getCurrencyFormat(totalAllFee));
@@ -160,23 +162,23 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
         }
     }
 
-    public void addPaymentOptions() {
-        // Add payment options
-        Separator sep = new Separator();
-        sep.setHalignment(HPos.CENTER);
-        sep.setValignment(VPos.CENTER);
-        sep.setPadding(new Insets(0,0,0,50));
-        Label label = new Label();
-        label.setText("Choose payment method");
-        label.setFont(new Font(20));
-        HBox hbox = new HBox();
-        RadioButton radioBtn = new RadioButton("VNPay");
-        radioBtn.setFont(new Font(18));
-        hbox.getChildren().add(radioBtn);
-        coverVBox.getChildren().add(sep);
-        coverVBox.getChildren().add(label);
-        coverVBox.getChildren().add(hbox);
-    }
+//    public void addPaymentOptions() {
+//        // Add payment options
+//        Separator sep = new Separator();
+//        sep.setHalignment(HPos.CENTER);
+//        sep.setValignment(VPos.CENTER);
+//        sep.setPadding(new Insets(0,0,0,50));
+//        Label label = new Label();
+//        label.setText("Choose payment method");
+//        label.setFont(new Font(20));
+//        HBox hbox = new HBox();
+//        RadioButton radioBtn = new RadioButton("VNPay");
+//        radioBtn.setFont(new Font(18));
+//        hbox.getChildren().add(radioBtn);
+//        coverVBox.getChildren().add(sep);
+//        coverVBox.getChildren().add(label);
+//        coverVBox.getChildren().add(hbox);
+//    }
 
     
     // VNPay Stuffs

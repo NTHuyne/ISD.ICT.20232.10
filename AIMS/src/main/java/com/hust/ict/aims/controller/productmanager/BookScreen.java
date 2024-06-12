@@ -21,11 +21,11 @@ public class BookScreen implements MediaScreen {
 
     private Book media;
     private DataChangedListener dataChangedListener;
-    private BookDAO bookDAO;
+    private AlertDAOWrapper<Book, BookDAO> bookDAO;
 
     public BookScreen(DataChangedListener dataChangedListener, BookDAO bookDAO) {
         this.dataChangedListener = dataChangedListener;
-        this.bookDAO = bookDAO;
+        this.bookDAO = new AlertDAOWrapper<Book, BookDAO>(bookDAO);
     }
     
     public void setMedia(Book media) {

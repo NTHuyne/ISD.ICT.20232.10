@@ -27,25 +27,17 @@ public class CDDAO extends MediaTemplateDAO<CdAndLp> {
     }
 
     @Override
-    protected PreparedStatement getAllStatement() throws SQLException {
-        String sql = "SELECT * FROM "+
+    protected String getAllQuery() throws SQLException {
+        return "SELECT * FROM "+
                 "CD_and_LP as CD " +
                 "INNER JOIN Media " +
                 "ON Media.media_id = CD.media_id ";
-
-        // Create statement
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        return stmt;
     }
 
     @Override
-    protected PreparedStatement getByIdStatement(int cdAndLpId) throws SQLException {
+    protected String getByIdQuery() {
         // Assuming 'connection' is your established JDBC connection
-        String sql = "SELECT * FROM CD_and_LP as CD INNER JOIN Media ON Media.media_id = CD.media_id WHERE media_id = ?;";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, cdAndLpId);
-
-        return statement;
+        return "SELECT * FROM CD_and_LP as CD INNER JOIN Media ON Media.media_id = CD.media_id WHERE Media.media_id = ?;";
     }
 
     private void prepareStatementFromCD(PreparedStatement cdAndLpStatement, CdAndLp cdAndLp) throws SQLException {
@@ -64,16 +56,15 @@ public class CDDAO extends MediaTemplateDAO<CdAndLp> {
         cdAndLpStatement.setInt(7, cdAndLp.getMediaId());
     }
 
-    @Override 
-    protected PreparedStatement addStatement(CdAndLp cdAndLp) throws SQLException {
-        // Thêm thông tin vào bảng CD
-        String cdSql = "INSERT INTO CD_and_LP (isCD, artists, recordLabel, trackList, genre, releaseDate, media_id) "
+    @Override
+    protected String addQuery() {
+    	return "INSERT INTO CD_and_LP (isCD, artists, recordLabel, trackList, genre, releaseDate, media_id) "
         		+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        PreparedStatement cdStatement = connection.prepareStatement(cdSql, Statement.RETURN_GENERATED_KEYS);
+    }
+    @Override 
+    protected void addParams(PreparedStatement cdStatement, CdAndLp cdAndLp) throws SQLException {
+        // Thêm thông tin vào bảng CD
         this.prepareStatementFromCD(cdStatement, cdAndLp);
-
-        return cdStatement;
     }
     
     @Override 
@@ -87,7 +78,7 @@ public class CDDAO extends MediaTemplateDAO<CdAndLp> {
     }
 
 	@Override
-	protected String getDaoName() {
+	public String getDaoName() {
 		return "CD/LP";
 	}
 }

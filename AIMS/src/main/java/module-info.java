@@ -23,6 +23,7 @@ module com.hust.ict.aims {
     exports com.hust.ict.aims.service;
 
 	requires javafx.base;
+	requires org.mockito;
     opens com.hust.ict.aims.entity.media to javafx.base;
 
     exports com.hust.ict.aims;

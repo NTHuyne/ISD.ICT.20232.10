@@ -30,24 +30,16 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
 
 
     @Override
-    protected PreparedStatement getAllStatement() throws SQLException {
-        String sql = "SELECT * FROM "+
+    protected String getAllQuery() throws SQLException {
+        return "SELECT * FROM "+
                 "DVD INNER JOIN Media " +
                 "ON Media.media_id = DVD.media_id ";
-
-        // Create statement
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        return stmt;
     }
 
     @Override
-    protected PreparedStatement getByIdStatement(int dvdId) throws SQLException {
+    protected String getByIdQuery() {
         // Assuming 'connection' is your established JDBC connection
-        String sql = "SELECT * FROM DVD INNER JOIN Media ON Media.media_id = DVD.media_id WHERE media_id = ?;";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, dvdId);
-
-        return statement;
+        return "SELECT * FROM DVD INNER JOIN Media ON Media.media_id = DVD.media_id WHERE Media.media_id = ?;";
     }
 
     // DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id)
@@ -70,14 +62,16 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
         dvdStatement.setInt(9, dvd.getMediaId());
     }
 
+    @Override
+    protected String addQuery() {
+    	return "INSERT INTO DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id) "
+    			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    }
     @Override 
-    protected PreparedStatement addStatement(Dvd dvd) throws SQLException {
+    protected void addParams(PreparedStatement dvdStatement, Dvd dvd) throws SQLException {
         // Thêm thông tin vào bảng DVD
-        String dvdSql = "INSERT INTO DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement dvdStatement = connection.prepareStatement(dvdSql, Statement.RETURN_GENERATED_KEYS);
         this.prepareStatementFromDVD(dvdStatement, dvd);
 
-        return dvdStatement;
     }
     
     @Override 
@@ -91,7 +85,7 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
     }
 
 	@Override
-	protected String getDaoName() {
+	public String getDaoName() {
 		return "DVD";
 	}
 }

@@ -191,13 +191,16 @@ public class ProductManagerController implements Initializable, DataChangedListe
     private ObservableList<Media> mediaListData;
 
     public void mediasAddBtn() {
-        if (this.missingMediaField()) {
-
+        if (this.missingMediaField()) {        	
             ErrorAlert errorAlert = new ErrorAlert();
             errorAlert.createAlert("Error Message", null, "Please fill all blank fields");
             errorAlert.show();
         }
         try {
+        	if (mediaDAO.isTitleTaken(media_title.getText())) {
+                throw new IllegalArgumentException(media_title.getText() + " is already taken");
+            }
+        	
             String category = media_category.getValue().toString();
             // Factory
             Media newMedia = switch (category.toUpperCase()) {
@@ -217,8 +220,15 @@ public class ProductManagerController implements Initializable, DataChangedListe
 //            mediaShowData();
             mediasClearBtn();
 
-        } catch (Exception e){
+        } catch (IllegalArgumentException e){
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
+        } catch (Exception e) {
             e.printStackTrace();
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
         }
     }
     
@@ -296,6 +306,9 @@ public class ProductManagerController implements Initializable, DataChangedListe
             mediasClearBtn();
         } catch (Exception e){
             e.printStackTrace();
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
         }
     }
 

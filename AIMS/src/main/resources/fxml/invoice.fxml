@@ -105,7 +105,7 @@
                                           <Font name="SVN-Linux Libertine" size="18.0" />
                                       </font>
                                   </Label>
-                                  <Label fx:id="addressField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="103.0" prefWidth="186.0" text="1 Đại Cồ Việt, Hà Nội " textAlignment="CENTER" textFill="#262424" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                  <Label fx:id="addressField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="103.0" prefWidth="593.0" text="1 Đại Cồ Việt, Hà Nội " textAlignment="CENTER" textFill="#262424" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                       <font>
                                           <Font name="SVN-Linux Libertine" size="18.0" />
                                       </font>

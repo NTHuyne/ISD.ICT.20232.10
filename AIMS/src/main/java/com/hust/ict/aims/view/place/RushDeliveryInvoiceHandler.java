@@ -190,16 +190,21 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         coverVBox.getChildren().add(orderLabel);
 
         Pane emptyPane = new Pane(); emptyPane.setPrefWidth(70); emptyPane.setPrefHeight(100);
-        Label lbl1 = new Label("Media"); lbl1.setFont(new Font(18)); lbl1.setPrefWidth(317); lbl1.setPrefHeight(23);
-        Separator sep = new Separator(Orientation.VERTICAL); sep.setPrefHeight(200);
-        Label lbl2 = new Label("Unit price"); lbl2.setFont(new Font(18)); lbl2.setPrefWidth(190); lbl2.setPrefHeight(23);
-        Label lbl3 = new Label("Quantity"); lbl3.setFont(new Font(18)); lbl3.setPrefWidth(174); lbl3.setPrefHeight(23);
+        Label lbl1 = new Label("Media"); lbl1.setFont(new Font(18)); lbl1.setPrefWidth(350); lbl1.setPrefHeight(23);
+//        Separator sep = new Separator(Orientation.VERTICAL); sep.setPrefHeight(200);
+        Label lbl2 = new Label("Unit price"); lbl2.setFont(new Font(18)); lbl2.setPrefWidth(200); lbl2.setPrefHeight(23);
+        Label lbl3 = new Label("Quantity"); lbl3.setFont(new Font(18)); lbl3.setPrefWidth(180); lbl3.setPrefHeight(23);
         Label lbl4 = new Label("Total"); lbl4.setFont(new Font(18)); lbl4.setPrefWidth(354); lbl4.setPrefHeight(23);
         HBox headHBox = new HBox(); headHBox.setStyle("-fx-background-color: fff; -fx-background-radius: 20;"); headHBox.setAlignment(Pos.CENTER_LEFT);
             headHBox.setPrefHeight(46); headHBox.setPrefWidth(1139);
-        headHBox.getChildren().add(emptyPane); headHBox.getChildren().add(lbl1); headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
-        headHBox.getChildren().add(lbl2); headHBox.getChildren().add(new Separator(Orientation.VERTICAL)); headHBox.getChildren().add(lbl3);
-        headHBox.getChildren().add(new Separator(Orientation.VERTICAL)); headHBox.getChildren().add(lbl4);
+        headHBox.getChildren().add(emptyPane);
+        headHBox.getChildren().add(lbl1);
+//        headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
+        headHBox.getChildren().add(lbl2);
+//        headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
+        headHBox.getChildren().add(lbl3);
+//        headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
+        headHBox.getChildren().add(lbl4);
         coverVBox.getChildren().add(headHBox);
 
         ScrollPane scrollPane = new ScrollPane(); scrollPane.setPrefHeight(100); scrollPane.setPrefWidth(200);

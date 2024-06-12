@@ -51,6 +51,7 @@ public class AlertDAOWrapper<T, V extends TemplateDAO<T>> {
 		
 		innerDAO.update(item);
         
+		// TODO: Why does these not showing???
         InformationAlert alert = new InformationAlert();
         alert.createAlert("Information Message", null, "Successfully updated " + innerDAO.getDaoName());
         alert.show();

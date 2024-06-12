@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.Order.OrderStatus;
@@ -66,6 +67,20 @@ public class OrderDAO extends TemplateDAO<Order> {
         );
     }
 	
+	@Override
+	protected String addQuery() {
+		return "INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id)"
+				+ " VALUES (?, ?, ?, ?, ?)";
+	}
+	@Override
+	protected void addParams(PreparedStatement stmt, Order order) throws SQLException {
+		stmt.setInt(1, order.getShippingFees());
+		stmt.setInt(2, order.getSubtotal());
+		stmt.setString(3, order.getStatus().toString());
+		stmt.setInt(4, order.getDeliveryInfo().getDeliveryId());
+	}
+    
+    
 	// Override some basic CRUD
 	@Override
 	public int add(Order order) throws SQLException {

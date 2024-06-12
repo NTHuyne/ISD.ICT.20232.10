@@ -1,5 +1,6 @@
 package com.hust.ict.aims.persistence.dao.payment;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.hust.ict.aims.entity.invoice.Invoice;
@@ -13,18 +14,17 @@ public class InvoiceDAO extends TemplateDAO<Invoice> {
 	private PaymentTransactionDAO transDAO = new PaymentTransactionDAO(connection);
 	
 	
-//	@Override
-//	protected PreparedStatement addQuery(Invoice invoice) throws SQLException {
-//        String sql = "INSERT INTO Invoice (totalAmount, transaction_id, order_id) VALUES (?, ?, ?)";
-//
-//        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//        
-//    	stmt.setInt(1, invoice.getTotalAmount());
-//        stmt.setInt(2, invoice.getTransaction().getTransactionId());
-//        stmt.setInt(3, invoice.getOrder().getId());
-//        
-//        return stmt;
-//    }
+	@Override
+	protected String addQuery() {
+		return "INSERT INTO Invoice (totalAmount, transaction_id, order_id) VALUES (?, ?, ?)";
+	}
+	
+	@Override
+	protected void addParams(PreparedStatement stmt, Invoice invoice) throws SQLException {
+    	stmt.setInt(1, invoice.getTotalAmount());
+        stmt.setInt(2, invoice.getTransaction().getTransactionId());
+        stmt.setInt(3, invoice.getOrder().getId());
+    }
     
     @Override
     protected Invoice createItemFromResultSet(ResultSet res) throws SQLException {

@@ -3,7 +3,6 @@ package com.hust.ict.aims.persistence.dao.payment;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.payment.PaymentTransaction;
@@ -16,16 +15,15 @@ public class InvoiceDAO extends TemplateDAO<Invoice> {
 	
 	
 	@Override
-	protected PreparedStatement addStatement(Invoice invoice) throws SQLException {
-        String sql = "INSERT INTO Invoice (totalAmount, transaction_id, order_id) VALUES (?, ?, ?)";
-
-        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        
+	protected String addQuery() {
+		return "INSERT INTO Invoice (totalAmount, transaction_id, order_id) VALUES (?, ?, ?)";
+	}
+	
+	@Override
+	protected void addParams(PreparedStatement stmt, Invoice invoice) throws SQLException {
     	stmt.setInt(1, invoice.getTotalAmount());
         stmt.setInt(2, invoice.getTransaction().getTransactionId());
         stmt.setInt(3, invoice.getOrder().getId());
-        
-        return stmt;
     }
     
     @Override
@@ -43,24 +41,17 @@ public class InvoiceDAO extends TemplateDAO<Invoice> {
     
     
     @Override
-    protected PreparedStatement getByIdStatement(int invoiceId) throws SQLException {
-        String sql = "SELECT * FROM Invoice WHERE invoice_id = ?;";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, invoiceId);
-        return statement;
+    protected String getByIdQuery() throws SQLException {
+        return "SELECT * FROM Invoice WHERE invoice_id = ?;";
     }
 	
     @Override
-    protected PreparedStatement deleteStatement(int invoiceId) throws SQLException {
-        String sql = "DELETE FROM Invoice WHERE invoice_id = ?;";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, invoiceId);
-
-        return statement;
+    protected String deleteQuery() {
+        return "DELETE FROM Invoice WHERE invoice_id = ?;";
     }
 
 	@Override
-	protected String getDaoName() {
+	public String getDaoName() {
 		return "invoice";
 	}
 	

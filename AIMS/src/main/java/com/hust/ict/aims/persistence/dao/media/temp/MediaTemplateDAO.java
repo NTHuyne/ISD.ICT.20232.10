@@ -13,11 +13,11 @@ import com.hust.ict.aims.utils.InformationAlert;
 
 public abstract class MediaTemplateDAO<T extends Media> extends TemplateDAO<T> {
 	protected MediaAccessDAO mediaAccessDAO = new MediaAccessDAO(connection);	// Reusing connection
-	
-    public List<Media> getAllMedia() throws SQLException {
+
+	public List<Media> getAllMedia() throws SQLException {
         List<Media> itemlist = new ArrayList<>();
 
-        PreparedStatement stmt = this.getAllStatement();
+        PreparedStatement stmt = connection.prepareStatement(this.getAllQuery());
         ResultSet res = stmt.executeQuery();
 
         while (res.next()) {
@@ -30,28 +30,17 @@ public abstract class MediaTemplateDAO<T extends Media> extends TemplateDAO<T> {
 	
 	@Override
     public int add(T media) throws SQLException {
-    	if (mediaAccessDAO.isTitleTaken(media.getTitle())) {
-            ErrorAlert errorAlert = new ErrorAlert();
-            errorAlert.createAlert("Error Message", null, "Media title is already taken");
-            errorAlert.show();
-            throw new IllegalArgumentException(media.getTitle() + " is already taken");
-        }
-
         // Bắt đầu giao dịch
         connection.setAutoCommit(false);
 
         try {
         	media.setMediaId(mediaAccessDAO.add(media));
-        	int bookId = super.add(media);
+        	super.setNoReturnGeneratedKeys(true);
+        	super.add(media);
             connection.commit(); // Hoàn thành giao dịch
             
             System.out.println("Successfully added " + this.getDaoName() + ": " + media);
-
-            InformationAlert alert = new InformationAlert();
-            alert.createAlert("Information Message", null, "Successfully added " + this.getDaoName());
-            alert.show();
-
-            return bookId;
+            return media.getMediaId();
         } catch (SQLException e) {
             connection.rollback(); // Hủy bỏ giao dịch
             throw e;
@@ -69,18 +58,13 @@ public abstract class MediaTemplateDAO<T extends Media> extends TemplateDAO<T> {
             // Update Media table
             mediaAccessDAO.update(media);
             super.update(media);
-            connection.commit(); // Commit transaction
             
-            InformationAlert alert = new InformationAlert();
-            alert.createAlert("Information Message", null, "Successfully updated " + this.getDaoName());
-            alert.show();
-            
+            connection.commit(); // Commit transaction    
         } catch (SQLException e) {
             connection.rollback(); // Roll back transaction
             throw e;
         } finally {
             connection.setAutoCommit(true); // Restore auto-commit
-//            System.out.println("Updating media with ID: " + media.getId());
         }
     }
 }

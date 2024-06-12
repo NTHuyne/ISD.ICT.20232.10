@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import com.hust.ict.aims.entity.media.CdAndLp;
-import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.persistence.dao.media.CDDAO;
 import com.hust.ict.aims.utils.ErrorAlert;
 
@@ -16,30 +15,36 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 public class CDAndLPScreen implements MediaScreen {
 
-    private Media media;
+    private CdAndLp media;
     private DataChangedListener dataChangedListener;
     CDDAO cdAndLpDAO;
 
-    public CDAndLPScreen() {
-    }
-
-    public CDAndLPScreen(Media media, DataChangedListener dataChangedListener, CDDAO cdAndLpDAO) {
-        this.media = media;
+    public CDAndLPScreen(DataChangedListener dataChangedListener, CDDAO cdAndLpDAO) {
         this.dataChangedListener = dataChangedListener;
         this.cdAndLpDAO = cdAndLpDAO;
     }
+    
+    public void setMedia(CdAndLp media) {
+		this.media = media;
+	}
 
     @FXML
     private TextField cdAndLp_artists, cdAndLp_recordLabel, cdAndLp_trackList, cdAndLp_genre;
     @FXML
     private DatePicker cdAndLp_releaseDate;
     @FXML
-    private CheckBox cdAndLp_isCD;
+    private ToggleGroup CDorLP;
+    @FXML
+    private RadioButton cdAndLp_isCD;
+    @FXML
+    private RadioButton cdAndLp_isLP;
     @FXML
     private Button addCDAndLPBtn;
     @FXML
@@ -56,7 +61,7 @@ public class CDAndLPScreen implements MediaScreen {
                 // We are editing an existing book
                 addCDAndLPBtn.setText("Update");
                 CDAndLPDetailLabel.setText("Edit CD/ LP Detail");
-                setDVDFields(); // Set fields only in edit mode
+                this.setDVDFields(media); // Set fields only in edit mode
             } else {
                 CDAndLPDetailLabel.setText("Add CD/ LP Detail");
             }
@@ -71,27 +76,20 @@ public class CDAndLPScreen implements MediaScreen {
         }
     }
 
-    private void setDVDFields() {
-        try {
-            // Assuming media.getId() returns the ID of the DVD you want to fetch
-            CdAndLp cdAndLp = cdAndLpDAO.getById(media.getMediaId());
-
-            if (cdAndLp != null) {
-                cdAndLp_artists.setText(cdAndLp.getArtists());
-                cdAndLp_genre.setText(cdAndLp.getGenre());
-                cdAndLp_recordLabel.setText(cdAndLp.getRecordLabel());
-                cdAndLp_trackList.setText(cdAndLp.getTrackList());
-                cdAndLp_isCD.setSelected(cdAndLp.getIsCD());
-                if (cdAndLp.getReleaseDate() != null) {
-                    LocalDate localDate = new java.sql.Date(cdAndLp.getReleaseDate().getTime()).toLocalDate();
-                    cdAndLp_releaseDate.setValue(localDate);
-                }
-            } else {
-                System.out.println("No CD/ LP found with ID: " + media.getMediaId());
-                // Handle case where no DVD is found
-            }
-        } catch(Exception e){
-            e.printStackTrace();
+    private void setDVDFields(CdAndLp cdAndLp) {
+        cdAndLp_artists.setText(cdAndLp.getArtists());
+        cdAndLp_genre.setText(cdAndLp.getGenre());
+        cdAndLp_recordLabel.setText(cdAndLp.getRecordLabel());
+        cdAndLp_trackList.setText(cdAndLp.getTrackList());
+        if (cdAndLp.getIsCD()) {
+        	cdAndLp_isCD.setSelected(true);
+        } else {
+        	cdAndLp_isLP.setSelected(true);
+        }
+        
+        if (cdAndLp.getReleaseDate() != null) {
+            LocalDate localDate = new java.sql.Date(cdAndLp.getReleaseDate().getTime()).toLocalDate();
+            cdAndLp_releaseDate.setValue(localDate);
         }
     }
 
@@ -113,6 +111,7 @@ public class CDAndLPScreen implements MediaScreen {
             ErrorAlert errorAlert = new ErrorAlert();
             errorAlert.createAlert("Error Message", null, "Please fill all blank fields");
             errorAlert.show();
+            return;
         }
 
         try{
@@ -135,10 +134,12 @@ public class CDAndLPScreen implements MediaScreen {
 
             dataChangedListener.onDataChanged();
             Stage stage = (Stage) cdAndLp_artists.getScene().getWindow();
-            stage.close();
+            stage.hide();
 
         } catch (Exception e){
             e.printStackTrace();
+            Stage stage = (Stage) cdAndLp_artists.getScene().getWindow();
+            stage.hide();
         }
 
     }

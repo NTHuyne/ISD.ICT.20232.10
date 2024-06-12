@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
@@ -12,6 +13,7 @@ import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
  * @author
  */
 public class DVDDAO extends MediaTemplateDAO<Dvd> {
+
 	@Override
 	protected Dvd createItemFromResultSet(ResultSet res) throws SQLException {
     	return new Dvd(
@@ -29,24 +31,16 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
 
 
     @Override
-    protected PreparedStatement getAllStatement() throws SQLException {
-        String sql = "SELECT * FROM "+
+    protected String getAllQuery() throws SQLException {
+        return "SELECT * FROM "+
                 "DVD INNER JOIN Media " +
                 "ON Media.media_id = DVD.media_id ";
-
-        // Create statement
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        return stmt;
     }
 
     @Override
-    protected PreparedStatement getByIdStatement(int dvdId) throws SQLException {
+    protected String getByIdQuery() {
         // Assuming 'connection' is your established JDBC connection
-        String sql = "SELECT * FROM DVD INNER JOIN Media ON Media.media_id = DVD.media_id WHERE media_id = ?;";
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.setInt(1, dvdId);
-
-        return statement;
+        return "SELECT * FROM DVD INNER JOIN Media ON Media.media_id = DVD.media_id WHERE Media.media_id = ?;";
     }
 
     // DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id)
@@ -69,28 +63,32 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
         dvdStatement.setInt(9, dvd.getMediaId());
     }
 
+    @Override
+    protected String addQuery() {
+    	return "INSERT INTO DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id) "
+    			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    }
     @Override 
-    protected PreparedStatement addStatement(Dvd dvd) throws SQLException {
+    protected void addParams(PreparedStatement dvdStatement, Dvd dvd) throws SQLException {
         // Thêm thông tin vào bảng DVD
-        String dvdSql = "INSERT INTO DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement dvdStatement = connection.prepareStatement(dvdSql, Statement.RETURN_GENERATED_KEYS);
         this.prepareStatementFromDVD(dvdStatement, dvd);
 
-        return dvdStatement;
     }
     
-    @Override 
-    protected PreparedStatement updateStatement(Dvd dvd) throws SQLException {
+    
+	@Override
+	protected String updateQuery() {
         // DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id)
-        String dvdSql = "UPDATE DVD SET dvdType = ?, director = ?, runtime = ?, studio = ?, language = ?, subtitles = ?, releasedDate = ?, genre = ? WHERE media_id = ?";
-        PreparedStatement dvdStatement = connection.prepareStatement(dvdSql);
+		return "UPDATE DVD SET dvdType = ?, director = ?, runtime = ?, studio = ?, language = ?, subtitles = ?, releasedDate = ?, genre = ? WHERE media_id = ?";
+	}
+	@Override
+	protected void updateParams(PreparedStatement dvdStatement, Dvd dvd) throws SQLException {
+        // Update CD_and_LP table
         this.prepareStatementFromDVD(dvdStatement, dvd);
-
-        return dvdStatement;
-    }
+	}
 
 	@Override
-	protected String getDaoName() {
+	public String getDaoName() {
 		return "DVD";
 	}
 }

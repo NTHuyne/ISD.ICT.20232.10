@@ -23,6 +23,10 @@ public class Book extends Media {
 		this.genre = genre;
 	}
 
+	public Book() {
+		super();
+	}
+
 	public String getAuthors() {
 		return authors;
 	}

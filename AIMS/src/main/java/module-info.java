@@ -10,6 +10,8 @@ module com.hust.ict.aims {
 	requires java.desktop;
 	requires net.freeutils.jlhttp;
 	requires javafx.graphics;
+    requires org.simplejavamail.core;
+    requires org.simplejavamail;
 
     opens com.hust.ict.aims to javafx.fxml;
     opens com.hust.ict.aims.view.home to javafx.fxml;

@@ -93,4 +93,22 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+
+    public void addUser(User user) {
+        Connection conn = null;
+        String query = "INSERT INTO User (username, password, email, isAdmin)" +
+                        " VALUES (\'" + user.getUsername() +
+                        "\', \'" + user.getPassword() +
+                        "\', \'" + user.getEmail() +
+                        "\', " + user.getIsAdmin() + ")";
+
+        try {
+            conn = ConnectJDBC.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -94,8 +94,10 @@
                                     </Label>
                                     <ComboBox fx:id="roleComboBox" editable="true" layoutX="728.0" layoutY="143.0" prefWidth="150.0" />
                                             </children></AnchorPane>
-                                        <Button fx:id="userUpdateButton" layoutX="406.0" layoutY="669.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Update" AnchorPane.bottomAnchor="100.60000000000002" />
-                                        <Button fx:id="userDeleteButton" layoutX="607.0" layoutY="669.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Delete" AnchorPane.bottomAnchor="100.60000000000002" />
+                                        <Button fx:id="userUpdateButton" layoutX="420.0" layoutY="669.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Update" AnchorPane.bottomAnchor="100.60000000000002" />
+                                        <Button fx:id="userDeleteButton" layoutX="709.0" layoutY="669.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Delete" AnchorPane.bottomAnchor="100.60000000000002" />
+                              <Button fx:id="userAddButton" layoutX="266.0" layoutY="669.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Add" AnchorPane.bottomAnchor="100.60000000000002" />
+                              <Button fx:id="clearBtn" layoutX="570.0" layoutY="669.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Clear" />
                                     </children>
                                 </AnchorPane>
                             </children></AnchorPane>

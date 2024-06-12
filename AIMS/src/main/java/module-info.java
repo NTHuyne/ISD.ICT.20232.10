@@ -11,6 +11,7 @@ module com.hust.ict.aims {
 	requires net.freeutils.jlhttp;
 	requires javafx.graphics;
 
+
     opens com.hust.ict.aims to javafx.fxml;
     opens com.hust.ict.aims.view.home to javafx.fxml;
     opens com.hust.ict.aims.view.cart to javafx.fxml;
@@ -21,12 +22,8 @@ module com.hust.ict.aims {
     opens com.hust.ict.aims.service to javafx.fxml;
     exports com.hust.ict.aims.service;
 
+	requires javafx.base;
     opens com.hust.ict.aims.entity.media to javafx.base;
 
     exports com.hust.ict.aims;
-    uses com.hust.ict.aims.controller.productmanager.MediaScreenCreator;
-    provides com.hust.ict.aims.controller.productmanager.MediaScreenCreator with
-            com.hust.ict.aims.controller.productmanager.BookScreenCreator,
-            com.hust.ict.aims.controller.productmanager.CDAndLPScreenCreator,
-            com.hust.ict.aims.controller.productmanager.DVDScreenCreator;
 }

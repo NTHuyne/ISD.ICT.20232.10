@@ -18,6 +18,7 @@ public class MediaAccessDAO extends TemplateDAO<Media> {
 		super(conn);
 	}
 
+	
 	@Override
     public Media createItemFromResultSet(ResultSet res) throws SQLException {
     	return new Media(
@@ -109,7 +110,6 @@ public class MediaAccessDAO extends TemplateDAO<Media> {
     protected MediaAccessDAO() {
     	super();
     }
-
 
 	@Override
 	protected String getDaoName() {

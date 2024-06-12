@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import com.hust.ict.aims.entity.media.Dvd;
-import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.persistence.dao.media.DVDDAO;
 import com.hust.ict.aims.utils.ErrorAlert;
 
@@ -20,20 +19,22 @@ import javafx.stage.Stage;
 
 public class DVDScreen implements MediaScreen {
 
-    private Media media;
+    private Dvd media;
     private DataChangedListener dataChangedListener;
     DVDDAO dvdDAO;
 
-    public DVDScreen() {
-    }
-
-    public DVDScreen(Media media, DataChangedListener dataChangedListener, DVDDAO dvdDAO) {
-        this.media = media;
+    public DVDScreen(DataChangedListener dataChangedListener, DVDDAO dvdDAO) {
         this.dataChangedListener = dataChangedListener;
         this.dvdDAO = dvdDAO;
     }
 
-    @FXML
+    public void setMedia(Dvd media) {
+		this.media = media;
+	}
+
+
+
+	@FXML
     private TextField dvd_type, dvd_director, dvd_studio, dvd_genre, dvd_language, dvd_subtitles, dvd_runtime;
     @FXML
     private DatePicker dvd_releasedDate;
@@ -53,7 +54,7 @@ public class DVDScreen implements MediaScreen {
                 // We are editing an existing book
                 addDVDBtn.setText("Update");
                 DVDDetailLabel.setText("Edit DVD Detail");
-                setDVDFields(); // Set fields only in edit mode
+                this.setDVDFields(media); // Set fields only in edit mode
             } else {
                 DVDDetailLabel.setText("Add DVD Detail");
             }
@@ -68,29 +69,17 @@ public class DVDScreen implements MediaScreen {
         }
     }
 
-    private void setDVDFields() {
-        try {
-            // Assuming media.getId() returns the ID of the DVD you want to fetch
-            Dvd dvd = dvdDAO.getById(media.getMediaId());
-
-            if (dvd != null) {
-                dvd_director.setText(dvd.getDirector());
-                dvd_language.setText(dvd.getLanguage());
-                dvd_runtime.setText(String.valueOf(dvd.getRuntime()));
-                dvd_studio.setText(dvd.getStudio());
-                dvd_type.setText(dvd.getDvdType());
-                dvd_subtitles.setText(dvd.getSubtitles());
-                dvd_genre.setText(dvd.getGenre());
-                if (dvd.getReleasedDate() != null) {
-                    LocalDate localDate = new java.sql.Date(dvd.getReleasedDate().getTime()).toLocalDate();
-                    dvd_releasedDate.setValue(localDate);
-                }
-            } else {
-                System.out.println("No DVD found with ID: " + media.getMediaId());
-                // Handle case where no DVD is found
-            }
-        } catch(Exception e){
-            e.printStackTrace();
+    private void setDVDFields(Dvd dvd) {
+        dvd_director.setText(dvd.getDirector());
+        dvd_language.setText(dvd.getLanguage());
+        dvd_runtime.setText(String.valueOf(dvd.getRuntime()));
+        dvd_studio.setText(dvd.getStudio());
+        dvd_type.setText(dvd.getDvdType());
+        dvd_subtitles.setText(dvd.getSubtitles());
+        dvd_genre.setText(dvd.getGenre());
+        if (dvd.getReleasedDate() != null) {
+            LocalDate localDate = new java.sql.Date(dvd.getReleasedDate().getTime()).toLocalDate();
+            dvd_releasedDate.setValue(localDate);
         }
     }
 
@@ -117,6 +106,7 @@ public class DVDScreen implements MediaScreen {
             ErrorAlert errorAlert = new ErrorAlert();
             errorAlert.createAlert("Error Message", null, "Please fill all blank fields");
             errorAlert.show();
+            return;
         }
 
         try{
@@ -144,10 +134,12 @@ public class DVDScreen implements MediaScreen {
 
             dataChangedListener.onDataChanged();
             Stage stage = (Stage) dvd_type.getScene().getWindow();
-            stage.close();
+            stage.hide();
 
         } catch (Exception e){
             e.printStackTrace();
+            Stage stage = (Stage) dvd_type.getScene().getWindow();
+            stage.hide();
         }
 
     }

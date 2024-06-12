@@ -12,6 +12,7 @@ import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
  * @author
  */
 public class DVDDAO extends MediaTemplateDAO<Dvd> {
+
 	@Override
 	protected Dvd createItemFromResultSet(ResultSet res) throws SQLException {
     	return new Dvd(

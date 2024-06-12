@@ -11,6 +11,7 @@ import com.hust.ict.aims.utils.InformationAlert;
 
 public class MediaDAO {
 	public List<Media> getAllMedia() throws SQLException {
+		System.out.println("Getting all medias...");
 		List<Media> mergedList = new BookDAO().getAllMedia();
 		mergedList.addAll(new CDDAO().getAllMedia());
 		mergedList.addAll(new DVDDAO().getAllMedia());

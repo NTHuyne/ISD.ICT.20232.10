@@ -32,12 +32,12 @@
                             </font>
                         </Label>
                         <TextField fx:id="dvd_studio" layoutX="99.0" layoutY="267.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.leftAnchor="95.0" />
-                  <Label layoutX="23.0" layoutY="74.0" text="Film type" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="74.0">
+                  <Label layoutX="23.0" layoutY="74.0" text="Film genre" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="74.0">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="dvd_filmType" layoutX="100.0" layoutY="69.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="69.0" />
+                  <TextField fx:id="dvd_genre" layoutX="100.0" layoutY="69.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="69.0" />
                     </children>
                 </AnchorPane>
                 <AnchorPane fx:id="loginForm" layoutX="300.0" prefHeight="400.0" prefWidth="300.0">

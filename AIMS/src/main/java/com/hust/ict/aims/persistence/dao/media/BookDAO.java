@@ -12,7 +12,7 @@ import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
  * @author
  */
 public class BookDAO extends MediaTemplateDAO<Book> {
-	
+
 	@Override
     protected Book createItemFromResultSet(ResultSet res) throws SQLException {
     	return new Book(

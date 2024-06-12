@@ -469,10 +469,10 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 logout_btn.getScene().getWindow().hide();
 
                 // Quay ve login form
-                Stage stage = new Stage();
-                LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
-                loginHandler.setScreenTitle("Login");
-                loginHandler.show();
+//                Stage stage = new Stage();
+//                LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
+//                loginHandler.setScreenTitle("Login");
+//                loginHandler.show();
             }
 
         } catch (Exception e) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.persistence.database.ConnectJDBC;
-import com.hust.ict.aims.utils.InformationAlert;
+
 
 public class MediaDAO {
 	public List<Media> getAllMedia() throws SQLException {
@@ -40,9 +40,9 @@ public class MediaDAO {
                 throw new SQLException("Deleting media failed, no rows affected.");
             } else {
                 System.out.println("Successfully deleted media with ID: " + mediaId);
-                InformationAlert alert = new InformationAlert();
-                alert.createAlert("Information Message", null, "Successfully deleted media");
-                alert.show();
+//                InformationAlert alert = new InformationAlert();
+//                alert.createAlert("Information Message", null, "Successfully deleted media");
+//                alert.show();
             }
         }
     }

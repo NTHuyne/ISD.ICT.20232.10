@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
@@ -67,15 +68,16 @@ public class CDDAO extends MediaTemplateDAO<CdAndLp> {
         this.prepareStatementFromCD(cdStatement, cdAndLp);
     }
     
-    @Override 
-    protected PreparedStatement updateStatement(CdAndLp cdAndLp) throws SQLException {
+    
+	@Override
+	protected String updateQuery() {
+		return "UPDATE CD_and_LP SET isCD = ?, artists = ?, recordLabel = ?, trackList = ?, genre = ?, releaseDate = ? WHERE media_id = ?";
+	}
+	@Override
+	protected void updateParams(PreparedStatement cdAndLpStatement, CdAndLp cdAndLp) throws SQLException {
         // Update CD_and_LP table
-        String cdAndLpSql = "UPDATE CD_and_LP SET isCD = ?, artists = ?, recordLabel = ?, trackList = ?, genre = ?, releaseDate = ? WHERE media_id = ?";
-        PreparedStatement cdAndLpStatement = connection.prepareStatement(cdAndLpSql);
         this.prepareStatementFromCD(cdAndLpStatement, cdAndLp);
-
-        return cdAndLpStatement;
-    }
+	}
 
 	@Override
 	public String getDaoName() {

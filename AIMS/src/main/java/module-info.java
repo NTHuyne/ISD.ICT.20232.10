@@ -24,6 +24,7 @@ module com.hust.ict.aims {
 
 	requires javafx.base;
 	requires org.mockito;
+	requires org.junit.jupiter.api;
     opens com.hust.ict.aims.entity.media to javafx.base;
 
     exports com.hust.ict.aims;

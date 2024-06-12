@@ -46,7 +46,7 @@ public class InvoiceDAO extends TemplateDAO<Invoice> {
     }
 	
     @Override
-    protected String deleteQuery() throws SQLException {
+    protected String deleteQuery() {
         return "DELETE FROM Invoice WHERE invoice_id = ?;";
     }
 

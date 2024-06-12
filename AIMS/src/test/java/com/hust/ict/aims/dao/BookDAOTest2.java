@@ -5,14 +5,19 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.junit.jupiter.api.Assertions;
 
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.persistence.dao.media.BookDAO;
+import com.hust.ict.aims.persistence.dao.media.MediaDAO;
 
-public class BookDAOTest {
+@TestMethodOrder(OrderAnnotation.class)
+public class BookDAOTest2 {
 	private Book getFirstBook() {
 		Media trueMedia = new Media(
         	1,
@@ -43,6 +48,7 @@ public class BookDAOTest {
 	private Book tempBook = getFirstBook();
 	
 	@Test
+	@Order(1)
 	void testGetById() {
 		try {
 			Book queriedBook = new BookDAO().getById(1);
@@ -75,6 +81,7 @@ public class BookDAOTest {
     }
 	
 	@Test
+	@Order(2)
 	void testAdd() {
 		tempBook.setTitle("ADDING");
 		tempBook.setPages(999);
@@ -96,6 +103,7 @@ public class BookDAOTest {
 	}
 	
 	@Test
+	@Order(3)
 	void testUpdate() {
 		tempBook.setTitle("UPDATING");
 		tempBook.setPages(0);
@@ -112,4 +120,20 @@ public class BookDAOTest {
 			Assertions.fail();
 		}
 	}
+	
+	@Test
+	@Order(4)
+	void testDelete() {
+		try {
+			new MediaDAO().deleteMedia(tempBook.getMediaId());;
+					
+			Book queriedBook = new BookDAO().getById(tempBook.getMediaId());
+			
+			Assertions.assertNull(queriedBook);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Assertions.fail();
+		}
+	}
+	// Doesn't implement delete because that's mediaDAO responsibility
 }

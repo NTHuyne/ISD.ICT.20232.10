@@ -3,8 +3,6 @@ package com.hust.ict.aims.persistence.dao.media;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
@@ -15,9 +13,16 @@ public class BookDAO extends MediaTemplateDAO<Book> {
 
 	@Override
 	protected Book createItemFromResultSet(ResultSet res) throws SQLException {
-		return new Book(mediaAccessDAO.createItemFromResultSet(res), res.getString("authors"),
-				res.getString("coverType"), res.getString("publisher"), res.getDate("publicationDate"),
-				res.getInt("pages"), res.getString("language"), res.getString("genre"));
+		return new Book(
+			mediaAccessDAO.createItemFromResultSet(res),
+			res.getString("authors"),
+			res.getString("coverType"),
+			res.getString("publisher"),
+			res.getDate("publicationDate"),
+			res.getInt("pages"),
+			res.getString("language"),
+			res.getString("genre")
+		);
 	}
 
 	@Override
@@ -55,7 +60,6 @@ public class BookDAO extends MediaTemplateDAO<Book> {
 		return "INSERT INTO Book (authors, coverType, publisher, publicationDate, pages, language, genre, media_id)"
 				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	}
-
 	@Override
 	protected void addParams(PreparedStatement bookStatement, Book book) throws SQLException {
 		// Thêm thông tin vào bảng Book
@@ -63,13 +67,13 @@ public class BookDAO extends MediaTemplateDAO<Book> {
 	}
 
 	@Override
-	protected PreparedStatement updateStatement(Book book) throws SQLException {
+	protected String updateQuery() {
+		return "UPDATE Book SET authors = ?, coverType = ?, publisher = ?, publicationDate = ?, pages = ?, language = ?, genre = ? WHERE media_id = ?";
+	}
+	@Override
+	protected void updateParams(PreparedStatement bookStatement, Book book) throws SQLException {
 		// Update Book table
-		String bookSql = "UPDATE Book SET authors = ?, coverType = ?, publisher = ?, publicationDate = ?, pages = ?, language = ?, genre = ? WHERE media_id = ?";
-		PreparedStatement bookStatement = connection.prepareStatement(bookSql);
 		this.prepareStatementFromBook(bookStatement, book);
-
-		return bookStatement;
 	}
 
 	@Override

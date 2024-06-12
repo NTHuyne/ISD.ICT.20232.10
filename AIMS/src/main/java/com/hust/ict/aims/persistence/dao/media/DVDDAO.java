@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
@@ -74,15 +75,17 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
 
     }
     
-    @Override 
-    protected PreparedStatement updateStatement(Dvd dvd) throws SQLException {
+    
+	@Override
+	protected String updateQuery() {
         // DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id)
-        String dvdSql = "UPDATE DVD SET dvdType = ?, director = ?, runtime = ?, studio = ?, language = ?, subtitles = ?, releasedDate = ?, genre = ? WHERE media_id = ?";
-        PreparedStatement dvdStatement = connection.prepareStatement(dvdSql);
+		return "UPDATE DVD SET dvdType = ?, director = ?, runtime = ?, studio = ?, language = ?, subtitles = ?, releasedDate = ?, genre = ? WHERE media_id = ?";
+	}
+	@Override
+	protected void updateParams(PreparedStatement dvdStatement, Dvd dvd) throws SQLException {
+        // Update CD_and_LP table
         this.prepareStatementFromDVD(dvdStatement, dvd);
-
-        return dvdStatement;
-    }
+	}
 
 	@Override
 	public String getDaoName() {

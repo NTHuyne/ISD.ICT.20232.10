@@ -51,11 +51,12 @@ public class PaymentTransactionDAO extends TemplateDAO<PaymentTransaction> {
     protected String getByIdQuery() {
         return "SELECT * FROM PaymentTransaction WHERE transaction_id = ?;";
     }
-	
-    @Override
-    protected String deleteQuery()  {
-        return "DELETE FROM PaymentTransaction WHERE transaction_id = ?;";
-    }
+
+    // Note: Shouldn't delete existing transaction?
+//    @Override
+//    protected String deleteQuery()  {
+//        return "DELETE FROM PaymentTransaction WHERE transaction_id = ?;";
+//    }
 
 	@Override
 	public String getDaoName() {

@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
-import com.hust.ict.aims.utils.ConfirmationAlert;
 
 /**
  * @author
@@ -66,16 +64,13 @@ public class MediaAccessDAO extends TemplateDAO<Media> {
     }
 
     @Override
-	protected PreparedStatement updateStatement(Media media) throws SQLException {
-        String mediaSql = "UPDATE Media SET price = ?, title = ?, totalQuantity = ?, weight = ?, description = ?, importDate = ?, rushOrderSupported = ?, imageUrl = ?, productDimension = ?, barcode = ? WHERE media_id = ?";
-
-        try (PreparedStatement mediaStatement = connection.prepareStatement(mediaSql)) {
-	        // Thiết lập các tham số cho Media
-	        this.prepareStatementFromMedia(mediaStatement, media);
-	        mediaStatement.setInt(11, media.getMediaId());
-	        
-	        return mediaStatement;
-        }
+	protected String updateQuery() {
+    	return "UPDATE Media SET price = ?, title = ?, totalQuantity = ?, weight = ?, description = ?, importDate = ?, rushOrderSupported = ?, imageUrl = ?, productDimension = ?, barcode = ? WHERE media_id = ?";
+    }
+	protected void updateParams(PreparedStatement mediaStatement, Media media) throws SQLException {
+        // Thiết lập các tham số cho Media
+        this.prepareStatementFromMedia(mediaStatement, media);
+        mediaStatement.setInt(11, media.getMediaId());
     }
     
     // This class is only used for Book, CD and DVD DAOs

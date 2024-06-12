@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hust.ict.aims.persistence.dao.media.temp.SqlAndParams;
 import com.hust.ict.aims.persistence.database.ConnectJDBC;
 
 // Utilizing Template Design Pattern
@@ -51,7 +49,10 @@ public abstract class TemplateDAO<T> {
     	throw new SQLException("Unimplemented Add for " + getDaoName() +" DAO");
     }
     
-    protected PreparedStatement updateStatement(T item) throws SQLException {
+    protected String updateQuery() throws SQLException {
+    	throw new SQLException("Unimplemented Update for " + getDaoName() +" DAO");
+    }
+    protected void updateParams(PreparedStatement stmt, T item) throws SQLException {
     	throw new SQLException("Unimplemented Update for " + getDaoName() +" DAO");
 	}
     
@@ -79,7 +80,7 @@ public abstract class TemplateDAO<T> {
         if (resultSet.next()) {
             return this.createItemFromResultSet(resultSet);
         } else {
-        	throw new SQLException("No " + getDaoName() + " found for ID: " + id);
+        	return null; // throw new SQLException("No " + getDaoName() + " found for ID: " + id);
         }
     }
     
@@ -116,8 +117,9 @@ public abstract class TemplateDAO<T> {
     }
 	
 	public void update(T item) throws SQLException {
-		PreparedStatement statement = this.updateStatement(item);
-		
+		PreparedStatement statement = connection.prepareStatement(this.updateQuery());
+    	this.updateParams(statement, item);
+    	
         int affectedRows = statement.executeUpdate();
         if (affectedRows == 0) {
             throw new SQLException("Updating media failed, no rows affected.");
@@ -135,9 +137,6 @@ public abstract class TemplateDAO<T> {
             throw new SQLException("Deleting " + getDaoName() + " failed, no rows affected.");
         } else {
             System.out.println("Successfully deleted " + getDaoName() +" with ID: " + id);
-//            InformationAlert alert = new InformationAlert();
-//            alert.createAlert("Information Message", null, "Successfully deleted " + getDaoName());
-//            alert.show();
         }
     }
 }

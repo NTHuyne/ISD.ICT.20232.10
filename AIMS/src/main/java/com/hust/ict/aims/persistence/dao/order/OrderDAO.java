@@ -40,22 +40,6 @@ public class OrderDAO extends TemplateDAO<Order> {
         }
 	}
 
-	// INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id) VALUES
-	// (100, 500, 1, 1);
-//	@Override
-//	protected PreparedStatement addQuery(Order order) throws SQLException {
-//		String sql = "INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id) VALUES (?, ?, ?, ?);";
-//
-//		PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-//
-//		stmt.setInt(1, order.getShippingFees());
-//		stmt.setInt(2, order.getSubtotal());
-//		stmt.setString(3, order.getStatus().toString());
-//		stmt.setInt(4, order.getDeliveryInfo().getDeliveryId());
-//
-//		return stmt;
-//	}
-
 	@Override
 	protected String getByIdQuery(){
 		return "SELECT * FROM OrderInfo WHERE order_id = ?;";
@@ -117,6 +101,9 @@ public class OrderDAO extends TemplateDAO<Order> {
 	@Override
 	public Order getById(int orderId) throws SQLException {
 		Order thisorder = super.getById(orderId);
+		if (thisorder == null) {
+			return null;
+		}
 		
 		String sql = "SELECT * FROM Order_Media WHERE order_id = ?;";
 		
@@ -137,14 +124,10 @@ public class OrderDAO extends TemplateDAO<Order> {
 		return thisorder;
 	}
 
-//    @Override
-//    protected PreparedStatement deleteQuery(int orderId) throws SQLException {
-//        String sql = "DELETE FROM OrderInfo WHERE order_id = ?;";
-//        PreparedStatement statement = connection.prepareStatement(sql);
-//        statement.setInt(1, orderId);
-//
-//        return statement;
-//    }
+    @Override
+    protected String deleteQuery() {
+        return "DELETE FROM OrderInfo WHERE order_id = ?;";
+    }
 //
 //	@Override
 //	protected PreparedStatement getAllStatement() throws SQLException {

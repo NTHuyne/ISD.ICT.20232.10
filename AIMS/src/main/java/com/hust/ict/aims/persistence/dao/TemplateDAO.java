@@ -92,8 +92,6 @@ public abstract class TemplateDAO<T> {
 	public int add(T item) throws SQLException {
     	PreparedStatement statement = connection.prepareStatement(this.addQuery(), PreparedStatement.RETURN_GENERATED_KEYS);
     	this.addParams(statement, item);
-
-    	System.out.println(statement.toString());
     	
         int affectedRows = statement.executeUpdate();
         if (affectedRows == 0) {

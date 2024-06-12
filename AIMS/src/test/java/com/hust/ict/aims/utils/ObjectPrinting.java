@@ -1,4 +1,4 @@
-package com.hust.ict.aims.dao;
+package com.hust.ict.aims.utils;
 
 import java.lang.reflect.Field;
 

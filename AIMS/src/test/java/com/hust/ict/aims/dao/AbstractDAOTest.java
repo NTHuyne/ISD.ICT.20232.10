@@ -3,38 +3,48 @@ package com.hust.ict.aims.dao;
 import java.sql.SQLException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.junit.jupiter.api.Assertions;
 
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
+import com.hust.ict.aims.utils.ObjectPrinting;
 
+@TestInstance(Lifecycle.PER_CLASS)
 @TestMethodOrder(OrderAnnotation.class)
 public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 	public abstract T getExistingItem();
+	public abstract int getExistingItemId();
 	public abstract V getDAO();
-	public abstract int getItemId(T item);
 	
 	public abstract void prepareAddItem(T item);
 	public abstract void prepareUpdateItem(T item);
 	
-	public String[] excludeFields() {
+	// Overridable
+	public String[] excludeFieldsForAdd() {
 		return null;
 	}
-	
-	private T tempItem = getExistingItem();		// Copy to a temp item
+
+	private T tempItem = getExistingItem(); 		// Copy to a temp item
+	private int tempItemId;
 	
 	@Test
 	@Order(1)
 	public void testGetById() {
 		try {
-			T queriedItem = this.getDAO().getById(1);
+			T queriedItem = this.getDAO().getById(this.getExistingItemId());
 			T trueItem = this.getExistingItem();
+			
+			ObjectPrinting.printAllAttributes(queriedItem);
+			ObjectPrinting.printAllAttributes(trueItem);
 			
 			Assertions.assertTrue(new ReflectionEquals(queriedItem).matches(trueItem));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			
 			Assertions.fail();
 		}
 	}
@@ -47,11 +57,11 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 		try {
 			V itemDAO = this.getDAO();
 			
-			int queriedId = itemDAO.add(tempItem);
-			T queriedItem = itemDAO.getById(queriedId);
+			tempItemId = itemDAO.add(tempItem);
+			T queriedItem = itemDAO.getById(tempItemId);
 			
 			// Except importDate because it's set as Today
-			Assertions.assertTrue(new ReflectionEquals(queriedItem, this.excludeFields()).matches(tempItem));
+			Assertions.assertTrue(new ReflectionEquals(queriedItem, this.excludeFieldsForAdd()).matches(tempItem));
 			
 			// Update with id
 			tempItem = queriedItem;
@@ -70,7 +80,7 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 			V itemDAO = this.getDAO();
 					
 			itemDAO.update(tempItem);
-			T queriedItem = itemDAO.getById(this.getItemId(tempItem));
+			T queriedItem = itemDAO.getById(tempItemId);
 			
 			Assertions.assertTrue(new ReflectionEquals(queriedItem).matches(tempItem));
 		} catch (SQLException e) {
@@ -79,18 +89,18 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 		}
 	}
 	
-	public void deleteStatement() throws SQLException {
-		this.getDAO().delete(this.getItemId(tempItem));
+	// Overridable
+	public void deleteStatement(int id) throws SQLException {
+		this.getDAO().delete(tempItemId);
 	}
 	
 	@Test
 	@Order(4)
 	void testDelete() {
 		try {
-			// new MediaDAO().deleteMedia(this.getItemId(tempItem));
-			deleteStatement();
+			deleteStatement(tempItemId);
 					
-			T queriedItem = this.getDAO().getById(this.getItemId(tempItem));
+			T queriedItem = this.getDAO().getById(tempItemId);
 			
 			Assertions.assertNull(queriedItem);
 		} catch (SQLException e) {
@@ -98,5 +108,5 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 			Assertions.fail();
 		}
 	}
-	// Doesn't implement delete because that's mediaDAO responsibility
+
 }

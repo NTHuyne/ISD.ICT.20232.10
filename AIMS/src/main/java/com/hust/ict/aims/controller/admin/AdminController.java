@@ -77,6 +77,12 @@ public class AdminController implements Initializable {
     private ObservableList<User> userListData;
 
     @FXML
+    private Button userAddButton;
+
+    @FXML
+    private Button clearBtn;
+
+    @FXML
     void logout(ActionEvent event) {
         try{
             ConfirmationAlert confAlert = new ConfirmationAlert();
@@ -102,6 +108,13 @@ public class AdminController implements Initializable {
         userRolesList();
         userShowData();
 
+        userUpdateButton.setDisable(true);
+        userDeleteButton.setDisable(true);
+
+        userAddButton.setOnMouseClicked(e -> {
+            addUser();
+        });
+
         userUpdateButton.setOnMouseClicked(e -> {
             updateUser();
         });
@@ -109,6 +122,46 @@ public class AdminController implements Initializable {
         userDeleteButton.setOnMouseClicked(e -> {
             deleteUser();
         });
+
+        clearBtn.setOnMouseClicked(e -> {
+            clearAllFields();
+        });
+    }
+
+    public void clearAllFields() {
+        usernameField.setText("");
+        passwordField.setText("");
+        emailField.setText("");
+        roleComboBox.setValue("");
+    }
+
+    public void addUser() {
+        if(usernameField.getText().isEmpty() ||
+                passwordField.getText().isEmpty() ||
+                !PlaceOrderController.validateEmailField(emailField) ||
+                roleComboBox.getValue().isEmpty()) {
+            ErrorAlert errAlert = new ErrorAlert();
+            errAlert.createAlert("Error message", null, "Please fill all blank fields!");
+            errAlert.show();
+            throw new RuntimeException();
+        }
+
+        if(roleComboBox.getValue().equals("Admin")) {
+            ErrorAlert errAlert = new ErrorAlert();
+            errAlert.createAlert("Error message", null, "Can not add a new admin.");
+            errAlert.show();
+            throw new RuntimeException();
+        }
+
+        try {
+            Boolean isAdmin = roleComboBox.getValue().equals("Admin");
+            User newUser = new User(usernameField.getText(), passwordField.getText(), isAdmin, emailField.getText());
+            userDAO.addUser(newUser);
+            userShowData();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateUser() {
@@ -116,10 +169,6 @@ public class AdminController implements Initializable {
                 passwordField.getText().isEmpty() ||
                 !PlaceOrderController.validateEmailField(emailField) ||
                 roleComboBox.getValue().isEmpty()) {
-            System.out.println(usernameField.getText());
-            System.out.println(passwordField.getText());
-            System.out.println(emailField.getText());
-            System.out.println(roleComboBox.getValue());
             ErrorAlert errAlert = new ErrorAlert();
             errAlert.createAlert("Error message", null, "Please fill all blank fields!");
             errAlert.show();
@@ -133,6 +182,13 @@ public class AdminController implements Initializable {
             if(user.getIsAdmin() && user.getIsAdmin() != isAdmin) {
                 ErrorAlert errorAlert = new ErrorAlert();
                 errorAlert.createAlert("Error mess", null, "Can not change the role of admin");
+                errorAlert.show();
+                throw new RuntimeException();
+            }
+
+            if(user.getIsAdmin() && user.getId() != AdminSession.id) {
+                ErrorAlert errorAlert = new ErrorAlert();
+                errorAlert.createAlert("Error mess", null, "Can not change personal info of other administrators");
                 errorAlert.show();
                 throw new RuntimeException();
             }
@@ -183,10 +239,11 @@ public class AdminController implements Initializable {
         userTableView.getSelectionModel().clearSelection(selectedIndex);
         selectedIndex = -1;
 
-        usernameField.setText("");
-        passwordField.setText("");
-        emailField.setText("");
-        roleComboBox.setValue("");
+        clearAllFields();
+
+        userAddButton.setDisable(false);
+        userUpdateButton.setDisable(true);
+        userDeleteButton.setDisable(true);
     }
 
     public void selectUser() {
@@ -202,6 +259,9 @@ public class AdminController implements Initializable {
 
             AdminSession.password = user.getPassword();
             AdminSession.isAdmin = user.getIsAdmin();
+            userAddButton.setDisable(true);
+            userUpdateButton.setDisable(false);
+            userDeleteButton.setDisable(false);
         }
         else {
             deselectUser();

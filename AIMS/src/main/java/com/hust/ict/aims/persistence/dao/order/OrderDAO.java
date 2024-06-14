@@ -70,7 +70,7 @@ public class OrderDAO extends TemplateDAO<Order> {
 	@Override
 	protected String addQuery() {
 		return "INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id)"
-				+ " VALUES (?, ?, ?, ?, ?)";
+				+ " VALUES (?, ?, ?, ?)";
 	}
 	@Override
 	protected void addParams(PreparedStatement stmt, Order order) throws SQLException {

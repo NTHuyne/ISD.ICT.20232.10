@@ -157,7 +157,7 @@ public class AdminController implements Initializable {
             Boolean isAdmin = roleComboBox.getValue().equals("Admin");
             User newUser = new User(usernameField.getText(), passwordField.getText(), isAdmin, emailField.getText());
             userDAO.addUser(newUser);
-            UserEmailSender.sendUserEmail(newUser, "Your new AIMS' account created\n");
+            UserEmailSender.sendUserEmail(newUser, "Your new AIMS' account created by \n" + AdminSession.getEmail() + " \n");
             userShowData();
         }
         catch(Exception e) {

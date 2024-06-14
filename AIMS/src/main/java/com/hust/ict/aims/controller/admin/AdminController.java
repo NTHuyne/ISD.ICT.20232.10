@@ -244,6 +244,9 @@ public class AdminController implements Initializable {
         userAddButton.setDisable(false);
         userUpdateButton.setDisable(true);
         userDeleteButton.setDisable(true);
+        usernameField.setDisable(false);
+        emailField.setDisable(false);
+        clearBtn.setDisable(false);
     }
 
     public void selectUser() {
@@ -256,12 +259,15 @@ public class AdminController implements Initializable {
             passwordField.setText(user.getPassword());
             emailField.setText(user.getEmail());
             roleComboBox.setValue((user.getIsAdmin() ? "Admin" : "Product Manager"));
+            usernameField.setDisable(true);
+            emailField.setDisable(true);
 
             AdminSession.password = user.getPassword();
             AdminSession.isAdmin = user.getIsAdmin();
             userAddButton.setDisable(true);
             userUpdateButton.setDisable(false);
             userDeleteButton.setDisable(false);
+            clearBtn.setDisable(true);
         }
         else {
             deselectUser();

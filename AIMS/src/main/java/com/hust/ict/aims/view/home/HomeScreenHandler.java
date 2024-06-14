@@ -231,15 +231,21 @@ public class HomeScreenHandler extends BaseScreenHandler {
         label.setTextAlignment(TextAlignment.RIGHT);
         menuItem.setGraphic(label);
         menuItem.setOnAction(e -> {
-            List<MediaHandler> filteredItems = new ArrayList<>();
-
-            for (MediaHandler media : homeItems) {
-                if (media.getMedia().getMediaTypeName().equalsIgnoreCase(text)) {
-                    filteredItems.add(media);
+            setBController(new HomeController());
+            try {
+                List<Media> medium = HomeController.getAllMedia();
+                homeItems = new ArrayList<>();
+                for (Media media : medium) {
+                    if (media.getMediaTypeName().equalsIgnoreCase(text)) {
+                        MediaHandler mediaHandler = new MediaHandler(Configs.HOME_MEDIA_PATH, media, this);
+                        homeItems.add(mediaHandler);
+                    }
                 }
+            } catch (SQLException | IOException ex) {
+                LOGGER.info("Errors occurred: " + ex.getMessage());
+                ex.printStackTrace();
             }
 
-            homeItems = filteredItems;
             currentPage = 0;
             addMediaHome();
         });

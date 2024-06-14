@@ -56,6 +56,9 @@ public class HomeScreenHandler extends BaseScreenHandler {
     private VBox vboxMedia3;
 
     @FXML
+    private VBox vboxMedia4;
+
+    @FXML
     private HBox hboxMedia;
 
     @FXML
@@ -147,7 +150,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
             hboxMedia.getChildren().forEach(node -> {
                 int vid = hboxMedia.getChildren().indexOf(node);
                 VBox vBox = (VBox) node;
-                while(vBox.getChildren().size()<3 && !mediaItems.isEmpty()){
+                while(vBox.getChildren().size()<4 && !mediaItems.isEmpty()){
                     MediaHandler media = (MediaHandler) mediaItems.get(0);
                     Node content = media.getContent();
                     if (content != null) {

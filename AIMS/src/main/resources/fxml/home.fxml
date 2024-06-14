@@ -59,18 +59,25 @@
                 </VBox>
             </children>
         </HBox>
-        <ScrollPane fx:id="scrollPane" layoutY="103.0" prefHeight="678.0" prefWidth="1326.0">
-            <content>
-                <HBox fx:id="hboxMedia" layoutX="24.0" layoutY="123.0" prefHeight="666.0" prefWidth="1327.0">
+        <VBox layoutY="103.0" prefHeight="678.0" prefWidth="1326.0">
+            <children>
+                <HBox fx:id="hboxMedia" layoutX="24.0" layoutY="123.0" prefHeight="600.0" prefWidth="1327.0">
                     <children>
                         <VBox fx:id="vboxMedia1" style="-fx-border-color: #33adff;" />
-                        <VBox fx:id="vboxMedia2" prefHeight="666.0" prefWidth="330.0" style="-fx-border-color: #33adff;" />
-                        <VBox fx:id="vboxMedia3" prefHeight="666.0" prefWidth="330.0" style="-fx-border-color: #33adff;" />
-                        <VBox fx:id="vboxMedia4" prefHeight="629.0" prefWidth="320.0" style="-fx-border-color: #33adff;" />
-                        <VBox prefHeight="629.0" prefWidth="331.0" style="-fx-border-color: #33adff;" />
+                        <VBox fx:id="vboxMedia2" prefHeight="600.0" prefWidth="330.0" style="-fx-border-color: #33adff;" />
+                        <VBox fx:id="vboxMedia3" prefHeight="600.0" prefWidth="330.0" style="-fx-border-color: #33adff;" />
+                        <VBox fx:id="vboxMedia4" prefHeight="600.0" prefWidth="320.0" style="-fx-border-color: #33adff;" />
+                        <VBox prefHeight="600.0" prefWidth="331.0" style="-fx-border-color: #33adff;" />
                     </children>
                 </HBox>
-            </content>
-        </ScrollPane>
+                <HBox alignment="CENTER" spacing="10.0" layoutX="24.0" layoutY="723.0" prefHeight="50.0" prefWidth="1327.0">
+                    <children>
+                        <Button fx:id="btnPrevPage" text="Previous" />
+                        <Label fx:id="lblPageInfo" text="Page 1 of X" />
+                        <Button fx:id="btnNextPage" text="Next" />
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
     </children>
 </AnchorPane>

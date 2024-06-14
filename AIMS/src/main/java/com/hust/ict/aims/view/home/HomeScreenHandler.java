@@ -9,12 +9,14 @@ import java.util.logging.Logger;
 
 import com.hust.ict.aims.controller.HomeController;
 import com.hust.ict.aims.controller.ViewCartController;
+import com.hust.ict.aims.controller.ViewOrderController;
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 import com.hust.ict.aims.view.cart.CartScreenHandler;
+import com.hust.ict.aims.view.order.OrderHandler;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -44,7 +46,10 @@ public class HomeScreenHandler extends BaseScreenHandler {
     private ImageView aimsImage;
 
     @FXML
-    private Button cartImage;
+    private Button cartButton;
+    
+    @FXML
+    private Button orderButton;
 
     @FXML
     private VBox vboxMedia1;
@@ -106,8 +111,20 @@ public class HomeScreenHandler extends BaseScreenHandler {
         aimsImage.setOnMouseClicked(e -> {
             addMediaHome(this.homeItems);
         });
+        
+        orderButton.setOnMouseClicked(e -> {
+        	try {
+				OrderHandler orderHandler = new OrderHandler(this.stage, Configs.ORDER_SCREEN_PATH);
+				orderHandler.setScreenTitle("View Order");
+				orderHandler.setHomeScreenHandler(this);
+				orderHandler.show();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        });
 
-        cartImage.setOnMouseClicked(e -> {
+        cartButton.setOnMouseClicked(e -> {
             CartScreenHandler cartScreen;
             try {
                 LOGGER.info("User clicked to view cart");

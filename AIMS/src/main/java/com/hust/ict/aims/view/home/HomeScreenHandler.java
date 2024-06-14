@@ -58,6 +58,9 @@ public class HomeScreenHandler extends BaseScreenHandler {
     private VBox vboxMedia4;
 
     @FXML
+    private VBox vboxMedia5;
+
+    @FXML
     private HBox hboxMedia;
 
     @FXML
@@ -148,10 +151,10 @@ public class HomeScreenHandler extends BaseScreenHandler {
     }
 
     public void addMediaHome() {
-        int startIndex = currentPage  * itemsPerPage;
+        int startIndex = currentPage * itemsPerPage;
         int endIndex = Math.min(startIndex + itemsPerPage, homeItems.size());
 
-        List<MediaHandler> paginatedItems = homeItems.subList(startIndex, endIndex);
+        List<MediaHandler> paginatedItems = new ArrayList<>(homeItems.subList(startIndex, endIndex));
 
         hboxMedia.getChildren().forEach(node -> {
             VBox vBox = (VBox) node;
@@ -161,7 +164,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
         while (!paginatedItems.isEmpty()) {
             hboxMedia.getChildren().forEach(node -> {
                 VBox vBox = (VBox) node;
-                while (vBox.getChildren().size() < 4 && !paginatedItems.isEmpty()) {
+                while (vBox.getChildren().size() < 4 && !paginatedItems.isEmpty()) {  // Adjust the size limit for each VBox as needed
                     MediaHandler media = paginatedItems.remove(0);
                     Node content = media.getContent();
                     if (content != null) {
@@ -176,12 +179,12 @@ public class HomeScreenHandler extends BaseScreenHandler {
 
     private void updatePageInfo() {
         int totalItems = homeItems.size();
-        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage) + 1;
+        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
 
-        lblPageInfo.setText("Page " + (currentPage+1) + " of " + totalPages);
+        lblPageInfo.setText("Page " + (currentPage + 1) + " of " + totalPages);
 
-        btnPrevPage.setDisable(currentPage == 1);
-        btnNextPage.setDisable(currentPage == totalPages);
+        btnPrevPage.setDisable(currentPage == 0);
+        btnNextPage.setDisable(currentPage == totalPages - 1);
     }
 
     private void setupPagination() {
@@ -196,7 +199,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
             int totalItems = homeItems.size();
             int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
 
-            if (currentPage < totalPages) {
+            if (currentPage < totalPages - 1) {
                 currentPage++;
                 addMediaHome();
             }
@@ -211,22 +214,16 @@ public class HomeScreenHandler extends BaseScreenHandler {
         label.setTextAlignment(TextAlignment.RIGHT);
         menuItem.setGraphic(label);
         menuItem.setOnAction(e -> {
-            hboxMedia.getChildren().forEach(node -> {
-                VBox vBox = (VBox) node;
-                vBox.getChildren().clear();
-            });
-
             List<MediaHandler> filteredItems = new ArrayList<>();
 
-            homeItems.forEach(me -> {
-                MediaHandler media = (MediaHandler) me;
+            for (MediaHandler media : homeItems) {
                 if (media.getMedia().getMediaTypeName().equalsIgnoreCase(text)) {
                     filteredItems.add(media);
                 }
-            });
+            }
 
             homeItems = filteredItems;
-            currentPage = -1;
+            currentPage = 0;
             addMediaHome();
         });
         menuButton.getItems().add(position, menuItem);
@@ -237,12 +234,11 @@ public class HomeScreenHandler extends BaseScreenHandler {
 
         List<MediaHandler> filteredItems = new ArrayList<>();
 
-        homeItems.forEach(me -> {
-            MediaHandler media = (MediaHandler) me;
+        for (MediaHandler media : homeItems) {
             if (media.getMedia().getTitle().toLowerCase().contains(searchTerm)) {
                 filteredItems.add(media);
             }
-        });
+        }
 
         homeItems = filteredItems;
         currentPage = 0;

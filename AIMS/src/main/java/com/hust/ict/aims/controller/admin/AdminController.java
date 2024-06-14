@@ -157,6 +157,7 @@ public class AdminController implements Initializable {
             Boolean isAdmin = roleComboBox.getValue().equals("Admin");
             User newUser = new User(usernameField.getText(), passwordField.getText(), isAdmin, emailField.getText());
             userDAO.addUser(newUser);
+            UserEmailSender.sendUserEmail(newUser, "Your new AIMS' account created\n");
             userShowData();
         }
         catch(Exception e) {
@@ -199,6 +200,7 @@ public class AdminController implements Initializable {
             user.setIsAdmin(isAdmin);
 
             userDAO.updateUser(user);
+            UserEmailSender.sendUserEmail(user, "Your AIMS' account has been updated by " + AdminSession.getEmail() + " \n");
             userShowData();
             deselectUser();
         }
@@ -217,6 +219,7 @@ public class AdminController implements Initializable {
         }
         try {
             userDAO.deleteUser(user);
+            UserEmailSender.sendUserEmail(user, "Your AIMS' account has been deleted by " + AdminSession.getEmail() + " \n");
             userShowData();
             deselectUser();
         }

@@ -118,8 +118,8 @@ public class MediaHandler extends BaseScreenHandler {
             mediaImage.setImage(image);
         }
 
-        mediaImage.setFitHeight(160);
-        mediaImage.setFitWidth(152);
+        mediaImage.setFitHeight(132);
+        mediaImage.setFitWidth(99);
 
         mediaTitle.setText(media.getTitle());
         mediaPrice.setText(Utils.getCurrencyFormat(media.getPrice()));

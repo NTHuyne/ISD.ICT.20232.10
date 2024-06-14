@@ -24,6 +24,10 @@ public class Dvd extends Media{
 		this.releasedDate = releasedDate;
 		this.genre = genre;
 	}
+    
+	public Dvd() {
+		super();
+	}
 
 	public String getDvdType() {
         return dvdType;

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.Order.OrderStatus;
@@ -43,32 +44,13 @@ public class OrderDAO extends TemplateDAO<Order> {
         }
 	}
 
-	// INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id) VALUES
-	// (100, 500, 1, 1);
 	@Override
-	protected PreparedStatement addStatement(Order order) throws SQLException {
-		String sql = "INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id) VALUES (?, ?, ?, ?);";
-
-		PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-		stmt.setInt(1, order.getShippingFees());
-		stmt.setInt(2, order.getSubtotal());
-		stmt.setString(3, order.getStatus().toString());
-		stmt.setInt(4, order.getDeliveryInfo().getDeliveryId());
-
-		return stmt;
+	protected String getByIdQuery(){
+		return "SELECT * FROM OrderInfo WHERE order_id = ?;";
 	}
 
 	@Override
-	protected PreparedStatement getByIdStatement(int orderId) throws SQLException {
-		String sql = "SELECT * FROM OrderInfo WHERE order_id = ?;";
-		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setInt(1, orderId);
-		return statement;
-	}
-
-	@Override
-	protected String getDaoName() {
+	public String getDaoName() {
 		return "order";
 	}
 	
@@ -88,6 +70,20 @@ public class OrderDAO extends TemplateDAO<Order> {
         );
     }
 	
+	@Override
+	protected String addQuery() {
+		return "INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id)"
+				+ " VALUES (?, ?, ?, ?)";
+	}
+	@Override
+	protected void addParams(PreparedStatement stmt, Order order) throws SQLException {
+		stmt.setInt(1, order.getShippingFees());
+		stmt.setInt(2, order.getSubtotal());
+		stmt.setString(3, order.getStatus().toString());
+		stmt.setInt(4, order.getDeliveryInfo().getDeliveryId());
+	}
+    
+    
 	// Override some basic CRUD
 	@Override
 	public int add(Order order) throws SQLException {
@@ -97,7 +93,6 @@ public class OrderDAO extends TemplateDAO<Order> {
 		int orderId = super.add(order);
 		
 		connection.setAutoCommit(false);
-		
 		String sql = "INSERT INTO Order_Media (order_id, media_id, quantity) VALUES (?, ?, ?)";
 
 		PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -124,6 +119,9 @@ public class OrderDAO extends TemplateDAO<Order> {
 	@Override
 	public Order getById(int orderId) throws SQLException {
 		Order thisorder = super.getById(orderId);
+		if (thisorder == null) {
+			return null;
+		}
 		
 		String sql = "SELECT * FROM Order_Media WHERE order_id = ?;";
 		
@@ -197,14 +195,10 @@ public class OrderDAO extends TemplateDAO<Order> {
 		
 	}
 
-//    @Override
-//    protected PreparedStatement deleteStatement(int orderId) throws SQLException {
-//        String sql = "DELETE FROM OrderInfo WHERE order_id = ?;";
-//        PreparedStatement statement = connection.prepareStatement(sql);
-//        statement.setInt(1, orderId);
-//
-//        return statement;
-//    }
+    @Override
+    protected String deleteQuery() {
+        return "DELETE FROM OrderInfo WHERE order_id = ?;";
+    }
 //
 //	@Override
 //	protected PreparedStatement getAllStatement() throws SQLException {

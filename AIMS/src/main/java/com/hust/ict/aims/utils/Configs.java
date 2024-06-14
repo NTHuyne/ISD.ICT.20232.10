@@ -24,6 +24,7 @@ public class Configs {
 	public static final String LOGIN_PATH = "/fxml/login.fxml";
 	public static final String PRODUCT_MANAGER_PATH = "/fxml/productmanager.fxml";
 	public static final String ORDER_SCREEN_PATH = "/fxml/orderInfo.fxml";
+	public static final String ADMIN_PATH = "/fxml/admin.fxml";
 
 
 	public static Font REGULAR_FONT = Font.font("Segoe UI", FontWeight.NORMAL, FontPosture.REGULAR, 24);

@@ -97,7 +97,7 @@ CREATE TABLE OrderInfo(
 
 	delivery_id				INTEGER			NOT NULL,
 	PRIMARY KEY (order_id),
-	FOREIGN KEY (delivery_id) REFERENCES DeliveryInfo(delivery_id)
+	FOREIGN KEY (delivery_id) REFERENCES DeliveryInfo(delivery_id) ON DELETE CASCADE
 );
 
 -- Table: Order_Media
@@ -106,8 +106,8 @@ CREATE TABLE Order_Media (
 	order_id				INTEGER			NOT NULL,
 	quantity				INTEGER			NOT NULL,
 	PRIMARY KEY (media_id, order_id),
-	FOREIGN KEY (media_id) REFERENCES Media(media_id),
-	FOREIGN KEY (order_id) REFERENCES OrderInfo(order_id)
+	FOREIGN KEY (media_id) REFERENCES Media(media_id) ON DELETE CASCADE,
+	FOREIGN KEY (order_id) REFERENCES OrderInfo(order_id) ON DELETE CASCADE
 );
 
 
@@ -141,7 +141,7 @@ CREATE TABLE Invoice(
 	transaction_id			INTEGER 		NOT NULL,
 	order_id				INTEGER			NOT NULL,
 	PRIMARY KEY (invoice_id),
-	FOREIGN KEY (transaction_id) REFERENCES PaymentTransaction(transaction_id),
+	FOREIGN KEY (transaction_id) REFERENCES PaymentTransaction(transaction_id),		-- Should not be deleted
 	FOREIGN KEY (order_id) REFERENCES OrderInfo(order_id) ON DELETE CASCADE
 	
 );

@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import com.hust.ict.aims.HomeScreen;
 import com.hust.ict.aims.controller.LoginController;
+import com.hust.ict.aims.entity.admin.AdminSession;
 import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
 import com.hust.ict.aims.entity.user.User;
 import com.hust.ict.aims.exception.LoginAccountException;
@@ -71,8 +72,20 @@ public class LoginHandler extends BaseScreenHandler {
                 ProductManagerSession.email = user.getEmail();
                 if (user.getIsAdmin()){
                     System.out.println("Admin logged in");
+                    AdminSession.username = user.getUsername();
+                    AdminSession.email = user.getEmail();
+                    AdminSession.id = user.getId();
+                    Parent root = FXMLLoader.load(getClass().getResource(Configs.ADMIN_PATH));
+                    Stage stage1 = new Stage();
+                    Scene scene1 = new Scene(root);
+
+                    stage1.setTitle("AIMS");
+                    stage1.setScene(scene1);
+                    stage1.show();
                 }
                 else {
+                    Stage stage1 = (Stage) username.getScene().getWindow();
+                    stage1.close();
                     Parent root = FXMLLoader.load(getClass().getResource(Configs.PRODUCT_MANAGER_PATH));
                     Stage stage = new Stage();
                     Scene scene = new Scene(root);

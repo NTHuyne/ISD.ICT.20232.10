@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.hust.ict.aims.controller.HomeController;
 import com.hust.ict.aims.controller.ViewCartController;
-import com.hust.ict.aims.controller.ViewOrderController;
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.utils.Configs;
@@ -18,14 +18,11 @@ import com.hust.ict.aims.view.BaseScreenHandler;
 import com.hust.ict.aims.view.cart.CartScreenHandler;
 import com.hust.ict.aims.view.order.OrderHandler;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.SplitMenuButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -46,7 +43,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
 
     @FXML
     private Button cartButton;
-    
+
     @FXML
     private Button orderButton;
 
@@ -83,6 +80,10 @@ public class HomeScreenHandler extends BaseScreenHandler {
     @FXML
     private Label lblPageInfo;
 
+    @FXML
+    private ChoiceBox<String> choiceBoxOrder;
+
+
     private List<MediaHandler> homeItems;
     private int currentPage = 0;
     private int itemsPerPage = 20;
@@ -91,6 +92,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
         super(stage, screenPath);
         setupData();
         setupPagination();
+        setupChoiceBoxOrder();
     }
 
     public Label getNumMediaCartLabel() {
@@ -127,17 +129,16 @@ public class HomeScreenHandler extends BaseScreenHandler {
             currentPage = 1;
             addMediaHome();
         });
-        
+
         orderButton.setOnMouseClicked(e -> {
-        	try {
-				OrderHandler orderHandler = new OrderHandler(this.stage, Configs.ORDER_SCREEN_PATH);
-				orderHandler.setScreenTitle("View Order");
-				orderHandler.setHomeScreenHandler(this);
-				orderHandler.show();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+            try {
+                OrderHandler orderHandler = new OrderHandler(this.stage, Configs.ORDER_SCREEN_PATH);
+                orderHandler.setScreenTitle("View Order");
+                orderHandler.setHomeScreenHandler(this);
+                orderHandler.show();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
 
         cartButton.setOnMouseClicked(e -> {
@@ -154,10 +155,11 @@ public class HomeScreenHandler extends BaseScreenHandler {
         });
 
         addMediaHome();
-        addMenuItem(0, "Book", splitMenuBtnSearch);
-        addMenuItem(1, "DVD", splitMenuBtnSearch);
-        addMenuItem(2, "CD", splitMenuBtnSearch);
-        addMenuItem(3, "LP", splitMenuBtnSearch);
+        addMenuItem(0, "All", splitMenuBtnSearch);
+        addMenuItem(1, "Book", splitMenuBtnSearch);
+        addMenuItem(2, "DVD", splitMenuBtnSearch);
+        addMenuItem(3, "CD", splitMenuBtnSearch);
+        addMenuItem(4, "LP", splitMenuBtnSearch);
         searchTextField.setOnKeyReleased(event -> handleSearch(event));
     }
 
@@ -236,7 +238,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
                 List<Media> medium = HomeController.getAllMedia();
                 homeItems = new ArrayList<>();
                 for (Media media : medium) {
-                    if (media.getMediaTypeName().equalsIgnoreCase(text)) {
+                    if (text.equalsIgnoreCase("All") || media.getMediaTypeName().equalsIgnoreCase(text)) {
                         MediaHandler mediaHandler = new MediaHandler(Configs.HOME_MEDIA_PATH, media, this);
                         homeItems.add(mediaHandler);
                     }
@@ -266,5 +268,29 @@ public class HomeScreenHandler extends BaseScreenHandler {
         homeItems = filteredItems;
         currentPage = 0;
         addMediaHome();
+    }
+
+    private void setupChoiceBoxOrder() {
+        choiceBoxOrder.setItems(FXCollections.observableArrayList("Ascending", "Descending"));
+        choiceBoxOrder.setValue("Ascending"); // Default selection
+        choiceBoxOrder.setOnAction(event -> handleFilter());
+    }
+
+    private void handleFilter() {
+        String order = choiceBoxOrder.getValue();
+        if (order != null) {
+            if ("Ascending".equals(order)) {
+                sortMedia(Comparator.comparingDouble(o -> o.getMedia().getPrice()));
+            } else if ("Descending".equals(order)) {
+                sortMedia((o1, o2) -> Double.compare(o2.getMedia().getPrice(), o1.getMedia().getPrice()));
+            }
+        }
+
+        currentPage = 0;
+        addMediaHome();
+    }
+
+    private void sortMedia(Comparator<MediaHandler> comparator) {
+        homeItems.sort(comparator);
     }
 }

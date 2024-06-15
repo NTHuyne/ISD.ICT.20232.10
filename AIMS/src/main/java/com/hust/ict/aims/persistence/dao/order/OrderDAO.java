@@ -198,6 +198,31 @@ public class OrderDAO extends TemplateDAO<Order> {
 		
 	}
 
+	public List<ArrayList<String>> getMediaInOrder(int id){
+		List<ArrayList<String>> mediaInOrder = new ArrayList<>();
+		Connection conn = null;
+		String query = "SELECT M.title, M.price, O.quantity, M.price*O.quantity as totalprice FROM media M JOIN order_media O ON M.media_id = O.media_id WHERE O.order_id = ?;";
+		try {
+			conn = ConnectJDBC.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, id);
+			ResultSet res = stmt.executeQuery();
+			while (res.next()) {
+				ArrayList<String> arrayList = new ArrayList<>();
+				arrayList.add(res.getString("title"));
+				arrayList.add(String.valueOf(res.getInt("price")));
+				arrayList.add(String.valueOf(res.getInt("quantity")));
+				arrayList.add(String.valueOf(res.getInt("totalprice")));
+				mediaInOrder.add(arrayList);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("error");
+		}
+		return mediaInOrder;
+	}
+
     @Override
     protected String deleteQuery() {
         return "DELETE FROM OrderInfo WHERE order_id = ?;";

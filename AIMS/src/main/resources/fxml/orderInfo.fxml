@@ -5,6 +5,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -102,10 +104,10 @@
 					</Label>
 					<HBox prefHeight="477.0" prefWidth="1326.0">
 						<children>
-							<GridPane fx:id="gridPane" prefHeight="374.0" prefWidth="700.0">
+							<GridPane fx:id="gridPane" prefHeight="374.0" prefWidth="650.0">
 								<columnConstraints>
-									<ColumnConstraints hgrow="SOMETIMES" maxWidth="472.0" minWidth="10.0" prefWidth="307.0" />
-									<ColumnConstraints hgrow="SOMETIMES" maxWidth="761.0" minWidth="0.0" prefWidth="373.0" />
+									<ColumnConstraints hgrow="SOMETIMES" maxWidth="472.0" minWidth="10.0" prefWidth="287.0" />
+									<ColumnConstraints hgrow="SOMETIMES" maxWidth="761.0" minWidth="0.0" prefWidth="343.0" />
 								</columnConstraints>
 								<rowConstraints>
 									<RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="71.0" />
@@ -240,7 +242,7 @@
 									</Label>
 									<Label prefHeight="80.0" prefWidth="286.0" text="Order Information:" GridPane.columnSpan="2">
 										<font>
-											<Font name="System Bold" size="31.0" />
+											<Font name="System Bold" size="28.0" />
 										</font>
 									</Label>
                            <Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Total: (VND)" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="7">
@@ -261,6 +263,27 @@
 									<Insets left="20.0" />
 								</padding>
 							</GridPane>
+                     <AnchorPane prefHeight="477.0" prefWidth="648.0">
+                        <children>
+                           <TableView fx:id="tableOrderMedia" layoutX="13.0" layoutY="64.0" prefHeight="357.0" prefWidth="639.0">
+                             <columns>
+                               <TableColumn fx:id="col_id" prefWidth="40.0" text="ID" />
+                               <TableColumn fx:id="col_title" prefWidth="217.0" text="Title" />
+                                 <TableColumn fx:id="col_unit_price" prefWidth="140.0" text="Unit Price (VND)" />
+                                 <TableColumn fx:id="col_quantity" prefWidth="100.0" text="Quantity" />
+                                 <TableColumn fx:id="col_price" prefWidth="140.0" text="Price (VND)" />
+                             </columns>
+                           </TableView>
+                           <Button fx:id="cancelOrderBtn" layoutX="283.0" layoutY="451.0" mnemonicParsing="false" text="Cancel Order">
+                              <cursor>
+                                 <Cursor fx:constant="HAND" />
+                              </cursor>
+                           </Button>
+                        </children>
+                        <HBox.margin>
+                           <Insets right="10.0" />
+                        </HBox.margin>
+                     </AnchorPane>
 						</children>
 					</HBox>
 				</children>

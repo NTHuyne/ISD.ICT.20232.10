@@ -63,6 +63,12 @@ public class OrderHandler extends BaseScreenHandler{
     @FXML
     private Label statusField;
     
+    @FXML
+    private Label labelDelivery;
+    
+    @FXML
+    private Label labelInstruction;
+    
     public Alert alert;
     
     ClassLoader classLoader = getClass().getClassLoader();
@@ -114,8 +120,16 @@ public class OrderHandler extends BaseScreenHandler{
     	phoneField.setText(orderInfo.get(4));
     	emailField.setText(orderInfo.get(5));
     	addressField.setText(orderInfo.get(6));
-    	deliveryTimeField.setText(orderInfo.get(7));
-    	instructionField.setText(orderInfo.get(8));
+    	if(orderInfo.get(7).equals("Khong co") && orderInfo.get(8).equals("Khong co")) {
+    		deliveryTimeField.setVisible(false);
+    		instructionField.setVisible(false);
+    		labelDelivery.setVisible(false);
+    		labelInstruction.setVisible(false);
+    	} else {
+    		deliveryTimeField.setText(orderInfo.get(7));
+    		instructionField.setText(orderInfo.get(8));    		
+    	}
+    	
     	
     }
 }

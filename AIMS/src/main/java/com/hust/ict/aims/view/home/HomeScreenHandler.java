@@ -127,17 +127,16 @@ public class HomeScreenHandler extends BaseScreenHandler {
             currentPage = 1;
             addMediaHome();
         });
-        
+
         orderButton.setOnMouseClicked(e -> {
-        	try {
-				OrderHandler orderHandler = new OrderHandler(this.stage, Configs.ORDER_SCREEN_PATH);
-				orderHandler.setScreenTitle("View Order");
-				orderHandler.setHomeScreenHandler(this);
-				orderHandler.show();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+            try {
+                OrderHandler orderHandler = new OrderHandler(this.stage, Configs.ORDER_SCREEN_PATH);
+                orderHandler.setScreenTitle("View Order");
+                orderHandler.setHomeScreenHandler(this);
+                orderHandler.show();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
         });
 
         cartButton.setOnMouseClicked(e -> {
@@ -154,10 +153,11 @@ public class HomeScreenHandler extends BaseScreenHandler {
         });
 
         addMediaHome();
-        addMenuItem(0, "Book", splitMenuBtnSearch);
-        addMenuItem(1, "DVD", splitMenuBtnSearch);
-        addMenuItem(2, "CD", splitMenuBtnSearch);
-        addMenuItem(3, "LP", splitMenuBtnSearch);
+        addMenuItem(0, "All", splitMenuBtnSearch);
+        addMenuItem(1, "Book", splitMenuBtnSearch);
+        addMenuItem(2, "DVD", splitMenuBtnSearch);
+        addMenuItem(3, "CD", splitMenuBtnSearch);
+        addMenuItem(4, "LP", splitMenuBtnSearch);
         searchTextField.setOnKeyReleased(event -> handleSearch(event));
     }
 
@@ -236,7 +236,7 @@ public class HomeScreenHandler extends BaseScreenHandler {
                 List<Media> medium = HomeController.getAllMedia();
                 homeItems = new ArrayList<>();
                 for (Media media : medium) {
-                    if (media.getMediaTypeName().equalsIgnoreCase(text)) {
+                    if (text.equalsIgnoreCase("All") || media.getMediaTypeName().equalsIgnoreCase(text)) {
                         MediaHandler mediaHandler = new MediaHandler(Configs.HOME_MEDIA_PATH, media, this);
                         homeItems.add(mediaHandler);
                     }

@@ -9,6 +9,7 @@ import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 
@@ -82,6 +83,8 @@ public class MediaDetailHandler extends BaseScreenHandler {
         detailedMediaPrice.setText(Utils.getCurrencyFormat(media.getPrice()));
         detailedMediaDescription.setText(media.getDescription());
         detailedMediaCategory.setText(media.getMediaTypeName());
+        String imageUrl = Configs.IMAGE_PATH + '/' +media.getImageUrl();
+        loadImage(imageUrl);
         String rushOrder;
         if (media.isRushOrderSupported()) {
             rushOrder = "Yes";
@@ -127,8 +130,7 @@ public class MediaDetailHandler extends BaseScreenHandler {
     }
 
     private void loadImage(String imageUrl) {
-        File file = new File(imageUrl);
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(getClass().getResourceAsStream(imageUrl));
         detailedMediaImage.setImage(image);
     }
 }

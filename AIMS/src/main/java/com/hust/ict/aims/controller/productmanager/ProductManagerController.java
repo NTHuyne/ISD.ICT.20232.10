@@ -3,6 +3,7 @@ package com.hust.ict.aims.controller.productmanager;
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -189,6 +190,8 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
     private Image image;
     private ObservableList<Media> mediaListData;
+    private int priceUpdateCount = 0;
+    private LocalDate lastPriceUpdateDate = null;
 
     public void mediasAddBtn() {
         if (this.missingMediaField()) {        	
@@ -289,7 +292,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
     private Media selectedMedia;
     public void mediaUpdateBtn(){
         if (this.missingMediaField()
-           || selectedMedia == null || selectedMedia.getMediaId() == 0) {
+                || selectedMedia == null || selectedMedia.getMediaId() == 0) {
 
             ErrorAlert errorAlert = new ErrorAlert();
             errorAlert.createAlert("Error Message", null, "Please fill all blank fields");
@@ -298,12 +301,38 @@ public class ProductManagerController implements Initializable, DataChangedListe
         try{
             Media updatedMedia = selectedMedia;
 
+            // Parse the new price from the text field
+            int newPrice = Integer.parseInt(media_price.getText());
+
+            // Check if the new price is within 30% to 150% of the current price
+            if (newPrice < 0.3 * updatedMedia.getPrice() || newPrice > 1.5 * updatedMedia.getPrice()) {
+                throw new IllegalArgumentException("Price must be within 30% to 150% of the current price");
+            }
+
+            // Check if the price has already been updated twice today
+            LocalDate today = LocalDate.now();
+            if (today.equals(lastPriceUpdateDate) && priceUpdateCount >= 2) {
+                throw new IllegalArgumentException("Price can only be updated twice a day");
+            }
+
+            // If the date has changed, reset the count and update the date
+            if (!today.equals(lastPriceUpdateDate)) {
+                lastPriceUpdateDate = today;
+                priceUpdateCount = 0;
+            }
+
+            // Update the price and increment the count
             this.assignAllMediaField(updatedMedia);
+            priceUpdateCount++;
+
             this.showCorrespondingMediaScreen(updatedMedia);
 
-
-//          mediaShowData();
+//      mediaShowData();
             mediasClearBtn();
+        } catch (IllegalArgumentException e){
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
         } catch (Exception e){
             e.printStackTrace();
             ErrorAlert errorAlert = new ErrorAlert();
@@ -311,6 +340,7 @@ public class ProductManagerController implements Initializable, DataChangedListe
             errorAlert.show();
         }
     }
+
 
     public void mediaDeleteBtn() {
         if (selectedMedia == null || selectedMedia.getMediaId() == 0) {

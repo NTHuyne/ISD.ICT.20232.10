@@ -84,6 +84,8 @@ public class LoginHandler extends BaseScreenHandler {
                     stage1.show();
                 }
                 else {
+                    Stage stage1 = (Stage) username.getScene().getWindow();
+                    stage1.close();
                     Parent root = FXMLLoader.load(getClass().getResource(Configs.PRODUCT_MANAGER_PATH));
                     Stage stage = new Stage();
                     Scene scene = new Scene(root);

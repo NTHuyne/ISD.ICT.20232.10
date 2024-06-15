@@ -53,6 +53,9 @@ public class OrderHandler extends BaseScreenHandler{
     
     @FXML
     private Label subtotalField;
+
+    @FXML
+    private Label totalField;
     
     @FXML
     private Label deliveryTimeField;    
@@ -116,7 +119,8 @@ public class OrderHandler extends BaseScreenHandler{
     private void fillOrderInformation(ArrayList<String> orderInfo) {
       System.out.println("thong tin order: " + orderInfo.get(0) +  " " + orderInfo.get(1));
     	orderIdField.setText(orderInfo.get(0));
-    	subtotalField.setText(orderInfo.get(9));
+    	totalField.setText(orderInfo.get(9));
+        subtotalField.setText(orderInfo.get(1));
     	statusField.setText(orderInfo.get(2));
     	recipientNameField.setText(orderInfo.get(3));
     	phoneField.setText(orderInfo.get(4));

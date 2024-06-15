@@ -19,7 +19,7 @@ public class Invoice {
     public Invoice(Order order) {
         this.order = order;
         order.getLstOrderMedia().forEach(item -> {
-            this.totalAmount += item.getMedia().getPrice();
+            this.totalAmount += (int) (item.getMedia().getPrice()*1.1);
         });
     }
 

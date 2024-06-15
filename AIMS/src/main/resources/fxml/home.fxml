@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox prefHeight="104.0" prefWidth="1326.0" style="-fx-background-color: #ccebff; -fx-border-color: #33adff;">
             <children>
@@ -22,7 +22,7 @@
                         </Pane>
                     </children>
                 </VBox>
-                <HBox prefHeight="102.0" prefWidth="882.0">
+                <HBox prefHeight="102.0" prefWidth="791.0">
                     <children>
                         <Pane prefHeight="102.0" prefWidth="562.0">
                             <children>
@@ -48,11 +48,12 @@
                 </HBox>
                 <VBox prefHeight="102.0" prefWidth="161.0">
                     <children>
-                        <Pane prefHeight="200.0" prefWidth="200.0">
+                        <Pane prefHeight="102.0" prefWidth="17.0">
                             <children>
-                                <Button fx:id="cartImage" layoutX="24.0" layoutY="46.0" mnemonicParsing="false" pickOnBounds="true" prefHeight="25.0" prefWidth="111.0" style="-fx-cursor: hand;" text="CART">
+                                <Button fx:id="orderButton" layoutY="63.0" mnemonicParsing="false" pickOnBounds="true" prefHeight="25.0" prefWidth="111.0" style="-fx-cursor: hand;" text="ORDER">
                                 </Button>
-                                <Label fx:id="numMediaInCart" layoutX="24.0" layoutY="11.0" prefHeight="17.0" prefWidth="111.0" textFill="#5091e6" />
+                                <Label fx:id="numMediaInCart" layoutY="14.0" prefHeight="17.0" prefWidth="111.0" textFill="#5091e6" />
+                        <Button fx:id="cartButton" layoutY="28.0" mnemonicParsing="false" pickOnBounds="true" prefHeight="25.0" prefWidth="111.0" style="-fx-cursor: hand;" text="CART" />
                             </children>
                         </Pane>
                     </children>

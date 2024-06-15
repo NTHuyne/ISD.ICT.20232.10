@@ -19,6 +19,7 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
 import com.hust.ict.aims.persistence.dao.shipping.DeliveryInfoDAO;
+import com.hust.ict.aims.persistence.database.ConnectJDBC;
 
 /**
  * @author
@@ -31,7 +32,9 @@ public class OrderDAO extends TemplateDAO<Order> {
 	}
 	
 	private Map<Integer, Media> mediaMap;
-	
+	public OrderDAO() {
+		
+	}
 	public OrderDAO(Collection<Media> allMedias) {
 		super();
 		
@@ -137,6 +140,59 @@ public class OrderDAO extends TemplateDAO<Order> {
         thisorder.setLstOrderMedia(mediaList);
 
 		return thisorder;
+	}
+	
+	public ArrayList<String> getOrderById(int id, String email) {
+		ArrayList<String> arrayList = new ArrayList<>();
+		Connection conn = null;
+		String query = "SELECT " +
+                "O.order_id, " +
+                "O.subtotal, " +
+                "O.status, " +
+                "D.name, " +
+                "D.phone, " +
+                "D.email, " +
+                "CONCAT(D.address, ', ', D.province) AS full_address, " +
+                "R.deliveryTime, " +
+                "R.instruction " +
+                "FROM OrderInfo O " +
+                "JOIN DeliveryInfo D ON O.delivery_id = D.delivery_id " +
+                "LEFT JOIN RushOrderInfo R ON O.order_id = R.order_id " +
+                "WHERE O.order_id = ? AND D.email = ?";
+		try {
+			conn = ConnectJDBC.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(query);
+			stmt.setInt(1, id);
+			stmt.setString(2,email);
+			ResultSet res = stmt.executeQuery();
+//			System.out.println(">>check res id: " + res.getInt("order_id"));
+			while (res.next()) {
+				System.out.println(">>check res id: " + res.getInt("order_id"));
+				arrayList.add(String.valueOf(res.getInt("order_id")));
+                arrayList.add(String.valueOf(res.getInt("subtotal")));
+                arrayList.add(res.getString("status"));
+                arrayList.add(res.getString("name"));
+                arrayList.add(res.getString("phone"));
+                arrayList.add(res.getString("email"));
+                arrayList.add(res.getString("full_address"));
+                if (res.getTimestamp("deliveryTime") != null) {
+                    arrayList.add(res.getTimestamp("deliveryTime").toString());
+                } else {
+                    arrayList.add("Khong co");
+                }
+                if(res.getString("instruction") == null) {
+                	arrayList.add("Khong co");
+                } else {
+                	arrayList.add(res.getString("instruction"));                	
+                }
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("errror");
+		}
+		return arrayList;
+		
 	}
 
     @Override

@@ -97,16 +97,18 @@ public class OrderHandler extends BaseScreenHandler{
                 if (orderInfo != null) {
                     // Hiển thị GridPane và fill thông tin
                     gridPane.setVisible(true);
+                    noOrderFoundLabel.setVisible(false);
                     fillOrderInformation(orderInfo);
                 } else {
                     // Hiển thị thông báo không tìm thấy order
                 	noOrderFoundLabel.setVisible(true);
+                    gridPane.setVisible(false);
                 }
             } else {
             	alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
                 alert.setHeaderText(null);
-                alert.setContentText("orderid and email cannot be left blank");
+                alert.setContentText("Order ID and Email cannot be left blank");
                 alert.showAndWait();
             }
         });
@@ -114,7 +116,7 @@ public class OrderHandler extends BaseScreenHandler{
     private void fillOrderInformation(ArrayList<String> orderInfo) {
       System.out.println("thong tin order: " + orderInfo.get(0) +  " " + orderInfo.get(1));
     	orderIdField.setText(orderInfo.get(0));
-    	subtotalField.setText(orderInfo.get(1));
+    	subtotalField.setText(orderInfo.get(9));
     	statusField.setText(orderInfo.get(2));
     	recipientNameField.setText(orderInfo.get(3));
     	phoneField.setText(orderInfo.get(4));

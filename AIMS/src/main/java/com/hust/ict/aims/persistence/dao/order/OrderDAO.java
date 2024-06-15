@@ -154,10 +154,12 @@ public class OrderDAO extends TemplateDAO<Order> {
                 "D.email, " +
                 "CONCAT(D.address, ', ', D.province) AS full_address, " +
                 "R.deliveryTime, " +
-                "R.instruction " +
+                "R.instruction, " +
+				"I.totalAmount "+
                 "FROM OrderInfo O " +
                 "JOIN DeliveryInfo D ON O.delivery_id = D.delivery_id " +
                 "LEFT JOIN RushOrderInfo R ON O.order_id = R.order_id " +
+				"JOIN Invoice I ON O.order_id = I.order_id "+
                 "WHERE O.order_id = ? AND D.email = ?";
 		try {
 			conn = ConnectJDBC.getConnection();
@@ -185,11 +187,12 @@ public class OrderDAO extends TemplateDAO<Order> {
                 } else {
                 	arrayList.add(res.getString("instruction"));                	
                 }
+				arrayList.add(res.getString("totalAmount"));
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			System.out.println("errror");
+			System.out.println("error");
 		}
 		return arrayList;
 		

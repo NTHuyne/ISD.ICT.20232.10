@@ -53,6 +53,9 @@ public class OrderHandler extends BaseScreenHandler{
     
     @FXML
     private Label subtotalField;
+
+    @FXML
+    private Label totalField;
     
     @FXML
     private Label deliveryTimeField;    
@@ -91,10 +94,12 @@ public class OrderHandler extends BaseScreenHandler{
                 if (orderInfo != null) {
                     // Hiển thị GridPane và fill thông tin
                     gridPane.setVisible(true);
+                    noOrderFoundLabel.setVisible(false);
                     fillOrderInformation(orderInfo);
                 } else {
                     // Hiển thị thông báo không tìm thấy order
                 	noOrderFoundLabel.setVisible(true);
+                    gridPane.setVisible(false);
                 }
             } else {
             	alert = new Alert(Alert.AlertType.ERROR);
@@ -116,6 +121,7 @@ public class OrderHandler extends BaseScreenHandler{
     	addressField.setText(orderInfo.get(6));
     	deliveryTimeField.setText(orderInfo.get(7));
     	instructionField.setText(orderInfo.get(8));
+        totalField.setText(orderInfo.get(9));
     	
     }
 }

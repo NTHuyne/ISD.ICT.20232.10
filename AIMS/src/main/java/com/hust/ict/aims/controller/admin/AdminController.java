@@ -157,6 +157,7 @@ public class AdminController implements Initializable {
             Boolean isAdmin = roleComboBox.getValue().equals("Admin");
             User newUser = new User(usernameField.getText(), passwordField.getText(), isAdmin, emailField.getText());
             userDAO.addUser(newUser);
+            UserEmailSender.sendUserEmail(newUser, "Your new AIMS' account created by \n" + AdminSession.getEmail() + " \n");
             userShowData();
         }
         catch(Exception e) {
@@ -199,6 +200,7 @@ public class AdminController implements Initializable {
             user.setIsAdmin(isAdmin);
 
             userDAO.updateUser(user);
+            UserEmailSender.sendUserEmail(user, "Your AIMS' account has been updated by " + AdminSession.getEmail() + " \n");
             userShowData();
             deselectUser();
         }
@@ -217,6 +219,7 @@ public class AdminController implements Initializable {
         }
         try {
             userDAO.deleteUser(user);
+            UserEmailSender.sendUserEmail(user, "Your AIMS' account has been deleted by " + AdminSession.getEmail() + " \n");
             userShowData();
             deselectUser();
         }
@@ -244,6 +247,9 @@ public class AdminController implements Initializable {
         userAddButton.setDisable(false);
         userUpdateButton.setDisable(true);
         userDeleteButton.setDisable(true);
+        usernameField.setDisable(false);
+        emailField.setDisable(false);
+        clearBtn.setDisable(false);
     }
 
     public void selectUser() {
@@ -256,12 +262,15 @@ public class AdminController implements Initializable {
             passwordField.setText(user.getPassword());
             emailField.setText(user.getEmail());
             roleComboBox.setValue((user.getIsAdmin() ? "Admin" : "Product Manager"));
+            usernameField.setDisable(true);
+            emailField.setDisable(true);
 
             AdminSession.password = user.getPassword();
             AdminSession.isAdmin = user.getIsAdmin();
             userAddButton.setDisable(true);
             userUpdateButton.setDisable(false);
             userDeleteButton.setDisable(false);
+            clearBtn.setDisable(true);
         }
         else {
             deselectUser();

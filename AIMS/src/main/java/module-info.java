@@ -25,7 +25,7 @@ module com.hust.ict.aims {
     opens com.hust.ict.aims.service to javafx.fxml;
     exports com.hust.ict.aims.service;
     opens com.hust.ict.aims.controller.admin to javafx.fxml;
-//    exports com.hust.ict.aims.controller.admin;
+    exports com.hust.ict.aims.controller.admin;
 
 	requires javafx.base;
 	requires org.mockito;

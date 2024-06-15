@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -20,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
 	<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0">
 		<top>
 			<HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -32,7 +29,7 @@
 						</HBox.margin>
 					</ImageView>
 					<Separator maxHeight="-Infinity" maxWidth="-Infinity" orientation="VERTICAL" prefHeight="102.0" prefWidth="23.0" />
-					<Label contentDisplay="CENTER" prefHeight="86.0" prefWidth="380.0" text="ORDER REVIEW" textAlignment="CENTER" textFill="#f33061">
+					<Label contentDisplay="CENTER" prefHeight="86.0" prefWidth="380.0" text="ORDER" textAlignment="CENTER" textFill="#f33061">
 						<font>
 							<Font name="UTM Eremitage" size="36.0" />
 						</font>
@@ -50,13 +47,13 @@
 			</HBox>
 		</top>
 		<center>
-			<VBox prefHeight="698.0" prefWidth="1326.0" style="-fx-background-color: #e1f8ff;" BorderPane.alignment="CENTER">
+			<VBox prefHeight="219.0" prefWidth="1126.0" style="-fx-background-color: #e1f8ff;" BorderPane.alignment="CENTER">
 				<children>
 					<HBox prefHeight="40.0" prefWidth="340.0">
 						<children>
-							<Label prefHeight="36.0" prefWidth="233.0" text="Order ID:" textAlignment="RIGHT">
+							<Label prefHeight="36.0" prefWidth="233.0" text="Order id:" textAlignment="RIGHT">
 								<font>
-									<Font name="System Bold" size="18.0" />
+									<Font size="18.0" />
 								</font>
 								<padding>
 									<Insets left="150.0" />
@@ -64,65 +61,59 @@
 							</Label>
 							<TextField fx:id="searchFieldOrderid" prefHeight="36.0" prefWidth="387.0" />
 							<Button fx:id="searchButton" mnemonicParsing="false" prefHeight="79.0" prefWidth="112.0" text="SEARCH">
-								<HBox.margin>
-									<Insets left="30.0" />
-								</HBox.margin>
-                        <cursor>
-                           <Cursor fx:constant="HAND" />
-                        </cursor>
-							</Button>
+                        <HBox.margin>
+                           <Insets left="30.0" />
+                        </HBox.margin></Button>
 						</children>
-						<VBox.margin>
-							<Insets top="10.0" />
-						</VBox.margin>
+                  <VBox.margin>
+                     <Insets top="10.0" />
+                  </VBox.margin>
 					</HBox>
 					<HBox prefHeight="40.0" prefWidth="340.0">
 						<children>
 							<Label prefHeight="37.0" prefWidth="233.0" text="Email:" textAlignment="RIGHT">
 								<font>
-									<Font name="System Bold" size="18.0" />
+									<Font size="18.0" />
 								</font>
-								<padding>
-									<Insets left="150.0" />
-								</padding>
+                        <padding>
+                           <Insets left="150.0" />
+                        </padding>
 							</Label>
 							<TextField fx:id="searchFieldEmail" prefHeight="53.0" prefWidth="386.0">
-								<HBox.margin>
-									<Insets />
-								</HBox.margin>
-							</TextField>
+                        <HBox.margin>
+                           <Insets />
+                        </HBox.margin></TextField>
 						</children>
-						<VBox.margin>
-							<Insets top="5.0" />
-						</VBox.margin>
+                  <VBox.margin>
+                     <Insets top="5.0" />
+                  </VBox.margin>
 					</HBox>
 					<Label fx:id="noOrderFoundLabel" prefHeight="52.0" prefWidth="984.0" text="No orders found for this ID and email" textAlignment="CENTER" textFill="red" visible="false">
 						<font>
 							<Font name="System Bold" size="24.0" />
 						</font>
-						<VBox.margin>
-							<Insets left="150.0" />
-						</VBox.margin>
+                  <VBox.margin>
+                     <Insets left="150.0" />
+                  </VBox.margin>
 					</Label>
-					<HBox prefHeight="537.0" prefWidth="1326.0">
+					<HBox prefHeight="477.0" prefWidth="1326.0">
 						<children>
-							<GridPane fx:id="gridPane" prefHeight="509.0" prefWidth="700.0">
+							<GridPane fx:id="gridPane" prefHeight="374.0" prefWidth="1125.0">
 								<columnConstraints>
-									<ColumnConstraints hgrow="SOMETIMES" maxWidth="342.0" minWidth="10.0" prefWidth="312.0" />
-									<ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="0.0" prefWidth="368.0" />
+									<ColumnConstraints hgrow="SOMETIMES" maxWidth="472.0" minWidth="10.0" prefWidth="155.0" />
+									<ColumnConstraints hgrow="SOMETIMES" maxWidth="761.0" minWidth="0.0" prefWidth="761.0" />
 								</columnConstraints>
 								<rowConstraints>
-									<RowConstraints minHeight="80.0" prefHeight="50.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-                           <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
-									<RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
+									<RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="71.0" />
+									<RowConstraints maxHeight="46.0" minHeight="22.0" prefHeight="44.0" />
+									<RowConstraints maxHeight="52.0" minHeight="6.0" prefHeight="41.0" vgrow="SOMETIMES" />
+									<RowConstraints maxHeight="55.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+									<RowConstraints maxHeight="100.0" minHeight="20.0" prefHeight="36.0" vgrow="SOMETIMES" />
+									<RowConstraints maxHeight="115.0" minHeight="20.0" prefHeight="49.0" vgrow="SOMETIMES" />
+									<RowConstraints maxHeight="120.0" minHeight="20.0" prefHeight="57.0" vgrow="SOMETIMES" />
+									<RowConstraints maxHeight="105.0" minHeight="20.0" prefHeight="57.0" vgrow="SOMETIMES" />
+									<RowConstraints maxHeight="89.0" minHeight="20.0" prefHeight="54.0" vgrow="SOMETIMES" />
+									<RowConstraints maxHeight="80.0" minHeight="20.0" prefHeight="65.0" vgrow="SOMETIMES" />
 								</rowConstraints>
 								<children>
 									<Label contentDisplay="CENTER" prefHeight="43.0" prefWidth="142.0" text="Order ID:" textAlignment="CENTER" textFill="#333131" GridPane.rowIndex="1">
@@ -130,7 +121,7 @@
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
 									<Label contentDisplay="CENTER" prefHeight="43.0" prefWidth="142.0" text="Name:" textAlignment="CENTER" textFill="#333131" GridPane.rowIndex="2">
@@ -138,7 +129,7 @@
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
 									<Label contentDisplay="CENTER" prefHeight="61.0" prefWidth="194.0" text="Phone:" textAlignment="CENTER" textFill="#090909" GridPane.rowIndex="3">
@@ -146,7 +137,7 @@
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
 									<Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Email:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="4">
@@ -154,7 +145,7 @@
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
 									<Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Address:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="5">
@@ -162,130 +153,103 @@
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
-									<Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Total Amount (VND):" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="7">
+									<Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Subtotal:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="6">
 										<padding>
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
-									<Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Status:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="8">
+									<Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Status:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="7">
 										<padding>
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="labelDelivery" contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Delivery Time:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="9">
+									<Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Delivery Time:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="8">
 										<padding>
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="labelInstruction" contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Instruction:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="10">
+									<Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Instruction:" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="9">
 										<padding>
 											<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 										</padding>
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine bold" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="orderIdField" prefHeight="40.0" prefWidth="412.0" text="123456" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="1">
+									<Label fx:id="orderIdField" prefHeight="23.0" prefWidth="180.0" text="123456" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="1">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="recipientNameField" prefHeight="40.0" prefWidth="409.0" text="Alice" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="2">
+									<Label fx:id="recipientNameField" prefHeight="23.0" prefWidth="180.0" text="Alice" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="2">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="phoneField" prefHeight="40.0" prefWidth="394.0" text="0123456789" textAlignment="CENTER" textFill="#100f0f" GridPane.columnIndex="1" GridPane.rowIndex="3">
+									<Label fx:id="phoneField" prefHeight="23.0" prefWidth="180.0" text="0123456789" textAlignment="CENTER" textFill="#100f0f" GridPane.columnIndex="1" GridPane.rowIndex="3">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="emailField" prefHeight="40.0" prefWidth="402.0" text="email@mail.com" textAlignment="CENTER" textFill="#100f0f" GridPane.columnIndex="1" GridPane.rowIndex="4">
+									<Label fx:id="emailField" prefHeight="23.0" prefWidth="180.0" text="email@mail.com" textAlignment="CENTER" textFill="#100f0f" GridPane.columnIndex="1" GridPane.rowIndex="4">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="addressField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="41.0" prefWidth="448.0" text="1 Đại Cồ Việt, Hà Nội " textAlignment="CENTER" textFill="#262424" GridPane.columnIndex="1" GridPane.rowIndex="5">
+									<Label fx:id="addressField" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="41.0" prefWidth="238.0" text="1 Đại Cồ Việt, Hà Nội " textAlignment="CENTER" textFill="#262424" GridPane.columnIndex="1" GridPane.rowIndex="5">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="totalField" prefHeight="74.0" prefWidth="180.0" text="100.00" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="7">
+									<Label fx:id="subtotalField" prefHeight="23.0" prefWidth="180.0" text="100.00" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="6">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="statusField" prefHeight="80.0" prefWidth="180.0" text="Pending" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="8">
+									<Label fx:id="statusField" prefHeight="23.0" prefWidth="180.0" text="Pending" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="7">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="deliveryTimeField" prefHeight="40.0" prefWidth="383.0" text="12:00 PM" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="9">
+									<Label fx:id="deliveryTimeField" prefHeight="23.0" prefWidth="180.0" text="12:00 PM" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="8">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label fx:id="instructionField" prefHeight="40.0" prefWidth="384.0" text="Leave at door" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="10">
+									<Label fx:id="instructionField" prefHeight="23.0" prefWidth="180.0" text="Leave at door" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="9">
 										<font>
-											<Font size="16.0" />
+											<Font name="SVN-Linux Libertine" size="18.0" />
 										</font>
 									</Label>
-									<Label alignment="TOP_LEFT" contentDisplay="TOP" prefHeight="80.0" prefWidth="324.0" text="Order Information:" GridPane.columnSpan="2">
+									<Label prefHeight="80.0" prefWidth="286.0" text="Order Information:">
 										<font>
-											<Font name="System Bold" size="30.0" />
+											<Font name="System Bold" size="31.0" />
 										</font>
 									</Label>
-                           <Label contentDisplay="CENTER" maxHeight="-Infinity" prefHeight="76.0" prefWidth="169.0" text="Subtotal (VND):" textAlignment="CENTER" textFill="#161616" GridPane.rowIndex="6">
-                              <padding>
-                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                              </padding>
-                              <font>
-                                 <Font size="16.0" />
-                              </font>
-                           </Label>
-                           <Label fx:id="subtotalField" prefHeight="74.0" prefWidth="180.0" text="100.00" textAlignment="CENTER" textFill="#191717" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                              <font>
-                                 <Font size="16.0" />
-                              </font>
-                           </Label>
 								</children>
 								<padding>
 									<Insets left="20.0" />
 								</padding>
 							</GridPane>
-                     <AnchorPane prefHeight="537.0" prefWidth="604.0">
-                        <HBox.margin>
-                           <Insets right="20.0" />
-                        </HBox.margin>
-                        <children>
-                           <TableView fx:id="tableView" layoutY="36.0" prefHeight="437.0" prefWidth="608.0">
-                             <columns>
-                               <TableColumn fx:id="col_id" prefWidth="55.0" text="ID" />
-                               <TableColumn fx:id="col_title" prefWidth="171.0" text="Title" />
-                                 <TableColumn fx:id="col_category" prefWidth="85.0" text="Category" />
-                                 <TableColumn fx:id="col_price" prefWidth="113.0" text="Price (VND)" />
-                                 <TableColumn fx:id="col_quantity" prefWidth="70.0" text="Quantity" />
-                                 <TableColumn fx:id="col_total_price" prefWidth="113.0" text="Total Price" />
-                             </columns>
-                           </TableView>
-                        </children>
-                     </AnchorPane>
 						</children>
 					</HBox>
 				</children>
 			</VBox>
 		</center>
+		<bottom>
+			<HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+		</bottom>
 	</BorderPane>
 </AnchorPane>

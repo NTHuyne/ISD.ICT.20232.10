@@ -11,6 +11,8 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.placement.RushOrderUnsupportedException;
 import com.hust.ict.aims.service.CartService;
+import com.hust.ict.aims.subsystem.email.IEmail;
+import com.hust.ict.aims.subsystem.email.simplejavamail.SimplejavamailManager;
 import javafx.scene.control.TextField;
 
 public class PlaceOrderController extends BaseController{
@@ -138,6 +140,23 @@ public class PlaceOrderController extends BaseController{
 
     public Invoice createInvoice(Order order) {
         return new Invoice(order);
+    }
+
+    public void sendSuccessfulOrderMail(Invoice invoice){
+        String destEmail = invoice.getOrder().getDeliveryInfo().getEmail();
+        String invoiceId = String.valueOf(invoice.getOrder().getId());
+        String recipientName = invoice.getOrder().getDeliveryInfo().getName();
+        String phone = invoice.getOrder().getDeliveryInfo().getPhone();
+        String address = invoice.getOrder().getDeliveryInfo().getAddress() + ", " + invoice.getOrder().getDeliveryInfo().getProvince();
+        String totalAmount = String.valueOf(invoice.getTotalAmount()) + " VND";
+
+        IEmail mail = new SimplejavamailManager();
+
+        String emailContent = "AIMS GROUP-10 NOTIFICATION\n\nYour order has been placed successfully. Here is your invoice's information. Please check it.\n"
+                + "Order ID: " + invoiceId + " (You can later use it to review your order in app)" + "\nRecipient's name: " + recipientName + "\nPhone number: " + phone + "\nAddress: " + address + "\nEmail: " + destEmail + "\nTotal amount: " + totalAmount
+                + "\nYour order will be processed by manager later.\nPlease check your mail regularly.\n\nThank you.";
+
+        mail.sendEmail(destEmail, emailContent, "AIMS GROUP-10 NOTIFICATION");
     }
 
     public static boolean validatePhoneField(TextField phoneField) {

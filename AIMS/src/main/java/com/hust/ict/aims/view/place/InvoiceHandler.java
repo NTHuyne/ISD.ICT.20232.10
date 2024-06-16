@@ -200,6 +200,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
 		this.invoice.setTransaction(trans);
 		try {
 			new InvoiceDAO().addFromStart(this.invoice);
+            placeOrderController.sendSuccessfulOrderMail(invoice);
 			
 			// Go back to main javafx thread
 			Platform.runLater(() -> {

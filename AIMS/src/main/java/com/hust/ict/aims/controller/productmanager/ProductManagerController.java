@@ -13,6 +13,7 @@ import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.InformationAlert;
+import com.hust.ict.aims.view.login.LoginHandler;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +25,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -501,10 +503,10 @@ public class ProductManagerController implements Initializable, DataChangedListe
                 logout_btn.getScene().getWindow().hide();
 
                 // Quay ve login form
-//                Stage stage = new Stage();
-//                LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
-//                loginHandler.setScreenTitle("Login");
-//                loginHandler.show();
+                Stage stage = new Stage();
+                LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
+                loginHandler.setScreenTitle("Login");
+                loginHandler.show();
             }
 
         } catch (Exception e) {

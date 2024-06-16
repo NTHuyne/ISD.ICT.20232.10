@@ -201,10 +201,12 @@ public class ProductManagerController implements Initializable, DataChangedListe
             // Factory
             Media newMedia = switch (category.toUpperCase()) {
 	        	case "BOOK"		-> new Book();
-	        	case "CD", "LP"	-> new CdAndLp();
+	        	case "CD"       -> new CdAndLp(true);
+                case "LP"       -> new CdAndLp(false);
 	        	case "DVD"		-> new Dvd();
 	        	default -> null;
             };
+
             
             this.assignAllMediaField(newMedia);
 

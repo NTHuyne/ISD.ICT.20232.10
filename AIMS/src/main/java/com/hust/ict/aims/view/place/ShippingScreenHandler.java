@@ -106,9 +106,13 @@ public class ShippingScreenHandler extends BaseScreenHandler {
                     && PlaceOrderController.validateEmailField(emailField)) {
                 DeliveryInfo deliveryInfo = new DeliveryInfo(nameField.getText(), phoneField.getText(), provinceField.getValue(), addressField.getText(), emailField.getText(), instructionsField.getText());
                 Order order = placeOrderController.createOrder(deliveryInfo);
+                Invoice invoice = placeOrderController.createInvoice(order);
                 try {
-                    placeOrderController.placeRushOrder(order);
-                    RushDeliveryShippingScreenHandler rushDeliveryShippingScreen = new RushDeliveryShippingScreenHandler(this.stage, Configs.RUSH_ORDER_SHIPPING_SCREEN_PATH, placeOrderController, order);
+                    boolean canPlaceRushOrder = placeOrderController.canPlaceRushOrder(order);
+                    if(!canPlaceRushOrder) {
+                        throw new RushOrderUnsupportedException();
+                    }
+                    RushDeliveryShippingScreenHandler rushDeliveryShippingScreen = new RushDeliveryShippingScreenHandler(this.stage, Configs.RUSH_ORDER_SHIPPING_SCREEN_PATH, placeOrderController, invoice);
                     rushDeliveryShippingScreen.setPreviousScreen(this);
                     rushDeliveryShippingScreen.setHomeScreenHandler(homeScreenHandler);
                     rushDeliveryShippingScreen.setScreenTitle("Rush Delivery Shipping Form");

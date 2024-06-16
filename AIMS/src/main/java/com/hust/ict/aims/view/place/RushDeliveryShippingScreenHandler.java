@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import com.hust.ict.aims.controller.PlaceOrderController;
+import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.exception.placement.InvalidRushDeliveryTimeException;
 import com.hust.ict.aims.utils.Configs;
@@ -48,11 +49,13 @@ public class RushDeliveryShippingScreenHandler extends BaseScreenHandler {
     @FXML
     private ChoiceBox<Integer> yearChoiceBox;
 
-    public RushDeliveryShippingScreenHandler(Stage stage, String screenPath, PlaceOrderController placeOrderController, Order order) throws IOException {
+    public RushDeliveryShippingScreenHandler(Stage stage, String screenPath, PlaceOrderController placeOrderController, Invoice invoice) throws IOException {
         super(stage, screenPath);
         String imagePath = "/assets/images/Logo.png";
         Image im = new Image(getClass().getResourceAsStream(imagePath));
         aimsImage.setImage(im);
+
+        Order order = invoice.getOrder();
 
         // on mouse clicked, we back to home
         aimsImage.setOnMouseClicked(e -> {
@@ -82,6 +85,7 @@ public class RushDeliveryShippingScreenHandler extends BaseScreenHandler {
 
         proceedRushDeliveryButton.setOnMouseClicked(e -> {
             try{
+
                 String date = yearChoiceBox.getValue() + "-" +
                         (monthChoiceBox.getValue() < 10 ? ("0") : "") + monthChoiceBox.getValue() + "-" +
                         (dayChoiceBox.getValue() < 10 ? "0" : "") + dayChoiceBox.getValue();
@@ -92,12 +96,12 @@ public class RushDeliveryShippingScreenHandler extends BaseScreenHandler {
                 if (localDate.isEqual(LocalDate.now()) && localTime.isBefore(currentTime)) {
 					throw new InvalidRushDeliveryTimeException();
 				}
-                placeOrderController.placeRushOrder(order);
-                Order regularOrder = placeOrderController.categorizeRegularOrder(order);
-                Order rushOrder = placeOrderController.categorizeRushOrder(order);
-                rushOrder.setLocalDate(localDate);
-                rushOrder.setLocalTime(localTime);
-                RushDeliveryInvoiceHandler rushDeliveryInvoiceHandler = new RushDeliveryInvoiceHandler(this.stage, Configs.RUSH_DELIVERY_INVOICE_PATH, regularOrder, rushOrder, placeOrderController);
+//                placeOrderController.canPlaceRushOrder(order);
+//                Order regularOrder = placeOrderController.categorizeRegularOrder(order);
+//                Order rushOrder = placeOrderController.categorizeRushOrder(order);
+                order.setLocalDate(localDate); order.setLocalTime(localTime);
+                placeOrderController.categorizeOrder(order);
+                RushDeliveryInvoiceHandler rushDeliveryInvoiceHandler = new RushDeliveryInvoiceHandler(this.stage, Configs.RUSH_DELIVERY_INVOICE_PATH, order, placeOrderController);
                 rushDeliveryInvoiceHandler.setHomeScreenHandler(homeScreenHandler);
                 rushDeliveryInvoiceHandler.setScreenTitle("Rush Delivery Invoice");
                 rushDeliveryInvoiceHandler.setBController(placeOrderController);

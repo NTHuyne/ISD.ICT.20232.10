@@ -34,73 +34,64 @@ public class PlaceOrderController extends BaseController{
         }
     }
 
-    public void placeRushOrder(Order order) {
-        String province = order.getDeliveryInfo().getProvince();
-        if(!province.equals("Hà Nội")) {
-            throw new RushOrderUnsupportedException();
-        }
+//    public Order categorizeRegularOrder(Order order) {
+//        List<OrderMedia> lstRegularOrderMedia = new ArrayList<>();
+//        for(OrderMedia orderMedia : order.getLstOrderMedia()) {
+//            if(!orderMedia.getMedia().isRushOrderSupported()) {
+//				lstRegularOrderMedia.add(orderMedia);
+//			}
+//        }
+//
+//        Order regularOrder = new Order();
+//        regularOrder.setDeliveryInfo(order.getDeliveryInfo());
+//        regularOrder.setLstOrderMedia(lstRegularOrderMedia);
+//        regularOrder = calculateSubTotal(regularOrder);
+//        regularOrder.setShippingFees(calculateShippingFee(regularOrder));
+//        regularOrder.setIsRushOrder(false);
+//        return regularOrder;
+//    }
 
-        Order rushOrder = categorizeRushOrder(order);
-        if(rushOrder.getLstOrderMedia().isEmpty()) {
-			throw new RushOrderUnsupportedException();
-		}
-    }
-
-    public Order categorizeRegularOrder(Order order) {
-        List<OrderMedia> lstRegularOrderMedia = new ArrayList<>();
-        for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            if(!orderMedia.getMedia().isRushOrderSupported()) {
-				lstRegularOrderMedia.add(orderMedia);
-			}
-        }
-
-        Order regularOrder = new Order();
-        regularOrder.setDeliveryInfo(order.getDeliveryInfo());
-        regularOrder.setLstOrderMedia(lstRegularOrderMedia);
-        regularOrder = calculateSubTotal(regularOrder);
-        regularOrder.setShippingFees(calculateShippingFee(regularOrder));
-        regularOrder.setIsRushOrder(false);
-        return regularOrder;
-    }
-
-    public Order categorizeRushOrder(Order order) {
-        List<OrderMedia> lstRushOrderMedia = new ArrayList<>();
+    public boolean canPlaceRushOrder(Order order) {
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
             if(orderMedia.getMedia().isRushOrderSupported()) {
-				lstRushOrderMedia.add(orderMedia);
+				return true;
 			}
         }
-
-        Order rushOrder = new Order();
-        rushOrder.setDeliveryInfo(order.getDeliveryInfo());
-        rushOrder.setLstOrderMedia(lstRushOrderMedia);
-        rushOrder = calculateSubTotal(rushOrder);
-        rushOrder.setShippingFees(calculateShippingFee(rushOrder));
-        rushOrder.setIsRushOrder(true);
-        return rushOrder;
+        return false;
     }
 
-    public Order calculateSubTotal(Order order) {
-        List<OrderMedia> lstOrderMedia = order.getLstOrderMedia();
+    public void categorizeOrder(Order order) {
+        List<OrderMedia> lstOrderMedia = new ArrayList<>();
+        for(OrderMedia orderMedia : order.getLstOrderMedia()) {
+            if(orderMedia.getMedia().isRushOrderSupported()) {
+                orderMedia.setOrderType(OrderMedia.OrderType.RUSH);
+            }
+            else {
+                orderMedia.setOrderType(OrderMedia.OrderType.NORMAL);
+            }
+        }
+    }
+
+    public int calculateSubTotal(List<OrderMedia> lstOrderMedia) {
         int subTotal = 0;
         for(OrderMedia orderMedia : lstOrderMedia) {
             subTotal += (orderMedia.getMedia().getPrice() * orderMedia.getQuantity());
         }
-        order.setSubtotal(subTotal);
-        return order;
+        return subTotal;
     }
 
     public int calculateVAT(Order order) {
-        return calculateSubTotal(order).getSubtotal() / 10;
+        return calculateSubTotal(order.getLstOrderMedia()) / 10;
     }
 
-    public int calculateShippingFee(Order order) {
+    public int calculateShippingFee(List<OrderMedia> lstOrderMedia, OrderMedia.OrderType orderType, String province) {
         int shipFee = 0;
-        double highest = 0.0f;
-        if(order.getLstOrderMedia().isEmpty()) {
+        double highest = 0.0;
+        int subtotal = calculateSubTotal(lstOrderMedia);
+        if(lstOrderMedia.isEmpty()) {
 			return 0;
 		}
-        for(OrderMedia orderMedia : order.getLstOrderMedia()) {
+        for(OrderMedia orderMedia : lstOrderMedia) {
             // String dimension = orderMedia.getMedia().getProductDimension();
             // String[] dimensions = dimension.split("x");
             // Density of each item is assumed to be 5000 kg/m3
@@ -109,22 +100,22 @@ public class PlaceOrderController extends BaseController{
             // Note 11/6/24: Now has weight for media
             highest = Math.max(highest, orderMedia.getMedia().getWeight());
         }
-        if(order.getDeliveryInfo().getProvince().equals("Hà Nội") || order.getDeliveryInfo().getProvince().equals("Hồ Chí Minh")) {
+        if(province.equals("Hà Nội") || province.equals("Hồ Chí Minh")) {
             shipFee = 22000;
             if(highest > 3.0f) {
-				shipFee += ((int)Math.ceil((highest - 3)/0.5f) * 2500);
+				shipFee += ((int)Math.ceil((highest - 3)/0.5) * 2500);
 			}
         }
         else {
             shipFee = 30000;
             if(highest > 0.5f) {
-				shipFee += ((int)Math.ceil((highest - 0.5)/0.5f) * 2500);
+				shipFee += ((int)Math.ceil((highest - 0.5)/0.5) * 2500);
 			}
         }
-        if(order.getIsRushOrder()) {
-			shipFee += (order.getLstOrderMedia().size() * 10000);
+        if(orderType == OrderMedia.OrderType.RUSH) {
+			shipFee += (lstOrderMedia.size() * 10000);
 		} else
-        if(order.getSubtotal() > 100000) {
+        if(subtotal > 100000) {
 			shipFee -= 25000;
 		}
         if(shipFee < 0) {

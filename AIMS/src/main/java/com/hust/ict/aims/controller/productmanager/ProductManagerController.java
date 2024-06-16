@@ -1,14 +1,5 @@
 package com.hust.ict.aims.controller.productmanager;
 
-import java.io.File;
-import java.net.URL;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
@@ -22,29 +13,29 @@ import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
 import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.InformationAlert;
-
-import com.hust.ict.aims.view.login.LoginHandler;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.*;
 
 public class ProductManagerController implements Initializable, DataChangedListener {
 
@@ -263,8 +254,9 @@ public class ProductManagerController implements Initializable, DataChangedListe
         media.setDescription(media_description.getText());
 
         String path = ProductManagerSession.path;
-        path = path.replace("\\", "\\\\");
-        media.setImageUrl(path);
+        int lastIndex = path.lastIndexOf("\\") + 1;
+        String imageUrl = path.substring(lastIndex);
+        media.setImageUrl(imageUrl);
     }
     
     private void showCorrespondingMediaScreen(Media media) {
@@ -419,24 +411,34 @@ public class ProductManagerController implements Initializable, DataChangedListe
 
         ProductManagerSession.path = media.getImageUrl();
 
-        String path = "File:" + media.getImageUrl();
+        String path = media.getImageUrl();
         ProductManagerSession.date = String.valueOf(media.getImportDate());
 
 
-        image = new Image(path, 150, 150, false, true);
+        image = new Image(getClass().getResourceAsStream("/assets/images/" + path));
         medias_imageView.setImage(image);
     }
 
-    public void mediasImportBtn() {
+    public void mediasImportBtn() throws IOException {
         FileChooser openFile = new FileChooser();
         openFile.getExtensionFilters().add(new FileChooser.ExtensionFilter("Open Image File", "*.png", "*.jpg"));
         File file = openFile.showOpenDialog(main_form.getScene().getWindow());
         if (file != null) {
             ProductManagerSession.path = file.getAbsolutePath();
-            image = new Image(file.toURI().toString(), 150, 150, false, true);
+            Image image = new Image(file.toURI().toString(), 150, 150, false, true);
 
             medias_imageView.setImage(image);
+            BufferedImage bufferedImage = ImageIO.read(file);
 
+            // Get the file extension
+            String fileName = file.getName();
+            String fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+
+            // Save the image with the detected file extension
+            File output = new File("C:\\Users\\admin\\Desktop\\ITSS2\\ISD.ICT.20232-10\\AIMS\\src\\main\\resources\\assets\\images\\" + fileName);
+            ImageIO.write(bufferedImage, fileExtension, output);
+
+            System.out.println("Image saved successfully as " + fileExtension + "!");
         }
     }
 

@@ -132,6 +132,7 @@ public class AdminController implements Initializable {
         usernameField.setText("");
         passwordField.setText("");
         emailField.setText("");
+        roleComboBox.setDisable(false);
         roleComboBox.setValue("");
     }
 
@@ -262,6 +263,9 @@ public class AdminController implements Initializable {
             passwordField.setText(user.getPassword());
             emailField.setText(user.getEmail());
             roleComboBox.setValue((user.getIsAdmin() ? "Admin" : "Product Manager"));
+            if (roleComboBox.getValue().equals("Admin")){
+                roleComboBox.setDisable(true);
+            }
             usernameField.setDisable(true);
             emailField.setDisable(true);
 

@@ -1,14 +1,20 @@
 package com.hust.ict.aims.subsystem.email.simplejavamail;
 
 import com.hust.ict.aims.subsystem.email.IEmail;
+import org.simplejavamail.MailException;
 import org.simplejavamail.api.email.Email;
 
 public class SimplejavamailManager implements IEmail {
     private final SimplejavamailController simplejavamailController =  new SimplejavamailController();
     @Override
-    public void sendEmail(String destEmail, String content, String subject) {
-        Email email = simplejavamailController.prepareEmail(destEmail, content, subject);
-        simplejavamailController.sendMail(email);
+    public void sendEmail(String destEmail, String content, String subject){
+        try {
+            Email email = simplejavamailController.prepareEmail(destEmail, content, subject);
+            simplejavamailController.sendMail(email);
+            System.out.println("Email sent successfully");
+        } catch (MailException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

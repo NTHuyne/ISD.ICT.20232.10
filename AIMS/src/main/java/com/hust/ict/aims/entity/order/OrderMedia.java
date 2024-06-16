@@ -3,14 +3,19 @@ package com.hust.ict.aims.entity.order;
 import com.hust.ict.aims.entity.media.Media;
 
 public class OrderMedia {
+	public enum OrderType {
+		NORMAL,
+		RUSH,
+	}
+	
     private Media media;
-    private int price;
     private int quantity;
+    private OrderType orderType;
+    
 
-    public OrderMedia(Media media, int price, int quantity) {
+    public OrderMedia(Media media, int quantity) {
         this.setMedia(media);
         this.setQuantity(quantity);
-        this.setPrice(price);
     }
 
     public OrderMedia() {}
@@ -23,14 +28,6 @@ public class OrderMedia {
         this.media = media;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -38,4 +35,12 @@ public class OrderMedia {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+	public OrderType getOrderType() {
+		return orderType;
+	}
+
+	public void setOrderType(OrderType orderType) {
+		this.orderType = orderType;
+	}
 }

@@ -1,23 +1,23 @@
 package com.hust.ict.aims.view.home;
 
-import com.hust.ict.aims.controller.HomeController;
-import com.hust.ict.aims.persistence.dao.media.BookDAO;
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Logger;
+
 import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.entity.media.Media;
+import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Logger;
 
 public class MediaDetailHandler extends BaseScreenHandler {
     private static final Logger LOGGER = Utils.getLogger(MediaDetailHandler.class.getName());
@@ -82,54 +82,55 @@ public class MediaDetailHandler extends BaseScreenHandler {
         detailedMediaTitle.setText(media.getTitle());
         detailedMediaPrice.setText(Utils.getCurrencyFormat(media.getPrice()));
         detailedMediaDescription.setText(media.getDescription());
-        detailedMediaCategory.setText(media.getCategory());
+        detailedMediaCategory.setText(media.getMediaTypeName());
+        String imageUrl = Configs.IMAGE_PATH + '/' +media.getImageUrl();
+        loadImage(imageUrl);
         String rushOrder;
-        if (media.getRushOrderSupport() == true) {
+        if (media.isRushOrderSupported()) {
             rushOrder = "Yes";
         } else {
             rushOrder = "No";
         }
         detailedMediaRushOrder.setText(rushOrder);
-        if (media.getCategory().equals("Book")) {
+        if (media instanceof Book) {
             info1.setText("Authors");
             info2.setText("Publisher");
             info3.setText("Pages");
             info4.setText("Language");
-            Book media1 = (Book) HomeController.getBookById(media.getId());
+            Book media1 = (Book) media;
             detailedInfo1.setText(media1.getAuthors());
             detailedInfo2.setText(media1.getPublisher());
             detailedInfo3.setText(String.valueOf(media1.getPages()));
             detailedInfo4.setText(media1.getLanguage());
         }
 
-        if (media.getCategory().equals("DVD")) {
+        if (media instanceof Dvd) {
             info1.setText("Dvd Type");
             info2.setText("Director");
             info3.setText("Studio");
             info4.setText("Language");
-            Dvd media1 = (Dvd) HomeController.getDvdById(media.getId());
+            Dvd media1 = (Dvd) media;
             detailedInfo1.setText(media1.getDvdType());
             detailedInfo2.setText(media1.getDirector());
             detailedInfo3.setText(media1.getStudio());
             detailedInfo4.setText(media1.getLanguage());
         }
 
-        if (media.getCategory().equals("CD") || media.getCategory().equals("LP")) {
+        if (media instanceof CdAndLp) {
             info1.setText("Artists");
             info2.setText("Record Label");
             info3.setText("Track List");
             info4.setText("Music Type");
-            CdAndLp media1 = (CdAndLp) HomeController.getCdById(media.getId());
+            CdAndLp media1 = (CdAndLp) media;
             detailedInfo1.setText(media1.getArtists());
             detailedInfo2.setText(media1.getRecordLabel());
             detailedInfo3.setText(media1.getTrackList());
-            detailedInfo4.setText(media1.getMusicType());
+            detailedInfo4.setText(media1.getGenre());
         }
     }
 
     private void loadImage(String imageUrl) {
-        File file = new File(imageUrl);
-        Image image = new Image(file.toURI().toString());
+        Image image = new Image(getClass().getResourceAsStream(imageUrl));
         detailedMediaImage.setImage(image);
     }
 }

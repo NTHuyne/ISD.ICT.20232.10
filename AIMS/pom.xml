@@ -94,7 +94,35 @@
 		    <version>3.1</version>
 		</dependency>
 
+		<!-- Testing -->
+		<dependency>
+		    <groupId>org.mockito</groupId>
+		    <artifactId>mockito-core</artifactId>
+		    <version>5.12.0</version>
+		</dependency>
 
+		<!-- Mailing service -->
+		<dependency>
+			<groupId>org.simplejavamail</groupId>
+			<artifactId>simple-java-mail</artifactId>
+			<version>8.11.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-jetty</artifactId>
+			<version>1.34.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-gmail</artifactId>
+			<version>v1-rev20220404-2.0.0</version>
+		</dependency>
 
 	</dependencies>
 

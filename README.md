@@ -78,3 +78,71 @@ This is the source code for the AIMS capstone project for the ITSS course
 </details>
 
 </details>
+
+<details>
+  <summary>W12: 27/05/2024-02/06/2024 </summary>
+<br>
+<details>
+<summary>Nguyen Trong Huy</summary>
+<br>
+
+- Assigned tasks:
+    - Redesign the interface for shipping, invoice, cart.
+    - Fix bugs in home screen
+
+- Implementation details:
+    - Pull Request(s):[#10](https://github.com/NTHuyne/ISD.ICT.20232.10/pull/10)
+    - Specific implementation details:
+        - Using SceneBuilder redesign shipping.fxml, invoice.fxml, rush_delivery_invoice.fxml.
+
+</details>
+
+<details>
+<summary>Duong Van Huu</summary>
+<br>
+
+- Assigned tasks:
+    - Writng report about Design Concepts
+
+- Implementation details:
+    - Writing report on Design Concepts
+
+</details>
+
+<details>
+<summary>Dang Ngoc Huy</summary>
+<br>
+
+- Assigned tasks:
+    - Writing report on SOLID principles
+
+- Implementation details:
+    - Writing report on SOLID principles
+
+</details>
+
+<details>
+<summary>Dang Viet Hoang</summary>
+<br>
+
+- Assigned tasks:
+    - Writing Design documents and report on design concepts
+
+- Implementation details:
+    - Writing documents
+
+</details>
+
+<details>
+<summary>Nguyen Chan Hung</summary>
+<br>
+
+- Assigned tasks:
+    - Implement shipping delivery, place order, place rush order.
+
+- Implementation details:
+    - Pull Request(s):[#10](https://github.com/NTHuyne/ISD.ICT.20232.10/pull/10)
+
+</details>
+
+</details>

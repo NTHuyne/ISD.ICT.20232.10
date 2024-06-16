@@ -1,5 +1,8 @@
 package com.hust.ict.aims.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.cart.CartMedia;
 import com.hust.ict.aims.entity.invoice.Invoice;
@@ -8,11 +11,7 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.placement.RushOrderUnsupportedException;
 import com.hust.ict.aims.service.CartService;
-import com.hust.ict.aims.utils.ErrorAlert;
-import com.hust.ict.aims.view.place.RushDeliveryInvoiceHandler;
-
-import java.util.ArrayList;
-import java.util.List;
+import javafx.scene.control.TextField;
 
 public class PlaceOrderController extends BaseController{
     private CartService cartService;
@@ -42,13 +41,17 @@ public class PlaceOrderController extends BaseController{
         }
 
         Order rushOrder = categorizeRushOrder(order);
-        if(rushOrder.getLstOrderMedia().isEmpty()) throw new RushOrderUnsupportedException();
+        if(rushOrder.getLstOrderMedia().isEmpty()) {
+			throw new RushOrderUnsupportedException();
+		}
     }
 
     public Order categorizeRegularOrder(Order order) {
         List<OrderMedia> lstRegularOrderMedia = new ArrayList<>();
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            if(!orderMedia.getMedia().getRushOrderSupport()) lstRegularOrderMedia.add(orderMedia);
+            if(!orderMedia.getMedia().isRushOrderSupported()) {
+				lstRegularOrderMedia.add(orderMedia);
+			}
         }
 
         Order regularOrder = new Order();
@@ -63,7 +66,9 @@ public class PlaceOrderController extends BaseController{
     public Order categorizeRushOrder(Order order) {
         List<OrderMedia> lstRushOrderMedia = new ArrayList<>();
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            if(orderMedia.getMedia().getRushOrderSupport()) lstRushOrderMedia.add(orderMedia);
+            if(orderMedia.getMedia().isRushOrderSupported()) {
+				lstRushOrderMedia.add(orderMedia);
+			}
         }
 
         Order rushOrder = new Order();
@@ -79,47 +84,61 @@ public class PlaceOrderController extends BaseController{
         List<OrderMedia> lstOrderMedia = order.getLstOrderMedia();
         int subTotal = 0;
         for(OrderMedia orderMedia : lstOrderMedia) {
-            subTotal += (orderMedia.getPrice() * orderMedia.getQuantity());
+            subTotal += (orderMedia.getMedia().getPrice() * orderMedia.getQuantity());
         }
         order.setSubtotal(subTotal);
         return order;
     }
 
+    public int calculateVAT(Order order) {
+        return calculateSubTotal(order).getSubtotal() / 10;
+    }
+
     public int calculateShippingFee(Order order) {
         int shipFee = 0;
-        float highest = 0.0f;
-        if(order.getLstOrderMedia().isEmpty()) return 0;
+        double highest = 0.0f;
+        if(order.getLstOrderMedia().isEmpty()) {
+			return 0;
+		}
         for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            String dimension = orderMedia.getMedia().getProductDimension();
-            String[] dimensions = dimension.split("x");
+            // String dimension = orderMedia.getMedia().getProductDimension();
+            // String[] dimensions = dimension.split("x");
             // Density of each item is assumed to be 5000 kg/m3
-            float mass = Float.valueOf(dimensions[0]) * Float.valueOf(dimensions[1]) * Float.valueOf(dimensions[2]) * 0.0006f;
-            highest = Math.max(highest, mass);
+            // float mass = Float.valueOf(dimensions[0]) * Float.valueOf(dimensions[1]) * Float.valueOf(dimensions[2]) * 0.0006f;
+        	
+            // Note 11/6/24: Now has weight for media
+            highest = Math.max(highest, orderMedia.getMedia().getWeight());
         }
         if(order.getDeliveryInfo().getProvince().equals("Hà Nội") || order.getDeliveryInfo().getProvince().equals("Hồ Chí Minh")) {
             shipFee = 22000;
-            if(highest > 3.0f) shipFee += ((int)Math.ceil((highest - 3)/0.5f) * 2500);
+            if(highest > 3.0f) {
+				shipFee += ((int)Math.ceil((highest - 3)/0.5f) * 2500);
+			}
         }
         else {
             shipFee = 30000;
-            if(highest > 0.5f) shipFee += ((int)Math.ceil((highest - 0.5)/0.5f) * 2500);
+            if(highest > 0.5f) {
+				shipFee += ((int)Math.ceil((highest - 0.5)/0.5f) * 2500);
+			}
         }
-        if(order.getIsRushOrder())
-            shipFee += (order.getLstOrderMedia().size() * 10000);
-        else
-        if(order.getSubtotal() > 100000) shipFee -= 25000;
-        if(shipFee < 0) shipFee = 0;
+        if(order.getIsRushOrder()) {
+			shipFee += (order.getLstOrderMedia().size() * 10000);
+		} else
+        if(order.getSubtotal() > 100000) {
+			shipFee -= 25000;
+		}
+        if(shipFee < 0) {
+			shipFee = 0;
+		}
         return shipFee;
     }
 
     public Order createOrder(DeliveryInfo deliveryInfo) {
-//        this.deliveryInfo = deliveryInfo;
         Order order = new Order();
         order.setDeliveryInfo(deliveryInfo);
         for(Object obj : cartService.getListMedia()) {
             CartMedia cartMedia = (CartMedia) obj;
-            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getPrice(),
-                    cartMedia.getQuantity());
+            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity());
             order.getLstOrderMedia().add(orderMedia);
         }
         order.setIsRushOrder(false);
@@ -130,7 +149,53 @@ public class PlaceOrderController extends BaseController{
         return new Invoice(order);
     }
 
-    public void requestToPayOrder() {
+    public static boolean validatePhoneField(TextField phoneField) {
+        if(phoneField.getText().isEmpty()) {
+            return false;
+        }
+        String phone = phoneField.getText();
+        if(phone.length() != 10) {
+            return false;
+        }
+        if(phone.charAt(0) != '0') {
+            return false;
+        } else if(phone.charAt(1) == '0') {
+            return false;
+        }
+        for(int i=1; i<phone.length(); i++) {
+            if(phone.charAt(i) < 48 && phone.charAt(i) > 57) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    public static boolean validateEmailField(TextField emailField) {
+        if(emailField.getText().isEmpty()) {
+            return false;
+        }
+        String email = emailField.getText();
+        if(!email.contains("@") || (!email.contains(".com") && !email.contains(".org") && !email.contains(".edu"))) {
+            return false;
+        }
+
+        // Allow only 1 @ character in email
+        int count = 0;
+        for(int i=0; i<email.length(); i++) {
+            if(email.charAt(i) == '@') {
+                count++;
+            }
+        }
+        if(count > 1) {
+            return false;
+        }
+        int idx_at = email.indexOf('@');
+        if(idx_at == 0) {
+            return false;
+        }
+        if(email.charAt(idx_at+1) == '.') {
+            return false;
+        }
+        return true;
     }
 }

@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.SplitMenuButton?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox prefHeight="104.0" prefWidth="1326.0" style="-fx-background-color: #ccebff; -fx-border-color: #33adff;">
             <children>
@@ -29,50 +24,73 @@
                         </Pane>
                     </children>
                 </VBox>
-                <HBox prefHeight="102.0" prefWidth="882.0">
+                <HBox prefHeight="102.0" prefWidth="791.0">
                     <children>
                         <Pane prefHeight="102.0" prefWidth="562.0">
                             <children>
-                                <TextField fx:id="searchTextField" layoutX="17.0" layoutY="27.0" prefHeight="48.0" prefWidth="528.0">
+                                <TextField fx:id="searchTextField" layoutX="17.0" layoutY="27.0" prefHeight="48.0" prefWidth="407.0">
                                     <font>
                                         <Font size="18.0" />
                                     </font>
                                 </TextField>
                             </children>
                         </Pane>
-                        <Pane prefHeight="102.0" prefWidth="158.0">
+                        <Pane prefHeight="102.0" prefWidth="562.0">
                             <children>
-                                <SplitMenuButton fx:id="splitMenuBtnSearch" layoutY="27.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="124.0" text="Search">
+                                <ChoiceBox fx:id="choiceBoxOrder" layoutX="164.0" layoutY="27.0" prefHeight="48.0" prefWidth="99.0">
                                     <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Ascending" />
+                                            <String fx:value="Descending" />
+                                        </FXCollections>
                                     </items>
-                                    <font>
-                                        <Font size="16.0" />
-                                    </font>
-                                </SplitMenuButton>
+                                </ChoiceBox>
                             </children>
+                        </Pane>
+                        <Pane prefHeight="102.0" prefWidth="397.0">
+                            <SplitMenuButton fx:id="splitMenuBtnSearch" layoutX="-1.0" layoutY="27.0" prefHeight="48.0" prefWidth="105.0" text="Search">
+                                <items>
+                                </items>
+                                <font>
+                                    <Font size="16.0" />
+                                </font>
+                            </SplitMenuButton>
                         </Pane>
                     </children>
                 </HBox>
                 <VBox prefHeight="102.0" prefWidth="161.0">
                     <children>
-                        <Pane prefHeight="200.0" prefWidth="200.0">
+                        <Pane prefHeight="102.0" prefWidth="17.0">
                             <children>
-                                <Button fx:id="cartImage" layoutX="24.0" layoutY="46.0" mnemonicParsing="false" pickOnBounds="true" prefHeight="25.0" prefWidth="111.0" style="-fx-cursor: hand;" text="CART">
+                                <Button fx:id="orderButton" layoutY="63.0" mnemonicParsing="false" pickOnBounds="true" prefHeight="25.0" prefWidth="111.0" style="-fx-cursor: hand;" text="ORDER">
                                 </Button>
-                                <Label fx:id="numMediaInCart" layoutX="24.0" layoutY="11.0" prefHeight="17.0" prefWidth="111.0" textFill="#5091e6" />
+                                <Label fx:id="numMediaInCart" layoutY="14.0" prefHeight="17.0" prefWidth="111.0" textFill="#5091e6" />
+                                <Button fx:id="cartButton" layoutY="28.0" mnemonicParsing="false" pickOnBounds="true" prefHeight="25.0" prefWidth="111.0" style="-fx-cursor: hand;" text="CART" />
                             </children>
                         </Pane>
                     </children>
                 </VBox>
             </children>
         </HBox>
-        <HBox fx:id="hboxMedia" layoutX="24.0" layoutY="123.0" prefHeight="629.0" prefWidth="1283.0">
+        <VBox layoutY="103.0" prefHeight="678.0" prefWidth="1326.0">
             <children>
-                <VBox fx:id="vboxMedia1" prefHeight="629.0" prefWidth="321.0" style="-fx-border-color: #33adff;" />
-                <VBox fx:id="vboxMedia2" prefHeight="629.0" prefWidth="320.0" style="-fx-border-color: #33adff;" />
-                <VBox fx:id="vboxMedia3" prefHeight="629.0" prefWidth="320.0" style="-fx-border-color: #33adff;" />
-                <VBox prefHeight="629.0" prefWidth="320.0" style="-fx-border-color: #33adff;" />
+                <HBox fx:id="hboxMedia" layoutX="24.0" layoutY="123.0" prefHeight="600.0" prefWidth="1327.0">
+                    <children>
+                        <VBox fx:id="vboxMedia1" style="-fx-border-color: #33adff;" />
+                        <VBox fx:id="vboxMedia2" prefHeight="600.0" prefWidth="330.0" style="-fx-border-color: #33adff;" />
+                        <VBox fx:id="vboxMedia3" prefHeight="600.0" prefWidth="330.0" style="-fx-border-color: #33adff;" />
+                        <VBox fx:id="vboxMedia4" prefHeight="600.0" prefWidth="320.0" style="-fx-border-color: #33adff;" />
+                        <VBox fx:id="vboxMedia5" prefHeight="600.0" prefWidth="331.0" style="-fx-border-color: #33adff;" />
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" layoutX="24.0" layoutY="723.0" prefHeight="50.0" prefWidth="1327.0" spacing="10.0">
+                    <children>
+                        <Button fx:id="btnPrevPage" text="Previous" />
+                        <Label fx:id="lblPageInfo" text="Page 1 of X" />
+                        <Button fx:id="btnNextPage" text="Next" />
+                    </children>
+                </HBox>
             </children>
-        </HBox>
+        </VBox>
     </children>
 </AnchorPane>

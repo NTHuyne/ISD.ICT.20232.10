@@ -1,60 +1,86 @@
 package com.hust.ict.aims.persistence.dao.media;
 
-import com.hust.ict.aims.persistence.database.ConnectJDBC;
-import com.hust.ict.aims.entity.media.CdAndLp;
-import com.hust.ict.aims.entity.media.Media;
-
-
-import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+
+import com.hust.ict.aims.entity.media.Book;
+import com.hust.ict.aims.entity.media.CdAndLp;
+import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
 /**
  * @author
  */
-public class CDDAO extends MediaDAO {
+public class CDDAO extends MediaTemplateDAO<CdAndLp> {
+	
+	@Override
+    protected CdAndLp createItemFromResultSet(ResultSet res) throws SQLException {
+    	return new CdAndLp(
+    		mediaAccessDAO.createItemFromResultSet(res),
+        	res.getString("artists"),
+        	res.getString("recordLabel"),
+        	res.getString("trackList"),
+        	res.getDate("releaseDate"),
+        	res.getString("genre"),
+        	res.getBoolean("isCD")
+        );
+    }
 
     @Override
-    public Media getMediaById(int id) throws SQLException {
-        String sql = "SELECT * FROM "+
-                "cd_and_lp as CD " +
+    protected String getAllQuery() throws SQLException {
+        return "SELECT * FROM "+
+                "CD_and_LP as CD " +
                 "INNER JOIN Media " +
-                "ON Media.id = CD.id " +
-                "where Media.id = " + id + ";";
-
-        Connection conn = null;
-        // Connnect to database
-        conn = ConnectJDBC.getConnection();
-        // Create statement
-        Statement stmt = conn.createStatement();
-        ResultSet res = stmt.executeQuery(sql);
-        CdAndLp cdAndLp = new CdAndLp();
-        if(res.next()) {
-
-            // from media table
-            String category = res.getString("category");
-            int price = res.getInt("price");
-            int value = res.getInt("value");
-            String title = res.getString("title");
-            String description = res.getString("description");
-            int quantity = res.getInt("quantity");
-            String barcode = res.getString("barcode");
-            Date importDate = res.getDate("importDate");
-            String imageUrl = res.getString("imageUrl");
-            String productDimension = res.getString("productDimension");
-
-            // from CD table
-            String artists = res.getString("artists");
-            String recordLabel = res.getString("recordLabel");
-            String trackList = res.getString("trackList");
-            String musicType = res.getString("musicType");
-            cdAndLp =new CdAndLp(id, category, price, value, title, description, quantity, importDate, barcode, productDimension, imageUrl,
-                    artists, recordLabel, trackList, musicType);
-        } else {
-            throw new SQLException();
-        }
-        return cdAndLp;
+                "ON Media.media_id = CD.media_id ";
     }
+
+    @Override
+    protected String getByIdQuery() {
+        // Assuming 'connection' is your established JDBC connection
+        return "SELECT * FROM CD_and_LP as CD INNER JOIN Media ON Media.media_id = CD.media_id WHERE Media.media_id = ?;";
+    }
+
+    private void prepareStatementFromCD(PreparedStatement cdAndLpStatement, CdAndLp cdAndLp) throws SQLException {
+    	cdAndLpStatement.setBoolean(1, cdAndLp.getIsCD());
+        cdAndLpStatement.setString(2, cdAndLp.getArtists());
+        cdAndLpStatement.setString(3, cdAndLp.getRecordLabel());
+        cdAndLpStatement.setString(4, cdAndLp.getTrackList());
+        cdAndLpStatement.setString(5, cdAndLp.getGenre());
+
+        if (cdAndLp.getReleaseDate() != null) {
+            cdAndLpStatement.setDate(6, new java.sql.Date(cdAndLp.getReleaseDate().getTime()));
+        } else {
+            cdAndLpStatement.setNull(6, java.sql.Types.DATE);
+        }
+
+        cdAndLpStatement.setInt(7, cdAndLp.getMediaId());
+    }
+
+    @Override
+    protected String addQuery() {
+    	return "INSERT INTO CD_and_LP (isCD, artists, recordLabel, trackList, genre, releaseDate, media_id) "
+        		+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    }
+    @Override 
+    protected void addParams(PreparedStatement cdStatement, CdAndLp cdAndLp) throws SQLException {
+        // Thêm thông tin vào bảng CD
+        this.prepareStatementFromCD(cdStatement, cdAndLp);
+    }
+    
+    
+	@Override
+	protected String updateQuery() {
+		return "UPDATE CD_and_LP SET isCD = ?, artists = ?, recordLabel = ?, trackList = ?, genre = ?, releaseDate = ? WHERE media_id = ?";
+	}
+	@Override
+	protected void updateParams(PreparedStatement cdAndLpStatement, CdAndLp cdAndLp) throws SQLException {
+        // Update CD_and_LP table
+        this.prepareStatementFromCD(cdAndLpStatement, cdAndLp);
+	}
+
+	@Override
+	public String getDaoName() {
+		return "CD/LP";
+	}
 }

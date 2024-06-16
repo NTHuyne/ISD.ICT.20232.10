@@ -1,160 +1,158 @@
 CREATE DATABASE AIMS;
 USE AIMS;
 
-
 -- Table: User
 CREATE TABLE User(
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
-    username				VARCHAR(50)		NOT NULL,
-    password				VARCHAR(50)		NOT NULL,
-    isAdmin					BOOLEAN			NOT NULL,
-    PRIMARY KEY (id)
+	user_id 				INTEGER 		NOT NULL AUTO_INCREMENT,
+	username				VARCHAR(50)		NOT NULL,
+	password				VARCHAR(50)		NOT NULL,
+	email					VARCHAR(50)		NOT NULL,
+	isAdmin					BOOLEAN			NOT NULL,
+	PRIMARY KEY (user_id)
 );
 
 -- Table: Media
 CREATE TABLE Media (
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
-    category				VARCHAR(50) 	NOT NULL,
-    price 					INTEGER			NOT NULL,
-    value 					INTEGER			NOT NULL,
-    title 					VARCHAR(50)		NOT NULL,
-    description 			VARCHAR(255)	NOT NULL,
-    quantity           		INTEGER      	NOT NULL,
-    importDate         		DATE,
-    rushOrderSupported 		BOOLEAN,
-    barcode					VARCHAR(50)		NOT NULL,
-    productDimension		VARCHAR(50),
-    imageUrl           		VARCHAR(200),
-    PRIMARY KEY (id)
+	media_id				INTEGER			NOT NULL AUTO_INCREMENT,
+	title					VARCHAR(50)		NOT NULL,
+	price					INTEGER			NOT NULL,
+	totalQuantity			INTEGER			NOT NULL,
+	weight					REAL			NOT NULL,
+	rushOrderSupported		BOOLEAN,
+	imageUrl				VARCHAR(200),
+
+	barcode					VARCHAR(50)		NOT NULL,
+	description				VARCHAR(255)	NOT NULL,
+	productDimension		VARCHAR(50),
+	importDate				DATE,
+
+	PRIMARY KEY (media_id)
 );
 
 -- Table: Book
 CREATE TABLE Book (
-	id 						INTEGER 		NOT NULL,
-    authors					VARCHAR(50) 	NOT NULL,
-    hardCover 				VARCHAR(50) 	NOT NULL,
-    publisher 				VARCHAR(50) 	NOT NULL,
-    publicationDate			DATE 			NOT NULL,
-    pages					INTEGER,
-    language				VARCHAR(50),
-    bookCategory			VARCHAR(50),
-    PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES Media (id) ON DELETE CASCADE
+	media_id				INTEGER			NOT NULL,
+	authors					VARCHAR(50) 	NOT NULL,
+	coverType				VARCHAR(50) 	NOT NULL,
+	publisher 				VARCHAR(50) 	NOT NULL,
+	publicationDate			DATE 			NOT NULL,
+
+	pages					INTEGER,
+	language				VARCHAR(50),
+	genre					VARCHAR(50),
+	PRIMARY KEY (media_id),
+	FOREIGN KEY (media_id) REFERENCES Media (media_id) ON DELETE CASCADE
 );
 
 -- Table: Cd and LP
 CREATE TABLE CD_and_LP (
-	id 						INTEGER 		NOT NULL,
-    artists					VARCHAR(50) 	NOT NULL,
-    recordLabel 			VARCHAR(50) 	NOT NULL,
-    trackList				VARCHAR(200)	NOT NULL,
-    releaseDate				DATE,
-    musicType				VARCHAR(50)		NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES Media (id) 	ON DELETE CASCADE
+	media_id				INTEGER			NOT NULL,
+    isCD					BOOLEAN			NOT NULL,
+	artists					VARCHAR(50) 	NOT NULL,
+	recordLabel 			VARCHAR(50) 	NOT NULL,
+	trackList				VARCHAR(200)	NOT NULL,
+	genre					VARCHAR(50)		NOT NULL,
+
+	releaseDate				DATE,
+	PRIMARY KEY (media_id),
+	FOREIGN KEY (media_id) REFERENCES Media (media_id) ON DELETE CASCADE
 );
 
 -- Table: DVD
 CREATE TABLE DVD (
-	id 						INTEGER 		NOT NULL,
-    dvdType					VARCHAR(50)		NOT NULL,
-    director				VARCHAR(50) 	NOT NULL,
-    runtime		 			INTEGER		 	NOT NULL,
-    studio					VARCHAR(50)		NOT NULL,
-    language				VARCHAR(50) 	NOT NULL,
-    subtitles				VARCHAR(50) 	NOT NULL,
-    releasedDate			DATE,
-    filmType				VARCHAR(50),
-    PRIMARY KEY (id),
-    FOREIGN KEY (id) REFERENCES Media (id) 	ON DELETE CASCADE
+	media_id				INTEGER			NOT NULL,
+	dvdType					VARCHAR(50)		NOT NULL,
+	director				VARCHAR(50) 	NOT NULL,
+	runtime		 			INTEGER		 	NOT NULL,
+	studio					VARCHAR(50)		NOT NULL,
+	language				VARCHAR(50) 	NOT NULL,
+	subtitles				VARCHAR(50) 	NOT NULL,
+
+	releasedDate			DATE,
+	genre					VARCHAR(50),
+	PRIMARY KEY (media_id),
+	FOREIGN KEY (media_id) REFERENCES Media (media_id) ON DELETE CASCADE
 );
 
--- Table: RushOrderInfo
-CREATE TABLE RushOrderInfo (
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
-	deliveryTime			DATETIME		NOT NULL,
-    instructions			VARCHAR(200)	NOT NULL,
-	PRIMARY KEY (id)
-);
+
 
 -- Table: DeliveryInfo
 CREATE TABLE DeliveryInfo (
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
-    name 					VARCHAR(50)		NOT NULL,
-    phone					VARCHAR(15)		NOT NULL,
-    email					VARCHAR(50)		NOT NULL,
-    province				VARCHAR(50)		NOT NULL,
-    district				VARCHAR(50)		NOT NULL,
-    address					VARCHAR(200)	NOT NULL,
-    rushOrderID				INTEGER,
-    message					VARCHAR(200),
-    PRIMARY KEY (id),
-    FOREIGN KEY (rushOrderID) REFERENCES RushOrderInfo (id)
+	delivery_id				INTEGER 		NOT NULL AUTO_INCREMENT,
+	name 					VARCHAR(50)		NOT NULL,
+	phone					VARCHAR(15)		NOT NULL,
+	email					VARCHAR(50)		NOT NULL,
+	province				VARCHAR(50)		NOT NULL,
+	address					VARCHAR(200)	NOT NULL,
+	message					VARCHAR(200),
+	PRIMARY KEY (delivery_id)
 );
 
 -- Table: OrderInfo
 CREATE TABLE OrderInfo(
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
+	order_id 				INTEGER 		NOT NULL AUTO_INCREMENT,
 	shippingFees			INTEGER			NOT NULL,
-    subtotal				INTEGER			NOT NULL,
-    deliveryInfoId			INTEGER			NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (deliveryInfoId) REFERENCES DeliveryInfo (id)
+	subtotal				INTEGER			NOT NULL,
+	status					VARCHAR(20)		NOT NULL,	-- 1 pending, 2 success?
+
+	delivery_id				INTEGER			NOT NULL,
+	PRIMARY KEY (order_id),
+	FOREIGN KEY (delivery_id) REFERENCES DeliveryInfo(delivery_id) ON DELETE CASCADE
 );
 
 -- Table: Order_Media
-CREATE TABLE Order_Media(
-	orderID				INTEGER 		NOT NULL,
-    mediaID				INTEGER			NOT NULL,
-    quantity			INTEGER			NOT NULL,
-    price				INTEGER			NOT NULL,
-	FOREIGN KEY (orderID) REFERENCES OrderInfo (id),
-    FOREIGN KEY (mediaID) REFERENCES Media (id)
+CREATE TABLE Order_Media (
+	media_id				INTEGER			NOT NULL,
+	order_id				INTEGER			NOT NULL,
+	quantity				INTEGER			NOT NULL,
+	PRIMARY KEY (media_id, order_id),
+	FOREIGN KEY (media_id) REFERENCES Media(media_id) ON DELETE CASCADE,
+	FOREIGN KEY (order_id) REFERENCES OrderInfo(order_id) ON DELETE CASCADE
 );
 
--- Table: Invoice
-CREATE TABLE Invoice(
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
-    totalAmount				INTEGER			NOT NULL,
-    orderId					INTEGER 		NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (orderId) REFERENCES OrderInfo (id)
-);
 
--- Table: VnPay
-CREATE TABLE VnPAY(
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
-    imageQRUrl				VARCHAR(50)		NOT NULL,
-    paymentAccountName		VARCHAR(50)		NOT NULL,
-    paymentAccountNumber	VARCHAR(50)		NOT NULL,
-    bank					VARCHAR(50)		NOT NULL,
-	PRIMARY KEY (id)
+
+-- Table: RushOrderInfo
+CREATE TABLE RushOrderInfo (
+	rush_id 				INTEGER 		NOT NULL AUTO_INCREMENT,
+	deliveryTime			DATETIME		NOT NULL,
+	instruction				VARCHAR(200)	NOT NULL,
+	order_id				INTEGER			NOT NULL,
+	PRIMARY KEY (rush_id),
+	FOREIGN KEY (order_id) REFERENCES OrderInfo(order_id) ON DELETE CASCADE
 );
 
 -- Table: PaymentTransaction
 CREATE TABLE PaymentTransaction(
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
-    createAt				DATETIME		NOT NULL,
-    paymentTime				DATETIME		NOT NULL,
-    content					VARCHAR(50)		NOT NULL,
-    vnPayId					INTEGER			NOT NULL,
-    method					VARCHAR(50)		NOT NULL,
-    status					VARCHAR(50)		NOT NULL,
-    invoiceId				INTEGER			NOT NULL,
-    PRIMARY KEY (id),
-	FOREIGN KEY (vnPayId) REFERENCES vnPay (id),
-	FOREIGN KEY (invoiceId) REFERENCES Invoice (id)
+	transaction_id 			INTEGER 		NOT NULL AUTO_INCREMENT,
+	paymentTime				TIMESTAMP		NOT NULL,
+	paymentAmount			INTEGER			NOT NULL,
+	content					VARCHAR(50)		NOT NULL,
+
+	bankTransactionId		VARCHAR(50)		NOT NULL,
+	cardType				VARCHAR(50)		NOT NULL,
+	PRIMARY KEY (transaction_id)
+);
+
+-- Table: Invoice
+CREATE TABLE Invoice(
+	invoice_id 				INTEGER 		NOT NULL AUTO_INCREMENT,
+	totalAmount				INTEGER			NOT NULL,
+	transaction_id			INTEGER 		NOT NULL,
+	order_id				INTEGER			NOT NULL,
+	PRIMARY KEY (invoice_id),
+	FOREIGN KEY (transaction_id) REFERENCES PaymentTransaction(transaction_id),		-- Should not be deleted
+	FOREIGN KEY (order_id) REFERENCES OrderInfo(order_id) ON DELETE CASCADE
+	
 );
 
 
--- Index: orderId_index
-CREATE INDEX orderId_index ON Invoice (orderId);
+-- Index: delivery_id_index
+CREATE INDEX delivery_id_index ON OrderInfo (delivery_id);
 
--- Index: deliveryInfoId_index
-CREATE INDEX deliveryInfoId_index ON OrderInfo (deliveryInfoId);
+-- Index: transaction_id_index, order_id_index
+CREATE INDEX invoice_transaction_id_index ON Invoice (transaction_id);
+CREATE INDEX invoice_order_id_index ON Invoice (order_id);
 
--- Index: vnPayId_index
-CREATE INDEX vnPayId_index ON PaymentTransaction (vnPayId);
-
--- Index: invoiceId_index
-CREATE INDEX invoiceId_index ON PaymentTransaction (invoiceId);
+-- Index: order_id_index
+CREATE INDEX rush_order_id_index ON RushOrderInfo (order_id);

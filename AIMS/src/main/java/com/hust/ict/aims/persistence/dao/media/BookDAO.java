@@ -1,63 +1,83 @@
 package com.hust.ict.aims.persistence.dao.media;
 
-
-
-import com.hust.ict.aims.persistence.database.ConnectJDBC;
-import com.hust.ict.aims.entity.media.Book;
-import com.hust.ict.aims.entity.media.Media;
-
-import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Date;
+import com.hust.ict.aims.entity.media.Book;
+import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
 /**
  * @author
  */
-public class BookDAO extends MediaDAO {
-    @Override
-    public Media getMediaById(int id) throws SQLException {
-        String sql = "SELECT * FROM "+
-                "Book " +
-                "INNER JOIN Media " +
-                "ON Media.id = Book.id " +
-                "where Media.id = " + id + ";";
-        Connection conn = null;
-        // Connnect to database
-        conn = ConnectJDBC.getConnection();
-        // Create statement
-        Statement stmt = conn.createStatement();
-        ResultSet res = stmt.executeQuery(sql);
-        Book book = new Book();
-        if(res.next()) {
+public class BookDAO extends MediaTemplateDAO<Book> {
 
-            // from Media table
-            String category = res.getString("category");
-            int price = res.getInt("price");
-            int value = res.getInt("value");
-            String title = res.getString("title");
-            String description = res.getString("description");
-            int quantity = res.getInt("quantity");
-            String barcode = res.getString("barcode");
-            Date importDate = res.getDate("importDate");
-//            Boolean rushOrderSupport = res.getBoolean("rushOrderSupport");
-            String imageUrl = res.getString("imageUrl");
-            String productDimension = res.getString("productDimension");
+	@Override
+	protected Book createItemFromResultSet(ResultSet res) throws SQLException {
+		return new Book(
+			mediaAccessDAO.createItemFromResultSet(res),
+			res.getString("authors"),
+			res.getString("coverType"),
+			res.getString("publisher"),
+			res.getDate("publicationDate"),
+			res.getInt("pages"),
+			res.getString("language"),
+			res.getString("genre")
+		);
+	}
 
-            // from Book table
-            String authors = res.getString("authors");
-            String hardCover = res.getString("hardCover");
-            String publisher = res.getString("publisher");
-            Date publicationDate = res.getDate("publicationDate");
-            int pages = res.getInt("pages");
-            String language = res.getString("language");
-            String bookCategory = res.getString("bookCategory");
-            book = new Book(id, category, price, value, title, description, quantity, importDate, barcode, productDimension, imageUrl,
-                    authors, hardCover, publisher, publicationDate, pages, language, bookCategory);
-        } else {
-            throw new SQLException();
-        }
-        return book;
-    }
+	@Override
+	protected String getAllQuery() {
+		return "SELECT * " + "FROM Book INNER JOIN Media " + "ON Media.media_id = Book.media_id;";
+
+	}
+
+	@Override
+	protected String getByIdQuery() throws SQLException {
+		return "SELECT * FROM Book INNER JOIN Media ON Media.media_id = Book.media_id WHERE Media.media_id = ?;";
+	}
+
+	// Book (authors, coverType, publisher, publicationDate, pages, language, genre,
+	// media_id)
+	private void prepareStatementFromBook(PreparedStatement bookStatement, Book book) throws SQLException {
+		bookStatement.setString(1, book.getAuthors());
+		bookStatement.setString(2, book.getCoverType());
+		bookStatement.setString(3, book.getPublisher());
+
+		if (book.getPublicationDate() != null) {
+			bookStatement.setDate(4, new java.sql.Date(book.getPublicationDate().getTime()));
+		} else {
+			bookStatement.setNull(4, java.sql.Types.DATE);
+		}
+
+		bookStatement.setInt(5, book.getPages());
+		bookStatement.setString(6, book.getLanguage());
+		bookStatement.setString(7, book.getGenre());
+		bookStatement.setInt(8, book.getMediaId());
+	}
+
+	@Override
+	protected String addQuery() {
+		return "INSERT INTO Book (authors, coverType, publisher, publicationDate, pages, language, genre, media_id)"
+				+ " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	}
+	@Override
+	protected void addParams(PreparedStatement bookStatement, Book book) throws SQLException {
+		// Thêm thông tin vào bảng Book
+		this.prepareStatementFromBook(bookStatement, book);
+	}
+
+	@Override
+	protected String updateQuery() {
+		return "UPDATE Book SET authors = ?, coverType = ?, publisher = ?, publicationDate = ?, pages = ?, language = ?, genre = ? WHERE media_id = ?";
+	}
+	@Override
+	protected void updateParams(PreparedStatement bookStatement, Book book) throws SQLException {
+		// Update Book table
+		this.prepareStatementFromBook(bookStatement, book);
+	}
+
+	@Override
+	public String getDaoName() {
+		return "book";
+	}
 }

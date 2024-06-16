@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hust.ict.aims.controller.productmanager.DVDScreen">
+    <children>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+            <children>
+                <AnchorPane layoutX="-3.0" prefHeight="400.0" prefWidth="300.0">
+                    <children>
+                        <Label layoutX="18.0" layoutY="134.0" text="DVD type" AnchorPane.leftAnchor="23.0">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="dvd_type" layoutX="95.0" layoutY="129.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.leftAnchor="95.0" />
+                        <Label layoutX="21.0" layoutY="198.0" text="Director" AnchorPane.leftAnchor="23.0">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="dvd_director" layoutX="99.0" layoutY="193.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.leftAnchor="95.0" />
+                        <Label layoutX="21.0" layoutY="272.0" text="Studio" AnchorPane.leftAnchor="23.0">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="dvd_studio" layoutX="99.0" layoutY="267.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.leftAnchor="95.0" />
+                  <Label layoutX="23.0" layoutY="74.0" text="Film genre" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="74.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="dvd_genre" layoutX="100.0" layoutY="69.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="69.0" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane fx:id="loginForm" layoutX="300.0" prefHeight="400.0" prefWidth="300.0">
+                    <children>
+                        <Button fx:id="addDVDBtn" layoutX="-24.0" layoutY="360.0" mnemonicParsing="false" onAction="#addDVDBtnAction" text="Add" />
+                        <Label fx:id="DVDDetailLabel" layoutX="-66.0" layoutY="14.0" text="Add DVD detail">
+                            <font>
+                                <Font name="System Bold" size="20.0" />
+                            </font>
+                        </Label>
+                        <DatePicker fx:id="dvd_releasedDate" layoutX="113.0" layoutY="129.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.rightAnchor="7.0" />
+                        <Label layoutX="5.0" layoutY="134.0" text="Released date" AnchorPane.leftAnchor="6.0">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="6.0" layoutY="199.0" text="Language" AnchorPane.leftAnchor="6.0">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="dvd_language" layoutX="114.0" layoutY="193.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.rightAnchor="7.0" />
+                        <Label layoutX="6.0" layoutY="271.0" text="Subtitles" AnchorPane.leftAnchor="6.0">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="dvd_subtitles" layoutX="114.0" layoutY="265.0" prefHeight="30.0" prefWidth="180.0" AnchorPane.rightAnchor="7.0" />
+                        <Label layoutX="8.0" layoutY="74.0" text="Runtime" AnchorPane.leftAnchor="8.0" AnchorPane.topAnchor="74.0">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </Label>
+                        <TextField fx:id="dvd_runtime" layoutX="115.0" layoutY="68.0" prefHeight="30.0" prefWidth="50.0" AnchorPane.leftAnchor="115.0" AnchorPane.topAnchor="69.0" />
+                    </children>
+                </AnchorPane>
+            </children>
+        </AnchorPane>
+    </children>
+</StackPane>

@@ -16,8 +16,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="788.0" prefWidth="1326.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
         <top>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                 <children>
@@ -40,7 +40,7 @@
             </HBox>
         </top>
         <center>
-            <VBox fx:id="coverVBox" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER">
+            <VBox fx:id="coverVBox" prefHeight="635.0" prefWidth="959.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER">
                 <children>
                     <Label prefHeight="80.0" prefWidth="298.0" text="Delivery Information:">
                         <font>
@@ -117,7 +117,7 @@
             </VBox>
         </center>
         <left>
-            <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER" />
+            <VBox prefHeight="635.0" prefWidth="40.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER" />
         </left>
         <bottom>
             <Pane prefHeight="50.0" prefWidth="1366.0" style="-fx-background-color: e1f8ff;" BorderPane.alignment="CENTER" />
@@ -316,7 +316,7 @@
                   <children>
                      <Button fx:id="payOrderBtn" contentDisplay="CENTER" layoutX="69.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="211.0" style="-fx-background-color: #ffd622; -fx-background-radius: 10;" text="Pay order">
                         <font>
-                           <Font size="24.0" />
+                           <Font size="18.0" />
                         </font>
                         <cursor>
                            <Cursor fx:constant="HAND" />
@@ -324,7 +324,7 @@
                      </Button>
                      <Button fx:id="cancelOrderBtn" layoutX="69.0" layoutY="71.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="211.0" style="-fx-background-color: white; -fx-background-radius: 10;" text="Cancel order">
                         <font>
-                           <Font size="24.0" />
+                           <Font size="18.0" />
                         </font>
                         <cursor>
                            <Cursor fx:constant="HAND" />
@@ -336,6 +336,9 @@
                   </VBox.margin>
                </Pane>
                 </children>
+            <BorderPane.margin>
+               <Insets right="40.0" />
+            </BorderPane.margin>
             </VBox>
         </right>
     </BorderPane>

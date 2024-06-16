@@ -30,7 +30,7 @@ public class Utils {
 
 	/**
 	 * Return a {@link String String} that represents the current time in the format of yyyy-MM-dd HH:mm:ss.
-	 * 
+	 *
 	 * @author hieudm
 	 * @return the current time as {@link String String}.
 	 */
@@ -43,7 +43,7 @@ public class Utils {
 	/**
 	 * Return a {@link String String} that represents the cipher text
 	 * encrypted by md5 algorithm.
-	 * 
+	 *
 	 * @author hieudm vnpay
 	 * @param message - plain text as {@link String String}.
 	 * @return cipher text as {@link String String}.

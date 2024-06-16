@@ -1,7 +1,12 @@
 package com.hust.ict.aims.view.place;
 
+import java.io.IOException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+
 import com.hust.ict.aims.controller.PlaceOrderController;
-import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
@@ -10,28 +15,25 @@ import com.hust.ict.aims.utils.ConfirmationAlert;
 import com.hust.ict.aims.utils.InformationAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
 import javafx.fxml.FXML;
-import javafx.geometry.*;
-import javafx.scene.control.*;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.controlsfx.control.spreadsheet.Grid;
-
-import java.io.File;
-import java.io.IOException;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.List;
 
 public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
     @FXML
@@ -125,8 +127,9 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
             ConfirmationAlert confirmationAlert = new ConfirmationAlert();
             confirmationAlert.createAlert("Error message: ", null, "Are you sure to cancel the order?");
             confirmationAlert.show();
-            if(confirmationAlert.isConfirmed())
-                homeScreenHandler.show();
+            if(confirmationAlert.isConfirmed()) {
+				homeScreenHandler.show();
+			}
         });
     }
 
@@ -136,15 +139,18 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
         emailField.setText(deliveryInfo.getEmail());
 
-        if(!regularOrder.getLstOrderMedia().isEmpty()) displayItems(regularOrder);
+        if(!regularOrder.getLstOrderMedia().isEmpty()) {
+			displayItems(regularOrder);
+		}
         displayItems(rushOrder);
 
         addPaymentOptions();
 
         // Display invoice for regular order
         int regSubtotal = 0;
-        if(regularOrder.getLstOrderMedia().isEmpty()) regularDeliveryVBox.setVisible(false);
-        else {
+        if(regularOrder.getLstOrderMedia().isEmpty()) {
+			regularDeliveryVBox.setVisible(false);
+		} else {
             regSubtotal = placeOrderController.calculateSubTotal(regularOrder).getSubtotal();
             regularDeliverySubtotalLabel.setText(
                     Utils.getCurrencyFormat(regSubtotal)
@@ -176,21 +182,29 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
 
     public void displayItems(Order order) {
         Label orderLabel = new Label(); orderLabel.setFont(new Font(24));
-        if(order.getIsRushOrder()) orderLabel.setText("Rush Delivery Items:");
-        else orderLabel.setText("Regular Delivery Items");
+        if(order.getIsRushOrder()) {
+			orderLabel.setText("Rush Delivery Items:");
+		} else {
+			orderLabel.setText("Regular Delivery Items");
+		}
         coverVBox.getChildren().add(orderLabel);
 
         Pane emptyPane = new Pane(); emptyPane.setPrefWidth(70); emptyPane.setPrefHeight(100);
-        Label lbl1 = new Label("Media"); lbl1.setFont(new Font(18)); lbl1.setPrefWidth(317); lbl1.setPrefHeight(23);
-        Separator sep = new Separator(Orientation.VERTICAL); sep.setPrefHeight(200);
-        Label lbl2 = new Label("Unit price"); lbl2.setFont(new Font(18)); lbl2.setPrefWidth(190); lbl2.setPrefHeight(23);
-        Label lbl3 = new Label("Quantity"); lbl3.setFont(new Font(18)); lbl3.setPrefWidth(174); lbl3.setPrefHeight(23);
+        Label lbl1 = new Label("Media"); lbl1.setFont(new Font(18)); lbl1.setPrefWidth(350); lbl1.setPrefHeight(23);
+//        Separator sep = new Separator(Orientation.VERTICAL); sep.setPrefHeight(200);
+        Label lbl2 = new Label("Unit price"); lbl2.setFont(new Font(18)); lbl2.setPrefWidth(200); lbl2.setPrefHeight(23);
+        Label lbl3 = new Label("Quantity"); lbl3.setFont(new Font(18)); lbl3.setPrefWidth(180); lbl3.setPrefHeight(23);
         Label lbl4 = new Label("Total"); lbl4.setFont(new Font(18)); lbl4.setPrefWidth(354); lbl4.setPrefHeight(23);
         HBox headHBox = new HBox(); headHBox.setStyle("-fx-background-color: fff; -fx-background-radius: 20;"); headHBox.setAlignment(Pos.CENTER_LEFT);
             headHBox.setPrefHeight(46); headHBox.setPrefWidth(1139);
-        headHBox.getChildren().add(emptyPane); headHBox.getChildren().add(lbl1); headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
-        headHBox.getChildren().add(lbl2); headHBox.getChildren().add(new Separator(Orientation.VERTICAL)); headHBox.getChildren().add(lbl3);
-        headHBox.getChildren().add(new Separator(Orientation.VERTICAL)); headHBox.getChildren().add(lbl4);
+        headHBox.getChildren().add(emptyPane);
+        headHBox.getChildren().add(lbl1);
+//        headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
+        headHBox.getChildren().add(lbl2);
+//        headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
+        headHBox.getChildren().add(lbl3);
+//        headHBox.getChildren().add(new Separator(Orientation.VERTICAL));
+        headHBox.getChildren().add(lbl4);
         coverVBox.getChildren().add(headHBox);
 
         ScrollPane scrollPane = new ScrollPane(); scrollPane.setPrefHeight(100); scrollPane.setPrefWidth(200);

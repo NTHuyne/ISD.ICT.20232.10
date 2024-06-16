@@ -1,64 +1,94 @@
 package com.hust.ict.aims.persistence.dao.media;
 
-import com.hust.ict.aims.persistence.database.ConnectJDBC;
-import com.hust.ict.aims.entity.media.Dvd;
-import com.hust.ict.aims.entity.media.Media;
-
-
-import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
+
+import com.hust.ict.aims.entity.media.CdAndLp;
+import com.hust.ict.aims.entity.media.Dvd;
+import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
 /**
  * @author
  */
-public class DVDDAO extends MediaDAO {
+public class DVDDAO extends MediaTemplateDAO<Dvd> {
+
+	@Override
+	protected Dvd createItemFromResultSet(ResultSet res) throws SQLException {
+    	return new Dvd(
+    		mediaAccessDAO.createItemFromResultSet(res),
+        	res.getString("dvdType"),
+        	res.getString("director"),
+        	res.getInt("runtime"),
+        	res.getString("studio"),
+        	res.getString("language"),
+        	res.getString("subtitles"),
+        	res.getDate("releasedDate"),
+        	res.getString("genre")
+        );
+    }
+
 
     @Override
-    public Media getMediaById(int id) throws SQLException {
-        String sql = "SELECT * FROM "+
-                "DVD " +
-                "INNER JOIN Media " +
-                "ON Media.id = DVD.id " +
-                "where Media.id = " + id + ";";
-        Connection conn = null;
-        // Connnect to database
-        conn = ConnectJDBC.getConnection();
-        // Create statement
-        Statement stmt = conn.createStatement();
-        ResultSet res = stmt.executeQuery(sql);
-        Dvd dvd = new Dvd();
-        if(res.next()) {
-
-// from media table
-            String category = res.getString("category");
-            int price = res.getInt("price");
-            int value = res.getInt("value");
-            String title = res.getString("title");
-            String description = res.getString("description");
-            int quantity = res.getInt("quantity");
-            String barcode = res.getString("barcode");
-            Date importDate = res.getDate("importDate");
-            String imageUrl = res.getString("imageUrl");
-            String productDimension = res.getString("productDimension");
-
-            // from DVD table
-            String dvdType = res.getString("dvdType");
-            String director = res.getString("director");
-            int runtime = res.getInt("runtime");
-            String studio = res.getString("studio");
-            String language = res.getString("language");
-            String subtitles = res.getString("subtitles");
-            Date releasedDate = res.getDate("releasedDate");
-            String filmType = res.getString("filmType");
-
-            dvd = new Dvd(id, category, price, value, title, description, quantity, importDate, barcode, productDimension, imageUrl,
-                    dvdType, director, runtime, studio, language, subtitles, releasedDate, filmType);
-        } else {
-            throw new SQLException();
-        }
-        return dvd;
+    protected String getAllQuery() throws SQLException {
+        return "SELECT * FROM "+
+                "DVD INNER JOIN Media " +
+                "ON Media.media_id = DVD.media_id ";
     }
+
+    @Override
+    protected String getByIdQuery() {
+        // Assuming 'connection' is your established JDBC connection
+        return "SELECT * FROM DVD INNER JOIN Media ON Media.media_id = DVD.media_id WHERE Media.media_id = ?;";
+    }
+
+    // DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id)
+    private void prepareStatementFromDVD(PreparedStatement dvdStatement, Dvd dvd) throws SQLException {
+        dvdStatement.setString(1, dvd.getDvdType());
+        dvdStatement.setString(2, dvd.getDirector());
+        dvdStatement.setInt(3, dvd.getRuntime());
+        dvdStatement.setString(4, dvd.getStudio());
+        dvdStatement.setString(5, dvd.getLanguage());
+        dvdStatement.setString(6, dvd.getSubtitles());
+
+        if (dvd.getReleasedDate() != null) {
+        	dvdStatement.setDate(7, new java.sql.Date(dvd.getReleasedDate().getTime()));
+        } else {
+        	dvdStatement.setNull(7, java.sql.Types.DATE);
+        }
+
+        dvdStatement.setString(8, dvd.getGenre());
+
+        dvdStatement.setInt(9, dvd.getMediaId());
+    }
+
+    @Override
+    protected String addQuery() {
+    	return "INSERT INTO DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id) "
+    			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    }
+    @Override 
+    protected void addParams(PreparedStatement dvdStatement, Dvd dvd) throws SQLException {
+        // Thêm thông tin vào bảng DVD
+        this.prepareStatementFromDVD(dvdStatement, dvd);
+
+    }
+    
+    
+	@Override
+	protected String updateQuery() {
+        // DVD (dvdType, director, runtime, studio, language, subtitles, releasedDate, genre, media_id)
+		return "UPDATE DVD SET dvdType = ?, director = ?, runtime = ?, studio = ?, language = ?, subtitles = ?, releasedDate = ?, genre = ? WHERE media_id = ?";
+	}
+	@Override
+	protected void updateParams(PreparedStatement dvdStatement, Dvd dvd) throws SQLException {
+        // Update CD_and_LP table
+        this.prepareStatementFromDVD(dvdStatement, dvd);
+	}
+
+	@Override
+	public String getDaoName() {
+		return "DVD";
+	}
 }

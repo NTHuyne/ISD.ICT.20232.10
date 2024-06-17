@@ -6,6 +6,16 @@ public class ProductManagerSession {
     public static String path;
     public static String email;
 
+    public static String getPassword() {
+        return password;
+    }
+
+    public static void setPassword(String password) {
+        ProductManagerSession.password = password;
+    }
+
+    private static String password;
+
     public static String getUsername() {
         return username;
     }
@@ -30,7 +40,7 @@ public class ProductManagerSession {
         ProductManagerSession.id = id;
     }
 
-    public static Integer id;
+    private static Integer id;
 
     public static String getEmail() {
         return email;

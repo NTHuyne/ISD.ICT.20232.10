@@ -82,6 +82,7 @@ public class LoginHandler extends BaseScreenHandler {
                     stage1.show();
                 }
                 else {
+                    ProductManagerSession.setPassword(user.getPassword());
                     ProductManagerSession.setId(user.getId());
                     ProductManagerSession.username = user.getUsername();
                     ProductManagerSession.email = user.getEmail();

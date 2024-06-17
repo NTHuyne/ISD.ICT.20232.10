@@ -63,10 +63,7 @@ public class OrderDAO extends TemplateDAO<Order> {
         	res.getInt("shippingFees"),
         	res.getInt("subtotal"),
         	OrderStatus.valueOf(res.getString("status")),
-        	deliveryInfo,
-        	false,
-        	null,
-        	null
+        	deliveryInfo
         );
     }
 	

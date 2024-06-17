@@ -1,7 +1,5 @@
 package com.hust.ict.aims.entity.order;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,28 +18,27 @@ public class Order {
     private OrderStatus status = OrderStatus.PENDING;
     private DeliveryInfo deliveryInfo;
     private List<OrderMedia> lstOrderMedia = new ArrayList<>();
-    private boolean isRushOrder;
-    private LocalDate localDate;
-    private LocalTime localTime;
 
     public Order(){
     }
 
-
-
-    public Order(int id, int shippingFees, int subtotal, OrderStatus status, DeliveryInfo deliveryInfo, boolean isRushOrder, LocalDate localDate, LocalTime localTime) {
+	public Order(int id, int shippingFees, int subtotal, OrderStatus status, DeliveryInfo deliveryInfo) {
 		super();
 		this.id = id;
 		this.shippingFees = shippingFees;
 		this.subtotal = subtotal;
 		this.status = status;
 		this.deliveryInfo = deliveryInfo;
-		this.isRushOrder = isRushOrder;
-		this.localDate = localDate;
-		this.localTime = localTime;
 	}
 
-
+	public Order(Order oldOrder) {
+		super();
+		this.id = oldOrder.getId();
+		this.shippingFees = oldOrder.getShippingFees();
+		this.subtotal = oldOrder.getSubtotal();
+		this.status = oldOrder.getStatus();
+		this.deliveryInfo = oldOrder.getDeliveryInfo();
+	}
 
 	public int getId() {
         return id;
@@ -82,18 +79,6 @@ public class Order {
     public void setDeliveryInfo(DeliveryInfo deliveryInfo) {
         this.deliveryInfo = deliveryInfo;
     }
-
-    public boolean getIsRushOrder() { return isRushOrder; }
-
-    public void setIsRushOrder(boolean isRushOrder) { this.isRushOrder = isRushOrder; }
-
-    public LocalDate getLocalDate() { return this.localDate; }
-
-    public void setLocalDate(LocalDate localDate) { this.localDate = localDate; }
-
-    public LocalTime getLocalTime() { return this.localTime; }
-
-    public void setLocalTime(LocalTime localTime) { this.localTime = localTime; }
 
 	public OrderStatus getStatus() {
 		return status;

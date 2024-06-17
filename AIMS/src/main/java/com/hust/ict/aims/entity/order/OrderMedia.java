@@ -1,11 +1,35 @@
 package com.hust.ict.aims.entity.order;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.hust.ict.aims.entity.media.Media;
 
 public class OrderMedia {
 	public enum OrderType {
-		NORMAL,
-		RUSH,
+		NORMAL(0), RUSH(1),;
+
+		private final int type;
+		
+		
+		OrderType(int type) {
+			this.type = type;
+		}
+		
+		public int toInt() {
+			return type;
+		}
+		
+		private static final Map<Integer, OrderType> LOOKUP = 
+				Arrays.asList(OrderType.values())
+				.stream()
+				.collect(Collectors.toMap(OrderType::toInt, Function.identity()));
+				
+		public static OrderType fromInt(int id) {
+			return LOOKUP.get(id);
+		}
 	}
 	
     private Media media;

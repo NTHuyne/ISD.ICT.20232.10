@@ -144,16 +144,21 @@ VALUES (21, 'Movie', 'Sherry Hormann', 160, 'Universal Pictures', 'English', 'Ko
 
 -- Insert data into DeliveryInfo table
 INSERT INTO DeliveryInfo (name, phone, email, province, address, message) 
-VALUES ('John Doe', '123456789', 'john@example.com', 'Hanoi', '123 ABC Street', 'Do not drop it');
+VALUES ('John Doe', '0123456789', 'john@example.com', 'Hanoi', '123 ABC Street', 'Do not drop it');
 
 -- Insert data into OrderInfo table
 INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id) VALUES (100, 500, 'PENDING', 1);
+INSERT INTO OrderInfo (shippingFees, subtotal, status, delivery_id) VALUES (666, 666, 'ACCEPTED', 1);
 
 -- Insert data into RushOrderInfo table
 INSERT INTO RushOrderInfo (deliveryTime, instruction, order_id) VALUES ('2022-12-31 23:59:59', 'Handle with care', 1);
 
 
 -- Insert data into Order_Media table
-INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (1, 2, 2, 1);
 INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (1, 1, 3, 0);
+INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (1, 2, 2, 1);
 INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (1, 3, 7, 0);
+
+INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (2, 1, 9, 0);
+INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (2, 2, 9, 0);
+INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (2, 3, 9, 0);

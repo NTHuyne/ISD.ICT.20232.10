@@ -19,16 +19,15 @@ public class Order {
     private DeliveryInfo deliveryInfo;
     private List<OrderMedia> lstOrderMedia = new ArrayList<>();
 
-    public Order(){
-    }
-
-	public Order(int id, int shippingFees, int subtotal, OrderStatus status, DeliveryInfo deliveryInfo) {
+	public Order(int id, int shippingFees, int subtotal, OrderStatus status, DeliveryInfo deliveryInfo,
+			List<OrderMedia> lstOrderMedia) {
 		super();
 		this.id = id;
 		this.shippingFees = shippingFees;
 		this.subtotal = subtotal;
 		this.status = status;
 		this.deliveryInfo = deliveryInfo;
+		this.lstOrderMedia = lstOrderMedia;
 	}
 
 	public Order(Order oldOrder) {
@@ -38,6 +37,7 @@ public class Order {
 		this.subtotal = oldOrder.getSubtotal();
 		this.status = oldOrder.getStatus();
 		this.deliveryInfo = oldOrder.getDeliveryInfo();
+		this.lstOrderMedia = oldOrder.lstOrderMedia;
 	}
 
 	public int getId() {

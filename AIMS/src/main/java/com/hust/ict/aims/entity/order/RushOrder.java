@@ -1,23 +1,27 @@
 package com.hust.ict.aims.entity.order;
 
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class RushOrder extends Order {
-	public static final ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
-    private ZonedDateTime deliveryTime;
+	private static final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
+    private Instant deliveryTime;
     private String instruction;
 	
-	public RushOrder(Order oldOrder, ZonedDateTime deliveryTime, String instruction) {
+	public RushOrder(Order oldOrder, Instant deliveryTime, String instruction) {
 		super(oldOrder);
 		this.deliveryTime = deliveryTime;
 		this.instruction = instruction;
 	}
 
-	public ZonedDateTime getDeliveryTime() {
+	public String getDeliveryTimeAsString() {
+		return formatter.format(deliveryTime);
+	}
+	public Instant getDeliveryTime() {
 		return deliveryTime;
 	}
-	public void setDeliveryTime(ZonedDateTime deliveryTime) {
+	public void setDeliveryTime(Instant deliveryTime) {
 		this.deliveryTime = deliveryTime;
 	}
 	public String getInstruction() {

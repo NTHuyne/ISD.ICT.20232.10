@@ -37,12 +37,12 @@ public class OrderMedia {
     private OrderType orderType;
     
 
-    public OrderMedia(Media media, int quantity) {
-        this.setMedia(media);
-        this.setQuantity(quantity);
-    }
-
-    public OrderMedia() {}
+    public OrderMedia(Media media, int quantity, OrderType orderType) {
+		super();
+		this.media = media;
+		this.quantity = quantity;
+		this.orderType = orderType;
+	}
 
     public Media getMedia() {
         return media;

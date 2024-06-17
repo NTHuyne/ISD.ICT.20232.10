@@ -27,6 +27,9 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 	public String[] excludeFieldsForAdd() {
 		return null;
 	}
+	public String[] excludeFieldsForGetById() {
+		return null;
+	}
 
 	private T tempItem = getExistingItem(); 		// Copy to a temp item
 	private int tempItemId;

@@ -11,7 +11,7 @@ public class ViewOrderController {
 		 	Order gottem = orderDAO.getById(orderId);
 		 			
 		 	if(gottem == null || !gottem.getDeliveryInfo().getEmail().equals(email)) {
-		 		throw new SQLException("No " + orderDAO.getDaoName() + " found for ID: " + orderId + " and email: " + email);
+		 		throw new SQLException("No order found for ID: " + orderId + " and email: " + email);
 		 	}
 		 	
 		 	return gottem;

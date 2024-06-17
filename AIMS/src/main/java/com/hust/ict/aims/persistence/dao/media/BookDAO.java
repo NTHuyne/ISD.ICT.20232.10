@@ -80,4 +80,11 @@ public class BookDAO extends MediaTemplateDAO<Book> {
 	public String getDaoName() {
 		return "book";
 	}
+	
+	
+	// Not used
+	@Override
+	protected String deleteQuery() throws SQLException {
+		throw new SQLException("Unimplemented delete for " + getDaoName() +" DAO");
+	}
 }

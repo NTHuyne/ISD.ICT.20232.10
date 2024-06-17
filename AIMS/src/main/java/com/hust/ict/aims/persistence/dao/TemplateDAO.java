@@ -22,39 +22,18 @@ public abstract class TemplateDAO<T> {
     }
 	
     public abstract String getDaoName();
-    
-    // Override these methods
-    protected String getAllQuery() throws SQLException {
-    	throw new SQLException("Unimplemented GetAll for " + getDaoName() +" DAO");
-    }
-    
-	protected String getByIdQuery() throws SQLException {
-		throw new SQLException("Unimplemented GetById for " + getDaoName() +" DAO");
-	}
-	
-	protected String deleteQuery() throws SQLException {
-		throw new SQLException("Unimplemented Delete for " + getDaoName() +" DAO");
-	}
+    protected abstract String getAllQuery() throws SQLException;
+    protected abstract String getByIdQuery() throws SQLException;
+    protected abstract String deleteQuery() throws SQLException;
     
 	// For getAll and getById
-    protected T createItemFromResultSet(ResultSet res) throws SQLException {
-    	System.err.println("Cannot create item for " + getDaoName() +" DAO");
-    	throw new SQLException("createItemFromResultSet is not implemented");
-	}
+    protected abstract T createItemFromResultSet(ResultSet res) throws SQLException;
     
-    protected String addQuery() throws SQLException {
-    	throw new SQLException("Unimplemented Add for " + getDaoName() +" DAO");
-    }
-    protected void addParams(PreparedStatement stmt, T item) throws SQLException {
-    	throw new SQLException("Unimplemented Add for " + getDaoName() +" DAO");
-    }
+    protected abstract String addQuery() throws SQLException;
+    protected abstract void addParams(PreparedStatement stmt, T item) throws SQLException;
     
-    protected String updateQuery() throws SQLException {
-    	throw new SQLException("Unimplemented Update for " + getDaoName() +" DAO");
-    }
-    protected void updateParams(PreparedStatement stmt, T item) throws SQLException {
-    	throw new SQLException("Unimplemented Update for " + getDaoName() +" DAO");
-	}
+    protected abstract String updateQuery() throws SQLException;
+    protected abstract void updateParams(PreparedStatement stmt, T item) throws SQLException;
     
     
     // Implementations

@@ -105,7 +105,7 @@ public class RushDeliveryShippingScreenHandler extends BaseScreenHandler {
 //                Order rushOrder = placeOrderController.categorizeRushOrder(order);
                 RushOrder thisorder = new RushOrder(
                 	invoice.getOrder(),
-                	ZonedDateTime.of(localDate, localTime, RushOrder.zoneId),
+                	ZonedDateTime.of(localDate, localTime, ZoneId.systemDefault()).toInstant(),
                 	instructionsField.getText()
                 );
                 placeOrderController.categorizeOrder(thisorder);

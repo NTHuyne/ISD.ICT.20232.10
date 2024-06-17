@@ -1,7 +1,7 @@
 package com.hust.ict.aims.view.place;
 
 import java.io.IOException;
-import java.time.ZonedDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
@@ -110,10 +110,9 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
 
         payOrderBtn.setOnMouseClicked(e -> {
         	// 
-            ZonedDateTime zonedDateTime = order.getDeliveryTime();
             InformationAlert infoAlert = new InformationAlert();
-            infoAlert.createAlert("Notification", null, "Your rush delivery will arrive at "+
-                    DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).format(zonedDateTime));
+            infoAlert.createAlert("Notification", null, "Your rush delivery will arrive at " + order.getDeliveryTimeAsString() );
+            
             infoAlert.show();
             requestPayOrder();
         });

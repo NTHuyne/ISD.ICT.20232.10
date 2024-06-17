@@ -62,4 +62,19 @@ public class PaymentTransactionDAO extends TemplateDAO<PaymentTransaction> {
 	public String getDaoName() {
 		return "transaction";
 	}
+	
+	
+	// Unused
+	@Override
+	protected String updateQuery() throws SQLException {
+		throw new SQLException("Unimplemented Update for " + getDaoName() +" DAO");
+	}
+	@Override
+	protected void updateParams(PreparedStatement stmt, PaymentTransaction item) throws SQLException {
+		throw new SQLException("Unimplemented Update for " + getDaoName() +" DAO");
+	}
+	@Override
+	protected String deleteQuery() throws SQLException {
+		throw new SQLException("Transaction shouldn't be deleted?");
+	}
 }

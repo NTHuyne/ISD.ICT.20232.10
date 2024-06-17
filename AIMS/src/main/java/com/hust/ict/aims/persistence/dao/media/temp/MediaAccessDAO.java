@@ -82,4 +82,19 @@ public class MediaAccessDAO extends TemplateDAO<Media> {
 	public String getDaoName() {
 		return "media";
 	}
+
+
+	@Override
+	protected String getAllQuery() throws SQLException {
+		throw new SQLException("Unimplemented GetAll for " + getDaoName() +" DAO");
+	}
+	@Override
+	protected String getByIdQuery() throws SQLException {
+		throw new SQLException("Unimplemented GetById for " + getDaoName() +" DAO");
+	}
+	@Override
+	protected String deleteQuery() throws SQLException {
+		throw new SQLException("Unimplemented delete for " + getDaoName() +" DAO");
+	}
+
 }

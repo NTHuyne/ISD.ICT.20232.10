@@ -3,10 +3,12 @@ package com.hust.ict.aims.view.place;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.invoice.Invoice;
-import com.hust.ict.aims.entity.order.Order;
+import com.hust.ict.aims.entity.order.RushOrder;
 import com.hust.ict.aims.exception.placement.InvalidRushDeliveryTimeException;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ErrorAlert;
@@ -55,7 +57,9 @@ public class RushDeliveryShippingScreenHandler extends BaseScreenHandler {
         Image im = new Image(getClass().getResourceAsStream(imagePath));
         aimsImage.setImage(im);
 
-        Order order = invoice.getOrder();
+
+
+        
 
         // on mouse clicked, we back to home
         aimsImage.setOnMouseClicked(e -> {
@@ -99,9 +103,16 @@ public class RushDeliveryShippingScreenHandler extends BaseScreenHandler {
 //                placeOrderController.canPlaceRushOrder(order);
 //                Order regularOrder = placeOrderController.categorizeRegularOrder(order);
 //                Order rushOrder = placeOrderController.categorizeRushOrder(order);
-                order.setLocalDate(localDate); order.setLocalTime(localTime);
-                placeOrderController.categorizeOrder(order);
-                RushDeliveryInvoiceHandler rushDeliveryInvoiceHandler = new RushDeliveryInvoiceHandler(this.stage, Configs.RUSH_DELIVERY_INVOICE_PATH, order, placeOrderController);
+                RushOrder thisorder = new RushOrder(
+                	invoice.getOrder(),
+                	ZonedDateTime.of(localDate, localTime, RushOrder.zoneId),
+                	"instruction"
+                );
+                placeOrderController.categorizeOrder(thisorder);
+                invoice.setOrder(thisorder);
+
+                
+                RushDeliveryInvoiceHandler rushDeliveryInvoiceHandler = new RushDeliveryInvoiceHandler(this.stage, Configs.RUSH_DELIVERY_INVOICE_PATH, thisorder, placeOrderController);
                 rushDeliveryInvoiceHandler.setHomeScreenHandler(homeScreenHandler);
                 rushDeliveryInvoiceHandler.setScreenTitle("Rush Delivery Invoice");
                 rushDeliveryInvoiceHandler.setBController(placeOrderController);

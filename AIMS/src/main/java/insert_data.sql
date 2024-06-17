@@ -154,6 +154,6 @@ INSERT INTO RushOrderInfo (deliveryTime, instruction, order_id) VALUES ('2022-12
 
 
 -- Insert data into Order_Media table
-INSERT INTO Order_Media (order_id, media_id, quantity) VALUES (1, 2, 2);
-INSERT INTO Order_Media (order_id, media_id, quantity) VALUES (1, 1, 3);
-INSERT INTO Order_Media (order_id, media_id, quantity) VALUES (1, 3, 7);
+INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (1, 2, 2, 1);
+INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (1, 1, 3, 0);
+INSERT INTO Order_Media (order_id, media_id, quantity, orderType) VALUES (1, 3, 7, 0);

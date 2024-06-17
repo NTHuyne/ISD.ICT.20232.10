@@ -105,6 +105,7 @@ CREATE TABLE Order_Media (
 	media_id				INTEGER			NOT NULL,
 	order_id				INTEGER			NOT NULL,
 	quantity				INTEGER			NOT NULL,
+    orderType				INTEGER			NOT NULL,
 	PRIMARY KEY (media_id, order_id),
 	FOREIGN KEY (media_id) REFERENCES Media(media_id) ON DELETE CASCADE,
 	FOREIGN KEY (order_id) REFERENCES OrderInfo(order_id) ON DELETE CASCADE
@@ -115,7 +116,7 @@ CREATE TABLE Order_Media (
 -- Table: RushOrderInfo
 CREATE TABLE RushOrderInfo (
 	rush_id 				INTEGER 		NOT NULL AUTO_INCREMENT,
-	deliveryTime			DATETIME		NOT NULL,
+	deliveryTime			TIMESTAMP		NOT NULL,
 	instruction				VARCHAR(200)	NOT NULL,
 	order_id				INTEGER			NOT NULL,
 	PRIMARY KEY (rush_id),

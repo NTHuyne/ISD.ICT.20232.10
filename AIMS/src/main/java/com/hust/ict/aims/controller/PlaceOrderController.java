@@ -134,7 +134,7 @@ public class PlaceOrderController extends BaseController{
             OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity());
             order.getLstOrderMedia().add(orderMedia);
         }
-        order.setIsRushOrder(false);
+        
         return order;
     }
 

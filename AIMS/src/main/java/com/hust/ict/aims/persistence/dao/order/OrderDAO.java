@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.Order.OrderStatus;
 import com.hust.ict.aims.entity.order.OrderMedia;
+import com.hust.ict.aims.entity.order.RushOrder;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
 import com.hust.ict.aims.persistence.dao.shipping.DeliveryInfoDAO;
@@ -109,6 +109,12 @@ public class OrderDAO extends TemplateDAO<Order> {
 		}
 
 		connection.setAutoCommit(true);
+		
+		// Extra types of order?
+		// Use interface later
+		if (order instanceof RushOrder) {
+			
+		}
 		
 		return orderId;
 	}

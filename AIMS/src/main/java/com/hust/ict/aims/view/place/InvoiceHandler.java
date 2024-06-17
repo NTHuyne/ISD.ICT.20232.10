@@ -142,6 +142,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
                 this.invoice.getOrder())));
         int shippingFee = this.placeOrderController.calculateShippingFee(order.getLstOrderMedia(), OrderMedia.OrderType.NORMAL, order.getDeliveryInfo().getProvince());
         this.invoice.getOrder().setShippingFees(shippingFee);
+        this.invoice.getOrder().setSubtotal(subTotal);
         shippingFeeLabel.setText(Utils.getCurrencyFormat(shippingFee));
 
         

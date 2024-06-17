@@ -1,29 +1,19 @@
 package com.hust.ict.aims.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hust.ict.aims.exception.LoginAccountException;
+import java.sql.SQLException;
+import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.persistence.dao.order.OrderDAO;
 
 public class ViewOrderController {
-	 public ArrayList<String> getOrderById(int orderId, String email, OrderDAO orderDAO) {
+	 public Order getOrderById(int orderId, String email, OrderDAO orderDAO) throws SQLException {
 		 System.out.println(">>check order id: " + orderId + " email: " + email);
-		 	ArrayList<String> arrayList = new ArrayList<>();
-		 	arrayList = orderDAO.getOrderById(orderId, email);
-//		 	System.out.println(">>>check array list: " + arrayList.get(0));
-		 	if(arrayList.isEmpty()) {
-		 		return null;
-		 	}
-		 	return arrayList;
-	 }
 
-	 public List<ArrayList<String>> getMediaInOrder(int orderId, OrderDAO orderDAO) {
-		 System.out.println(">>check order id: " + orderId );
-		 List<ArrayList<String>> arrayList = orderDAO.getMediaInOrder(orderId);
-		 if(arrayList.isEmpty()) {
-			 return null;
-		 }
-		 return arrayList;
+		 	Order gottem = orderDAO.getById(orderId);
+		 			
+		 	if(gottem == null || !gottem.getDeliveryInfo().getEmail().equals(email)) {
+		 		throw new SQLException("No " + orderDAO.getDaoName() + " found for ID: " + orderId + " and email: " + email);
+		 	}
+		 	
+		 	return gottem;
 	 }
 }

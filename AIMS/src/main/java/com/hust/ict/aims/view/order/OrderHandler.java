@@ -1,12 +1,16 @@
 package com.hust.ict.aims.view.order;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.hust.ict.aims.controller.ViewOrderController;
+import com.hust.ict.aims.entity.order.Order;
+import com.hust.ict.aims.entity.order.OrderMedia;
+import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.persistence.dao.order.OrderDAO;
 import com.hust.ict.aims.view.BaseScreenHandler;
+
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -67,22 +71,22 @@ public class OrderHandler extends BaseScreenHandler{
     private Label statusField;
 
     @FXML
-    private TableView<List<String>> tableOrderMedia;
+    private TableView<OrderMedia> tableOrderMedia;
 
     @FXML
-    private TableColumn<ArrayList<String>, String> col_id;
+    private TableColumn<OrderMedia, Integer> col_id;
 
     @FXML
-    private TableColumn<ArrayList<String>, String> col_title;
+    private TableColumn<OrderMedia, String> col_title;
 
     @FXML
-    private TableColumn<ArrayList<String>, String> col_unit_price;
+    private TableColumn<OrderMedia, Integer> col_unit_price;
 
     @FXML
-    private TableColumn<ArrayList<String>, String> col_quantity;
+    private TableColumn<OrderMedia, Integer> col_quantity;
 
     @FXML
-    private TableColumn<ArrayList<String>, String> col_price;
+    private TableColumn<OrderMedia, Integer> col_price;
 
     @FXML
     private Button cancelOrderBtn;
@@ -116,27 +120,28 @@ public class OrderHandler extends BaseScreenHandler{
             String inputOrder = searchFieldOrderid.getText();
             String inputEmail = searchFieldEmail.getText();
             if (!inputOrder.isEmpty() && !inputEmail.isEmpty()) {
-            	ArrayList<String> orderInfo = new ArrayList<String>();
-                List<ArrayList<String>> mediaInOrder;
-            	orderInfo = viewOrderController.getOrderById(Integer.parseInt(inputOrder), inputEmail, new OrderDAO());
-
-            	System.out.println(">>>check order info: " + orderInfo);
-                if (orderInfo != null) {
+            	
+            	List<OrderMedia> mediaInOrder;
+            	try {
+                	Order orderInfo = viewOrderController.getOrderById(Integer.parseInt(inputOrder), inputEmail, new OrderDAO());
                     // Hiển thị GridPane và fill thông tin
                     gridPane.setVisible(true);
                     noOrderFoundLabel.setVisible(false);
                     tableOrderMedia.setVisible(true);
                     cancelOrderBtn.setVisible(true);
-                    mediaInOrder = viewOrderController.getMediaInOrder(Integer.parseInt(inputOrder), new OrderDAO());
+                    mediaInOrder = orderInfo.getLstOrderMedia();
+                    
                     fillMediaInOrder(mediaInOrder);
                     fillOrderInformation(orderInfo);
-                } else {
-                    // Hiển thị thông báo không tìm thấy order
-                	noOrderFoundLabel.setVisible(true);
-                    gridPane.setVisible(false);
-                    tableOrderMedia.setVisible(false);
-                    cancelOrderBtn.setVisible(false);
-                }
+            	} catch(Exception e) {
+                  // Hiển thị thông báo không tìm thấy order
+            		System.err.println(e.getMessage());
+					noOrderFoundLabel.setVisible(true);
+					gridPane.setVisible(false);
+					tableOrderMedia.setVisible(false);
+					cancelOrderBtn.setVisible(false);
+            	}
+
             } else {
             	alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Message");
@@ -146,36 +151,41 @@ public class OrderHandler extends BaseScreenHandler{
             }
         });
     }
-    private void fillOrderInformation(ArrayList<String> orderInfo) {
-      System.out.println("thong tin order: " + orderInfo.get(0) +  " " + orderInfo.get(1));
-    	orderIdField.setText(orderInfo.get(0));
-    	subtotalField.setText(orderInfo.get(1));
-    	statusField.setText(orderInfo.get(2));
-    	recipientNameField.setText(orderInfo.get(3));
-    	phoneField.setText(orderInfo.get(4));
-    	emailField.setText(orderInfo.get(5));
-    	addressField.setText(orderInfo.get(6));
-        if(orderInfo.get(7).equals("Khong co") && orderInfo.get(8).equals("Khong co")) {
-            deliveryTimeField.setVisible(false);
-            instructionField.setVisible(false);
-            labelDelivery.setVisible(false);
-            labelInstruction.setVisible(false);
-        } else {
-            deliveryTimeField.setText(orderInfo.get(7));
-            instructionField.setText(orderInfo.get(8));
-        }
-        totalField.setText(orderInfo.get(9));
+    private void fillOrderInformation(Order orderInfo) {
+    	System.out.println("thong tin order: " + orderInfo.getId());
+		orderIdField.setText(String.valueOf(orderInfo.getId()));
+		subtotalField.setText(String.valueOf(orderInfo.getSubtotal()));
+		statusField.setText(orderInfo.getStatus().toString());
+		
+		DeliveryInfo delivery = orderInfo.getDeliveryInfo();
+		recipientNameField.setText(delivery.getName());
+		phoneField.setText(delivery.getPhone());
+		emailField.setText(delivery.getEmail());
+		addressField.setText(delivery.getAddress());
+
+		// TODO: FIX THIS with rushorder
+//        if(orderInfo.get(7).equals("Khong co") && orderInfo.get(8).equals("Khong co")) {
+//            deliveryTimeField.setVisible(false);
+//            instructionField.setVisible(false);
+//            labelDelivery.setVisible(false);
+//            labelInstruction.setVisible(false);
+//        } else {
+//            deliveryTimeField.setText(orderInfo.get(7));
+//            instructionField.setText(orderInfo.get(8));
+//        }
+		// TODO: FIX THIS TOO
+        // totalField.setText(orderInfo.getT);
     	
     }
 
-    private void fillMediaInOrder(List<ArrayList<String>> mediaInOrder){
-        col_id.setCellValueFactory(cellData -> new SimpleStringProperty(String.valueOf(tableOrderMedia.getItems().indexOf(cellData.getValue()) + 1)));
-        col_title.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(0)));
-        col_unit_price.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(1)));
-        col_quantity.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(2)));
-        col_price.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().get(3)));
+    private void fillMediaInOrder(List<OrderMedia> mediaInOrder){
+        col_id.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMedia().getMediaId()).asObject());
+        col_title.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMedia().getTitle()));
+        col_unit_price.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMedia().getMediaId()).asObject());
+        col_quantity.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMedia().getMediaId()).asObject());
+        col_price.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getMedia().getMediaId()).asObject());
 
-        ObservableList<List<String>> observableData = FXCollections.observableArrayList(mediaInOrder);
+        ObservableList<OrderMedia> observableData = FXCollections.observableArrayList(mediaInOrder);
         tableOrderMedia.setItems(observableData);
     }
 }

@@ -136,16 +136,16 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
         emailField.setText(deliveryInfo.getEmail());
 
         // TODO: IMPORTANT! Calculate total fee somewhere else and update invoice accordingly
-        int subTotal = placeOrderController.calculateSubTotal(this.invoice.getOrder()).getSubtotal();
+        int subTotal = placeOrderController.calculateSubTotal(this.invoice.getOrder().getLstOrderMedia());
         subtotalLabel.setText(Utils.getCurrencyFormat(subTotal));
         vatLabel.setText(Utils.getCurrencyFormat(placeOrderController.calculateVAT(
                 this.invoice.getOrder())));
-        int shippingFee = this.placeOrderController.calculateShippingFee(order);
+        int shippingFee = this.placeOrderController.calculateShippingFee(order.getLstOrderMedia(), OrderMedia.OrderType.NORMAL, order.getDeliveryInfo().getProvince());
         this.invoice.getOrder().setShippingFees(shippingFee);
         shippingFeeLabel.setText(Utils.getCurrencyFormat(shippingFee));
 
         
-        totalAllFee = subTotal * 11 / 10 + placeOrderController.calculateShippingFee(order);
+        totalAllFee = subTotal * 11 / 10 + shippingFee;
         priceLabel.setText(Utils.getCurrencyFormat(totalAllFee));
 
         try{
@@ -161,25 +161,6 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
             e.printStackTrace();
         }
     }
-
-//    public void addPaymentOptions() {
-//        // Add payment options
-//        Separator sep = new Separator();
-//        sep.setHalignment(HPos.CENTER);
-//        sep.setValignment(VPos.CENTER);
-//        sep.setPadding(new Insets(0,0,0,50));
-//        Label label = new Label();
-//        label.setText("Choose payment method");
-//        label.setFont(new Font(20));
-//        HBox hbox = new HBox();
-//        RadioButton radioBtn = new RadioButton("VNPay");
-//        radioBtn.setFont(new Font(18));
-//        hbox.getChildren().add(radioBtn);
-//        coverVBox.getChildren().add(sep);
-//        coverVBox.getChildren().add(label);
-//        coverVBox.getChildren().add(hbox);
-//    }
-
     
     // VNPay Stuffs
     private static VNPayOrderManager vnpayManager;
@@ -219,6 +200,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
 		this.invoice.setTransaction(trans);
 		try {
 			new InvoiceDAO().addFromStart(this.invoice);
+            placeOrderController.sendSuccessfulOrderMail(invoice);
 			
 			// Go back to main javafx thread
 			Platform.runLater(() -> {

@@ -25,6 +25,11 @@ public class CdAndLp extends Media{
 		super();
 	}
 
+	public CdAndLp(Boolean isCD){
+		super();
+		this.isCD = isCD;
+	}
+
 	public String getArtists() {
         return artists;
     }

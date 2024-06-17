@@ -5,6 +5,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.hust.ict.aims.controller.PlaceOrderController;
 import com.hust.ict.aims.entity.order.Order;
@@ -95,7 +97,7 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
 
     private PlaceOrderController placeOrderController;
 
-    public RushDeliveryInvoiceHandler(Stage stage, String screenPath, Order regularOrder, Order rushOrder, PlaceOrderController placeOrderController) throws IOException {
+    public RushDeliveryInvoiceHandler(Stage stage, String screenPath, Order order, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
 
         String imagePath = "/assets/images/Logo.png";
@@ -103,9 +105,9 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         aimsImage.setImage(im);
         this.placeOrderController = placeOrderController;
 
-        DeliveryInfo deliveryInfo = regularOrder.getDeliveryInfo();
+        DeliveryInfo deliveryInfo = order.getDeliveryInfo();
 
-        setUpData(regularOrder, rushOrder, deliveryInfo);
+        setUpData(order, deliveryInfo);
 
         // on mouse clicked, we back to home
         aimsImage.setOnMouseClicked(e -> {
@@ -113,7 +115,7 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         });
 
         payOrderBtn.setOnMouseClicked(e -> {
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(rushOrder.getLocalDate(), rushOrder.getLocalTime(),
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(order.getLocalDate(), order.getLocalTime(),
                     ZoneId.of("Asia/Ho_Chi_Minh"));
             InformationAlert infoAlert = new InformationAlert();
             infoAlert.createAlert("Notification", null, "Your rush delivery will arrive at "+
@@ -133,62 +135,75 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         });
     }
 
-    public void setUpData(Order regularOrder, Order rushOrder, DeliveryInfo deliveryInfo) {
+    public void setUpData(Order order, DeliveryInfo deliveryInfo) {
         recipientNameField.setText(deliveryInfo.getName());
         phoneField.setText(deliveryInfo.getPhone());
         addressField.setText(deliveryInfo.getAddress() + ", " + deliveryInfo.getProvince());
         emailField.setText(deliveryInfo.getEmail());
 
-        if(!regularOrder.getLstOrderMedia().isEmpty()) {
-			displayItems(regularOrder);
-		}
-        displayItems(rushOrder);
+        List<OrderMedia> regularOrder = new ArrayList<>();
+        List<OrderMedia> rushOrder = new ArrayList<>();
 
-        addPaymentOptions();
+        for(OrderMedia om : order.getLstOrderMedia()) {
+            if(om.getOrderType() == OrderMedia.OrderType.NORMAL) regularOrder.add(om);
+            else rushOrder.add(om);
+        }
+
+        if(!regularOrder.isEmpty()) {
+            Label orderLabel = new Label(); orderLabel.setFont(new Font(24));
+            orderLabel.setText("Regular Delivery Items:");
+            coverVBox.getChildren().add(orderLabel);
+			displayItems(regularOrder, false);
+		}
+        Label orderLabel = new Label(); orderLabel.setFont(new Font(24));
+        orderLabel.setText("Rush Delivery Items:");
+        coverVBox.getChildren().add(orderLabel);
+        displayItems(rushOrder, true);
+
+//        addPaymentOptions();
 
         // Display invoice for regular order
         int regSubtotal = 0;
-        if(regularOrder.getLstOrderMedia().isEmpty()) {
+        if(regularOrder.isEmpty()) {
 			regularDeliveryVBox.setVisible(false);
 		} else {
-            regSubtotal = placeOrderController.calculateSubTotal(regularOrder).getSubtotal();
+            regSubtotal = placeOrderController.calculateSubTotal(regularOrder);
             regularDeliverySubtotalLabel.setText(
                     Utils.getCurrencyFormat(regSubtotal)
             );
             regularDeliveryVatLabel.setText(Utils.getCurrencyFormat(regSubtotal / 10));
             regularDeliveryShipFeeLabel.setText(
-                    Utils.getCurrencyFormat(placeOrderController.calculateShippingFee(regularOrder))
+                    Utils.getCurrencyFormat(placeOrderController.calculateShippingFee(regularOrder,
+                            OrderMedia.OrderType.NORMAL, order.getDeliveryInfo().getProvince()))
             );
         }
 
         // Display invoice for rush order
-        int rushSubtotal = placeOrderController.calculateSubTotal(rushOrder).getSubtotal();
+        int rushSubtotal = placeOrderController.calculateSubTotal(rushOrder);
         rushDeliverySubtotalLabel.setText(
                 Utils.getCurrencyFormat(rushSubtotal)
         );
         rushDeliveryVatLabel.setText(Utils.getCurrencyFormat(rushSubtotal / 10));
         rushDeliveryShipFeeLabel.setText(
-                Utils.getCurrencyFormat(placeOrderController.calculateShippingFee(rushOrder))
+                Utils.getCurrencyFormat(placeOrderController.calculateShippingFee(rushOrder,
+                        OrderMedia.OrderType.RUSH, order.getDeliveryInfo().getProvince()))
         );
-
+        order.setShippingFees(
+                placeOrderController.calculateShippingFee(regularOrder,
+                        OrderMedia.OrderType.NORMAL, order.getDeliveryInfo().getProvince()) +
+                placeOrderController.calculateShippingFee(rushOrder,
+                        OrderMedia.OrderType.RUSH, order.getDeliveryInfo().getProvince())
+        );
+        order.setSubtotal(regSubtotal * 11 / 10 + rushSubtotal * 11 / 10
+                + order.getShippingFees() );
         priceLabel.setText(
                 Utils.getCurrencyFormat(
-                        regSubtotal * 11 / 10 + rushSubtotal * 11 / 10
-                            + placeOrderController.calculateShippingFee(regularOrder)
-                            + placeOrderController.calculateShippingFee(rushOrder)
+                        order.getSubtotal()
                 )
         );
     }
 
-    public void displayItems(Order order) {
-        Label orderLabel = new Label(); orderLabel.setFont(new Font(24));
-        if(order.getIsRushOrder()) {
-			orderLabel.setText("Rush Delivery Items:");
-		} else {
-			orderLabel.setText("Regular Delivery Items");
-		}
-        coverVBox.getChildren().add(orderLabel);
-
+    public void displayItems(List<OrderMedia> order, boolean isRushOrderMedia) {
         Pane emptyPane = new Pane(); emptyPane.setPrefWidth(70); emptyPane.setPrefHeight(100);
         Label lbl1 = new Label("Media"); lbl1.setFont(new Font(18)); lbl1.setPrefWidth(350); lbl1.setPrefHeight(23);
 //        Separator sep = new Separator(Orientation.VERTICAL); sep.setPrefHeight(200);
@@ -210,11 +225,14 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         ScrollPane scrollPane = new ScrollPane(); scrollPane.setPrefHeight(100); scrollPane.setPrefWidth(200);
         VBox itemsVBox = new VBox(); itemsVBox.setPrefHeight(90); itemsVBox.setPrefWidth(900);
         try{
-            for(Object om : order.getLstOrderMedia()) {
+            for(Object om : order) {
                 OrderMedia orderMedia = (OrderMedia) om;
-                MediaHandler mediaInvoiceScreen = new MediaHandler(Configs.INVOICE_MEDIA_PATH, orderMedia);
-                itemsVBox.getChildren().add(mediaInvoiceScreen.getContent());
-                itemsVBox.getChildren().add(new Separator());
+                OrderMedia.OrderType orderType = (isRushOrderMedia ? OrderMedia.OrderType.RUSH : OrderMedia.OrderType.NORMAL);
+                if(((OrderMedia) om).getOrderType() == orderType) {
+                    MediaHandler mediaInvoiceScreen = new MediaHandler(Configs.INVOICE_MEDIA_PATH, orderMedia);
+                    itemsVBox.getChildren().add(mediaInvoiceScreen.getContent());
+                    itemsVBox.getChildren().add(new Separator());
+                }
             }
         }
         catch(Exception e) {
@@ -224,23 +242,23 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         coverVBox.getChildren().add(scrollPane);
     }
 
-    public void addPaymentOptions() {
-        // Add payment options
-        Separator sep = new Separator();
-        sep.setHalignment(HPos.CENTER);
-        sep.setValignment(VPos.CENTER);
-        sep.setPadding(new Insets(0,0,0,50));
-        Label label = new Label();
-        label.setText("Choose payment method");
-        label.setFont(new Font(20));
-        HBox hbox = new HBox();
-        RadioButton radioBtn = new RadioButton("VNPay");
-        radioBtn.setFont(new Font(18));
-        hbox.getChildren().add(radioBtn);
-        coverVBox.getChildren().add(sep);
-        coverVBox.getChildren().add(label);
-        coverVBox.getChildren().add(hbox);
-    }
+//    public void addPaymentOptions() {
+//        // Add payment options
+//        Separator sep = new Separator();
+//        sep.setHalignment(HPos.CENTER);
+//        sep.setValignment(VPos.CENTER);
+//        sep.setPadding(new Insets(0,0,0,50));
+//        Label label = new Label();
+//        label.setText("Choose payment method");
+//        label.setFont(new Font(20));
+//        HBox hbox = new HBox();
+//        RadioButton radioBtn = new RadioButton("VNPay");
+//        radioBtn.setFont(new Font(18));
+//        hbox.getChildren().add(radioBtn);
+//        coverVBox.getChildren().add(sep);
+//        coverVBox.getChildren().add(label);
+//        coverVBox.getChildren().add(hbox);
+//    }
 
     public void requestPayOrder() {
 

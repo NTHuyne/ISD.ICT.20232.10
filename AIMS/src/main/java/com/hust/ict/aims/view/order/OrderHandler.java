@@ -156,7 +156,7 @@ public class OrderHandler extends BaseScreenHandler{
 		orderIdField.setText(String.valueOf(orderInfo.getId()));
 		subtotalField.setText(String.valueOf(orderInfo.getSubtotal()));
 		statusField.setText(orderInfo.getStatus().toString());
-		
+		totalField.setText(String.valueOf((int) (orderInfo.getSubtotal()*1.1) + orderInfo.getShippingFees()));
 		DeliveryInfo delivery = orderInfo.getDeliveryInfo();
 		recipientNameField.setText(delivery.getName());
 		phoneField.setText(delivery.getPhone());

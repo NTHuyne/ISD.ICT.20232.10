@@ -110,6 +110,10 @@ public class HomeScreenHandler extends BaseScreenHandler {
         numMediaInCart.setText(String.valueOf(Cart.getCart().getTotalMedia()) + " media");
         super.show();
     }
+    
+    public void emptyCart() {
+    	Cart.getCart().getListMedia().clear();
+    }
 
     public void setupData() {
         setBController(new HomeController());

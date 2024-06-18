@@ -87,4 +87,8 @@ public class Order {
 	public void setStatus(OrderStatus status) {
 		this.status = status;
 	}
+	
+	public String getTypeName() {
+		return "Normal order";
+	}
 }

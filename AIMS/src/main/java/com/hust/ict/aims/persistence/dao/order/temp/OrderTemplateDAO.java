@@ -54,10 +54,16 @@ public abstract class OrderTemplateDAO<T extends Order> extends TemplateDAO<T> {
         try {
         	order.setId(orderAccessDAO.add(order));
         	super.setNoReturnGeneratedKeys(true);
-        	super.add(order);
+        	
+        	// TemplateDAO & extra stuffs
+        	// Only do it if not normal order
+        	if (!(order instanceof Order)) {
+        		super.add(order);
+        	}
+        	
             connection.commit(); // Hoàn thành giao dịch
             
-            System.out.println("Successfully added " + this.getDaoName() + ": " + order);
+            System.out.println("(OrderTemplate) Successfully added " + this.getDaoName() + ": " + order);
             return order.getId();
         } catch (SQLException e) {
             connection.rollback(); // Hủy bỏ giao dịch

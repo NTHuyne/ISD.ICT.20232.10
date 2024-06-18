@@ -31,5 +31,8 @@ public class RushOrder extends Order {
 		this.instruction = instruction;
 	}
     
-    
+	@Override
+	public String getTypeName() {
+		return "Rush order";
+	}
 }

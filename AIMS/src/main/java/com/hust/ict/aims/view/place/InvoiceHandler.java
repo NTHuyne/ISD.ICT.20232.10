@@ -88,7 +88,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
     private Invoice invoice;
 
     private PlaceOrderController placeOrderController;
-
+    
     public InvoiceHandler(Stage stage, String screenPath, Invoice invoice, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
         this.invoice = invoice;
@@ -196,6 +196,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
 		
 		this.invoice.setTransaction(trans);
 		try {
+			System.out.println("WHAT");
 			new InvoiceDAO(new OrderDAO(new MediaDAO().getAllMedia())).addFromStart(this.invoice);
             placeOrderController.sendSuccessfulOrderMail(invoice);
 			

@@ -59,7 +59,7 @@ public class OrderAccessDAO extends TemplateDAO<Order> {
 	protected void addParams(PreparedStatement stmt, Order order) throws SQLException {
 		stmt.setInt(1, order.getShippingFees());
 		stmt.setInt(2, order.getSubtotal());
-		stmt.setString(3, order.getStatus().toString());
+		stmt.setString(3, OrderStatus.PENDING.toString());
 		stmt.setInt(4, order.getDeliveryInfo().getDeliveryId());
 	}
     
@@ -69,8 +69,14 @@ public class OrderAccessDAO extends TemplateDAO<Order> {
 		int deliveryId = deliveryDAO.add(order.getDeliveryInfo());
 		order.getDeliveryInfo().setDeliveryId(deliveryId);
 		
-		int orderId = super.add(order);
-		order.setId(orderId);
+		int orderId = -1;
+		try {
+			orderId = super.add(order);
+			order.setId(orderId);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		
 		this.addOrderMedias(order);
 		

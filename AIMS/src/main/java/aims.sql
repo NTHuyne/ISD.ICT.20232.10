@@ -128,7 +128,7 @@ CREATE TABLE PaymentTransaction(
 	transaction_id 			INTEGER 		NOT NULL AUTO_INCREMENT,
 	paymentTime				TIMESTAMP		NOT NULL,
 	paymentAmount			INTEGER			NOT NULL,
-	content					VARCHAR(50)		NOT NULL,
+	content					VARCHAR(500)		NOT NULL,
 
 	bankTransactionId		VARCHAR(50)		NOT NULL,
 	cardType				VARCHAR(50)		NOT NULL,

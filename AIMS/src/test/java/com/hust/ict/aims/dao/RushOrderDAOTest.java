@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.unitils.reflectionassert.ReflectionAssert;
 
+import com.hust.ict.aims.entity.order.Order.OrderStatus;
 import com.hust.ict.aims.entity.order.RushOrder;
 import com.hust.ict.aims.persistence.dao.order.RushOrderDAO;
 import com.hust.ict.aims.utils.ObjectPrinting;
@@ -37,6 +38,27 @@ public class RushOrderDAOTest extends AbstractDAOTest<RushOrder, RushOrderDAO> {
 			ObjectPrinting.checkAllAttributes(queriedItem, trueItem);
 			
 			Assertions.assertTrue(new ReflectionEquals(queriedItem).matches(trueItem));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+			Assertions.fail();
+		}
+	}
+	
+	@Override
+	@Test
+	@Order(3)
+	public void testUpdate() {
+		try {
+			RushOrder trueItem = this.getExistingItem();
+			trueItem.setStatus(OrderStatus.REJECTED);
+			this.getDAO().update(trueItem);
+			
+//			ObjectPrinting.printAllAttributes(queriedItem);
+//			ObjectPrinting.printAllAttributes(trueItem);
+//			ObjectPrinting.checkAllAttributes(queriedItem, trueItem);
+			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			

@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
+import com.hust.ict.aims.entity.order.Order.OrderStatus;
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
@@ -34,7 +35,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-public class ProductManagerProductController implements Initializable, DataChangedListener {
+public class ProductManagerOrderController implements Initializable, DataChangedListener {
 
 	private OrderDAO orderDAO;
 
@@ -46,8 +47,7 @@ public class ProductManagerProductController implements Initializable, DataChang
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		displayUsername();
+
 		this.orderShowData();
 	}
 
@@ -55,11 +55,6 @@ public class ProductManagerProductController implements Initializable, DataChang
 	public void onDataChanged() {
 		this.orderShowData();
 	}
-	
-
-
-	@FXML
-    private Button dashboard_btn;
 
     @FXML
     private Label delivery_address;
@@ -80,13 +75,7 @@ public class ProductManagerProductController implements Initializable, DataChang
     private Label delivery_province;
 
     @FXML
-    private Button logout_btn;
-
-    @FXML
     private AnchorPane main_form;
-
-    @FXML
-    private Button medias_btn;
 
     @FXML
     private TableColumn<OrderMedia, Integer> omedias_col_id;
@@ -116,16 +105,10 @@ public class ProductManagerProductController implements Initializable, DataChang
     private TableColumn<Order, String> orders_col_status;
 
     @FXML
+    private TableColumn<Order, String> orders_col_type;
+    
+    @FXML
     private TableView<Order> orders_tableView;
-
-    @FXML
-    private Label productManagerEmail;
-
-    @FXML
-    private Label username;
-
-    @FXML
-    private Button users_btn;
 
     @FXML
     void acceptOrder(ActionEvent event) {
@@ -137,6 +120,7 @@ public class ProductManagerProductController implements Initializable, DataChang
             errorAlert.createAlert("Error Message", null, e.getMessage());
             errorAlert.show();
 		}
+    	orders_tableView.refresh();
     }
 
 
@@ -150,6 +134,7 @@ public class ProductManagerProductController implements Initializable, DataChang
             errorAlert.createAlert("Error Message", null, e.getMessage());
             errorAlert.show();
 		}
+    	orders_tableView.refresh();
     }
     
 	private ObservableList<Order> orderListData;
@@ -164,11 +149,11 @@ public class ProductManagerProductController implements Initializable, DataChang
         
 	    orders_tableView.setItems(orderListData);
         
-	    orders_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
-	    orders_col_subtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
-	    orders_col_shippingFee.setCellValueFactory(new PropertyValueFactory<>("shippingFees"));
+	    orders_col_id.setCellValueFactory(col -> new SimpleIntegerProperty(col.getValue().getId()).asObject());
+	    orders_col_subtotal.setCellValueFactory(col -> new SimpleIntegerProperty(col.getValue().getSubtotal()).asObject());
+	    orders_col_shippingFee.setCellValueFactory(col -> new SimpleIntegerProperty(col.getValue().getShippingFees()).asObject());
 	    orders_col_status.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getStatus().toString()));
-
+	    orders_col_type.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getTypeName()));
 	}
 	
 	private void orderMediaShowData() {
@@ -185,6 +170,9 @@ public class ProductManagerProductController implements Initializable, DataChang
     @FXML
     void selectOrder(MouseEvent event) {
     	selectedOrder = orders_tableView.getSelectionModel().getSelectedItem();
+    	
+    	if (selectedOrder == null) return;
+    	
     	orderMediaShowData();
 
     	DeliveryInfo currentDelivery = selectedOrder.getDeliveryInfo();
@@ -203,39 +191,4 @@ public class ProductManagerProductController implements Initializable, DataChang
 
     }
 
-    
-    // TODO: Refactor this with productManager
-    @FXML
-    public void logout() {
-        try {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Are you sure you want to logout?");
-            Optional<ButtonType> option = alert.showAndWait();
-
-            if (option.get().equals(ButtonType.OK)) {
-
-                // hide trang admin
-                logout_btn.getScene().getWindow().hide();
-
-                // Quay ve login form
-                Stage stage = new Stage();
-                LoginHandler loginHandler = new LoginHandler(stage, Configs.LOGIN_PATH);
-                loginHandler.setScreenTitle("Login");
-                loginHandler.show();
-            }
-
-        } catch (Exception e) {
-            System.out.println("Uncessfully logout");
-            e.printStackTrace();
-        }
-    }
-    
-    public void displayUsername() {
-        String user = ProductManagerSession.username;
-        user = user.substring(0, 1).toUpperCase() + user.substring(1);
-        username.setText(user);
-        productManagerEmail.setText(ProductManagerSession.email);
-    }
 }

@@ -1,6 +1,7 @@
 package com.hust.ict.aims.view.place;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -8,15 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.hust.ict.aims.controller.PlaceOrderController;
+import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.order.RushOrder;
+import com.hust.ict.aims.entity.payment.PaymentTransaction;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
+import com.hust.ict.aims.exception.PaymentException;
+import com.hust.ict.aims.persistence.dao.media.MediaDAO;
+import com.hust.ict.aims.persistence.dao.order.OrderDAO;
+import com.hust.ict.aims.persistence.dao.payment.InvoiceDAO;
+import com.hust.ict.aims.subsystem.payment.IClient;
+import com.hust.ict.aims.subsystem.payment.vnpay.VNPayOrderManager;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
+import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.utils.InformationAlert;
 import com.hust.ict.aims.utils.Utils;
 import com.hust.ict.aims.view.BaseScreenHandler;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,13 +36,14 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
+public class RushDeliveryInvoiceHandler extends BaseScreenHandler implements IClient {
     @FXML
     private Label addressField;
 
@@ -91,9 +103,12 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
 
     private PlaceOrderController placeOrderController;
 
+    
+    private Invoice invoice;
     public RushDeliveryInvoiceHandler(Stage stage, String screenPath, RushOrder order, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
 
+        this.invoice = placeOrderController.createInvoice(order);
         String imagePath = "/assets/images/Logo.png";
         Image im = new Image(getClass().getResourceAsStream(imagePath));
         aimsImage.setImage(im);
@@ -128,6 +143,7 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         });
     }
 
+    private int totalAllFee;
     public void setUpData(RushOrder order, DeliveryInfo deliveryInfo) {
         recipientNameField.setText(deliveryInfo.getName());
         phoneField.setText(deliveryInfo.getPhone());
@@ -189,10 +205,10 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
         );
         order.setSubtotal(regSubtotal * 11 / 10 + rushSubtotal * 11 / 10
                 + order.getShippingFees() );
-        priceLabel.setText(
-                Utils.getCurrencyFormat(
-                        order.getSubtotal()
-                )
+        
+        totalAllFee = order.getSubtotal();
+        
+        priceLabel.setText(Utils.getCurrencyFormat(totalAllFee)
         );
     }
 
@@ -252,8 +268,65 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler {
 //        coverVBox.getChildren().add(label);
 //        coverVBox.getChildren().add(hbox);
 //    }
+    
 
+    @FXML
+    private AnchorPane loadingOverlay;
+
+    // VNPay Stuffs
+    private static VNPayOrderManager vnpayManager;
     public void requestPayOrder() {
-
+    	// ProgressIndicator pg;
+    	loadingOverlay.setVisible(true);
+    	if (vnpayManager == null) {
+    		System.out.println("VNPayOrderManager is running new.");
+    		vnpayManager = new VNPayOrderManager();
+    	}
+    	
+    	vnpayManager.payOrder(
+    		totalAllFee,
+			"Payment for " + invoice.getOrder().getDeliveryInfo().getName() + ", " 
+				+ invoice.getOrder().getLstOrderMedia().size() + " items",
+			this
+    	);
     }
+    
+	@Override
+	public void updateTransactionOnFailure(PaymentException exception) {
+		loadingOverlay.setVisible(false);
+		System.out.println("Transaction Failure!");
+		
+		Platform.runLater(() -> {
+			ErrorAlert failAlert = new ErrorAlert();
+			failAlert.createAlert("Transaction Failed", null, "Transaction failed.\nReason: " + exception.getMessage());
+			failAlert.show();
+		});
+	}
+
+	@Override
+	public void updateTransactionOnSuccess(PaymentTransaction trans) {
+		loadingOverlay.setVisible(false);
+		System.out.println("Transaction Success!!!");
+		
+		this.invoice.setTransaction(trans);
+		try {
+			new InvoiceDAO(new OrderDAO(new MediaDAO().getAllMedia())).addFromStart(this.invoice);
+            placeOrderController.sendSuccessfulOrderMail(invoice);
+			
+			// Go back to main javafx thread
+			Platform.runLater(() -> {
+		        InformationAlert successAlert = new InformationAlert();
+		        successAlert.createAlert("Transaction Completed", null, "Transaction completed successfully. Awating for product manager to confirm your order.");
+		        successAlert.show();
+		        homeScreenHandler.show();
+			});
+		} catch (SQLException e) {
+			e.printStackTrace();
+			Platform.runLater(() -> {
+				ErrorAlert failAlert = new ErrorAlert();
+				failAlert.createAlert("Transaction Failed", null, "Transaction failed.\nReason: Cannot insert to database?");
+				failAlert.show();
+			});
+		}
+	}
 }

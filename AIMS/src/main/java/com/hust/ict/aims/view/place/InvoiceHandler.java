@@ -205,6 +205,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
 		        InformationAlert successAlert = new InformationAlert();
 		        successAlert.createAlert("Transaction Completed", null, "Transaction completed successfully. Awating for product manager to confirm your order.");
 		        successAlert.show();
+		        homeScreenHandler.emptyCart();
 		        homeScreenHandler.show();
 			});
 		} catch (SQLException e) {

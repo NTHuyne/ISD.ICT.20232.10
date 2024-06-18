@@ -146,3 +146,121 @@ This is the source code for the AIMS capstone project for the ITSS course
 </details>
 
 </details>
+
+<details>
+  <summary>W13: 02/06/2024-08/06/2024 </summary>
+<br>
+<details>
+<summary>Nguyen Trong Huy</summary>
+<br>
+
+- Assigned tasks:
+    - Implement Login function
+
+</details>
+
+<details>
+<summary>Duong Van Huu</summary>
+<br>
+
+- Assigned tasks:
+    - Implement dashboard screen for product manager and CRUD products, viewing order
+
+</details>
+
+<details>
+<summary>Dang Ngoc Huy</summary>
+<br>
+
+- Assigned tasks:
+    - Implement dashboard screen for product manager and CRUD products, viewing order
+
+</details>
+
+<details>
+<summary>Dang Viet Hoang</summary>
+<br>
+
+- Assigned tasks:
+    - Complete connect VNPay to PayOrder
+
+</details>
+
+<details>
+<summary>Nguyen Chan Hung</summary>
+<br>
+
+- Assigned tasks:
+    - Complete Rush Delivery Form and Phone Validation
+
+</details>
+
+</details>
+
+<details>
+  <summary>W14 & W15: 08/06/2024-18/06/2024 </summary>
+<br>
+<details>
+<summary>Nguyen Trong Huy</summary>
+<br>
+
+- Assigned tasks:
+    - Email subsystem & integrate
+    - Design-level class diagram
+    - Control all documentations
+    - Fix bugs
+    - View Order Screen
+    - Customer: review order by order id and email
+    - Admin dashboard
+
+</details>
+
+<details>
+<summary>Duong Van Huu</summary>
+<br>
+
+- Assigned tasks:
+    - Customer: review order by order id and email
+    - SRS documentation
+    - Slides
+
+</details>
+
+<details>
+<summary>Dang Ngoc Huy</summary>
+<br>
+
+- Assigned tasks:
+    - Design-level class diagram
+    - Fix bug for image of media 
+
+</details>
+
+<details>
+<summary>Dang Viet Hoang</summary>
+<br>
+
+- Assigned tasks:
+    - ERD & DB Schema
+    - Issue redesign database for order
+    - Product manager: update order status
+
+</details>
+
+<details>
+<summary>Nguyen Chan Hung</summary>
+<br>
+
+- Assigned tasks:
+    - Admin dashboard
+    - Sequence diagram & Architecture design
+    - Slides
+
+</details>
+
+</details>
+
+## Sprint Backlog & Team Contribution 
+![alt text][def]
+
+[def]: ./Sprint%20Backlog%20&%20Team%20Contribution/Sprint%20Backlog%20&%20Team%20Contribution.png

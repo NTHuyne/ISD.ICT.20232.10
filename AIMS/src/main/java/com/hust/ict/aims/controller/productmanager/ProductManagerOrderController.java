@@ -2,21 +2,17 @@ package com.hust.ict.aims.controller.productmanager;
 
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
-import com.hust.ict.aims.entity.order.Order.OrderStatus;
 import com.hust.ict.aims.entity.order.OrderMedia;
-import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.persistence.dao.media.MediaDAO;
 import com.hust.ict.aims.persistence.dao.order.OrderDAO;
-import com.hust.ict.aims.utils.Configs;
+import com.hust.ict.aims.subsystem.email.IEmail;
+import com.hust.ict.aims.subsystem.email.simplejavamail.SimplejavamailManager;
 import com.hust.ict.aims.utils.ErrorAlert;
-import com.hust.ict.aims.view.login.LoginHandler;
-
+import com.hust.ict.aims.utils.InformationAlert;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -24,16 +20,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 public class ProductManagerOrderController implements Initializable, DataChangedListener {
 
@@ -114,6 +105,8 @@ public class ProductManagerOrderController implements Initializable, DataChanged
     void acceptOrder(ActionEvent event) {
     	try {
 			this.orderDAO.acceptOrder(selectedOrder);
+			
+			this.sendStateOrderMail(selectedOrder);
 		} catch (SQLException e) {
 			e.printStackTrace();
             ErrorAlert errorAlert = new ErrorAlert();
@@ -128,6 +121,8 @@ public class ProductManagerOrderController implements Initializable, DataChanged
     void rejectOrder(ActionEvent event) {
     	try {
 			this.orderDAO.rejectOrder(selectedOrder);
+			
+			this.sendStateOrderMail(selectedOrder);
 		} catch (SQLException e) {
 			e.printStackTrace();
             ErrorAlert errorAlert = new ErrorAlert();
@@ -191,4 +186,24 @@ public class ProductManagerOrderController implements Initializable, DataChanged
 
     }
 
+    private void sendStateOrderMail(Order order){
+        String destEmail = order.getDeliveryInfo().getEmail();
+        String invoiceId = String.valueOf(order.getId());
+        String recipientName = order.getDeliveryInfo().getName();
+        String phone = order.getDeliveryInfo().getPhone();
+        String address = order.getDeliveryInfo().getAddress() + ", " + order.getDeliveryInfo().getProvince();
+        // String totalAmount = String.valueOf(invoice.getTotalAmount()) + " VND";
+
+        IEmail mail = new SimplejavamailManager();
+
+        String emailContent = "AIMS GROUP-10 NOTIFICATION\n\nYour order has been " + order.getStatus().toString().toUpperCase() + "!\n"
+                + "Order ID: " + invoiceId + " (You can later use it to review your order in app)" + "\nRecipient's name: " + recipientName + "\nPhone number: " + phone + "\nAddress: " + address + "\nEmail: " + destEmail
+                + "\n\nThank you.";
+
+        mail.sendEmail(destEmail, emailContent, "AIMS GROUP-10 NOTIFICATION");
+        
+        InformationAlert successAlert = new InformationAlert();
+        successAlert.createAlert("Email sent", null, "Notification mail sent to user!");
+        successAlert.show();
+    }
 }

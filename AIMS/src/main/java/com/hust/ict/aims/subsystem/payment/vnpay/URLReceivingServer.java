@@ -13,14 +13,21 @@ public class URLReceivingServer {
 	private static String chosenPath = ReadPropertyValues.getProperty("server.getpath");
 	private static String serverHost = ReadPropertyValues.getProperty("server.host");
 	
+	private HTTPServer serverInstance;
+	
 	public HTTPServer build(IParamsProcessor processParams) {
 		// Initialize server on port
 		// https://github.com/curtcox/JLHTTP/blob/main/faq.md
-		HTTPServer serverInstance = new HTTPServer(chosenPort);
+	
+		if (serverInstance == null) {
+			serverInstance = new HTTPServer(chosenPort);
+		}
+		
 		System.out.println("Server initialized: " + serverHost + ":" + chosenPort + chosenPath);
 		
 		// default virtual host
-		VirtualHost host = serverInstance.getVirtualHost(null);  
+		VirtualHost host = serverInstance.getVirtualHost(null);
+		
 		host.addContext(chosenPath, new ContextHandler() {
 		    public int serve(Request req, Response resp) throws IOException {
 		        resp.getHeaders().add("Content-Type", "text/plain");

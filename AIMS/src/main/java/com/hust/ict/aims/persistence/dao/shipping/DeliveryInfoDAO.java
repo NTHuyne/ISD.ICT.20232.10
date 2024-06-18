@@ -39,9 +39,9 @@ public class DeliveryInfoDAO extends TemplateDAO<DeliveryInfo> {
     		res.getInt("delivery_id"),
         	res.getString("name"),
         	res.getString("phone"),
-        	res.getString("email"),
         	res.getString("province"),
         	res.getString("address"),
+        	res.getString("email"),
         	res.getString("message")
         );
     }

@@ -124,9 +124,11 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler implements ICl
         });
 
         payOrderBtn.setOnMouseClicked(e -> {
-        	// 
+        	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm MMM dd, yyyy");
+        	
             InformationAlert infoAlert = new InformationAlert();
-            infoAlert.createAlert("Notification", null, "Your rush delivery will arrive at " + order.getDeliveryTimeAsString() );
+            infoAlert.createAlert("Notification", null, "Your rush delivery will arrive at " 
+            		+ order.getDeliveryTime().atZone(ZoneId.systemDefault()).format(formatter) );
             
             infoAlert.show();
             requestPayOrder();
@@ -318,6 +320,7 @@ public class RushDeliveryInvoiceHandler extends BaseScreenHandler implements ICl
 		        InformationAlert successAlert = new InformationAlert();
 		        successAlert.createAlert("Transaction Completed", null, "Transaction completed successfully. Awating for product manager to confirm your order.");
 		        successAlert.show();
+		        homeScreenHandler.emptyCart();
 		        homeScreenHandler.show();
 			});
 		} catch (SQLException e) {

@@ -14,10 +14,6 @@ public class RushOrder extends Order {
 		this.instruction = instruction;
 	}
 
-	public String getDeliveryTimeAsString() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
-		return formatter.format(deliveryTime);
-	}
 	public Instant getDeliveryTime() {
 		return deliveryTime;
 	}

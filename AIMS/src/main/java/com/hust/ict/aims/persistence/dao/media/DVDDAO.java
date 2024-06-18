@@ -3,9 +3,6 @@ package com.hust.ict.aims.persistence.dao.media;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
-import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
@@ -90,5 +87,12 @@ public class DVDDAO extends MediaTemplateDAO<Dvd> {
 	@Override
 	public String getDaoName() {
 		return "DVD";
+	}
+	
+	
+	// Not used
+	@Override
+	protected String deleteQuery() throws SQLException {
+		throw new SQLException("Unimplemented delete for " + getDaoName() +" DAO");
 	}
 }

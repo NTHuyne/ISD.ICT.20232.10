@@ -38,7 +38,7 @@ public class CartService {
         return total;
     }
 
-    public List getListMedia(){
+    public List<CartMedia> getListMedia(){
         return lstCartMedia;
     }
 }

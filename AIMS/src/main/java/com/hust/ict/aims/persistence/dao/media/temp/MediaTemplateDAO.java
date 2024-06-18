@@ -8,8 +8,6 @@ import java.util.List;
 
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.persistence.dao.TemplateDAO;
-import com.hust.ict.aims.utils.ErrorAlert;
-import com.hust.ict.aims.utils.InformationAlert;
 
 public abstract class MediaTemplateDAO<T extends Media> extends TemplateDAO<T> {
 	protected MediaAccessDAO mediaAccessDAO = new MediaAccessDAO(connection);	// Reusing connection
@@ -67,4 +65,10 @@ public abstract class MediaTemplateDAO<T extends Media> extends TemplateDAO<T> {
             connection.setAutoCommit(true); // Restore auto-commit
         }
     }
+
+	// Not used
+	@Override
+	protected String deleteQuery() throws SQLException {
+		throw new SQLException("Use delete from MediaDAO instead!");
+	}
 }

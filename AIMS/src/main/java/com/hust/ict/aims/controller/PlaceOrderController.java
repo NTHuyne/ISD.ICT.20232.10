@@ -3,13 +3,11 @@ package com.hust.ict.aims.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hust.ict.aims.entity.cart.Cart;
 import com.hust.ict.aims.entity.cart.CartMedia;
 import com.hust.ict.aims.entity.invoice.Invoice;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
-import com.hust.ict.aims.exception.placement.RushOrderUnsupportedException;
 import com.hust.ict.aims.service.CartService;
 import com.hust.ict.aims.subsystem.email.IEmail;
 import com.hust.ict.aims.subsystem.email.simplejavamail.SimplejavamailManager;
@@ -17,10 +15,10 @@ import javafx.scene.control.TextField;
 
 public class PlaceOrderController extends BaseController{
     private CartService cartService;
-    private Cart cart;
-    private DeliveryInfo deliveryInfo;
-    private Order regularOrder;
-    private Order rushOrder;
+//    private Cart cart;
+//    private DeliveryInfo deliveryInfo;
+//    private Order regularOrder;
+//    private Order rushOrder;
 
     public PlaceOrderController() {
         this.cartService = new CartService();
@@ -60,18 +58,6 @@ public class PlaceOrderController extends BaseController{
 			}
         }
         return false;
-    }
-
-    public void categorizeOrder(Order order) {
-        List<OrderMedia> lstOrderMedia = new ArrayList<>();
-        for(OrderMedia orderMedia : order.getLstOrderMedia()) {
-            if(orderMedia.getMedia().isRushOrderSupported()) {
-                orderMedia.setOrderType(OrderMedia.OrderType.RUSH);
-            }
-            else {
-                orderMedia.setOrderType(OrderMedia.OrderType.NORMAL);
-            }
-        }
     }
 
     public int calculateSubTotal(List<OrderMedia> lstOrderMedia) {
@@ -127,16 +113,27 @@ public class PlaceOrderController extends BaseController{
     }
 
     public Order createOrder(DeliveryInfo deliveryInfo) {
-        Order order = new Order();
-        order.setDeliveryInfo(deliveryInfo);
-        for(Object obj : cartService.getListMedia()) {
-            CartMedia cartMedia = (CartMedia) obj;
-            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity());
-            order.getLstOrderMedia().add(orderMedia);
+    	List<OrderMedia> medialist = new ArrayList<OrderMedia>();
+    	
+        for(CartMedia cartMedia : cartService.getListMedia()) {
+            OrderMedia orderMedia = new OrderMedia(cartMedia.getMedia(), cartMedia.getQuantity(), OrderMedia.OrderType.NORMAL);
+            medialist.add(orderMedia);
         }
-        order.setIsRushOrder(false);
-        return order;
+    	
+        return new Order(0, 0, 0, null, deliveryInfo, medialist);
     }
+    
+
+    public void categorizeOrder(Order order) {
+        for(OrderMedia orderMedia : order.getLstOrderMedia()) {
+            if(orderMedia.getMedia().isRushOrderSupported()) {
+                orderMedia.setOrderType(OrderMedia.OrderType.RUSH);
+            }  else {
+                orderMedia.setOrderType(OrderMedia.OrderType.NORMAL);
+            }
+        }
+    }
+
 
     public Invoice createInvoice(Order order) {
         return new Invoice(order);

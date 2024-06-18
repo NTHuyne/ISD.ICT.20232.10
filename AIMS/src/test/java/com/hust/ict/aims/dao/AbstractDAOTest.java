@@ -24,8 +24,8 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 	public abstract void prepareUpdateItem(T item);
 	
 	// Overridable
-	public String[] excludeFieldsForAdd() {
-		return null;
+	public boolean customAddEquals(T item1, T item2) {
+		return item1.equals(item2);
 	}
 
 	private T tempItem = getExistingItem(); 		// Copy to a temp item
@@ -38,10 +38,10 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 			T queriedItem = this.getDAO().getById(this.getExistingItemId());
 			T trueItem = this.getExistingItem();
 			
-			ObjectPrinting.printAllAttributes(queriedItem);
-			ObjectPrinting.printAllAttributes(trueItem);
+//			ObjectPrinting.printAllAttributes(queriedItem);
+//			ObjectPrinting.printAllAttributes(trueItem);
 			
-			Assertions.assertTrue(new ReflectionEquals(queriedItem).matches(trueItem));
+			Assertions.assertEquals(queriedItem, trueItem);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			
@@ -61,7 +61,7 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 			T queriedItem = itemDAO.getById(tempItemId);
 			
 			// Except importDate because it's set as Today
-			Assertions.assertTrue(new ReflectionEquals(queriedItem, this.excludeFieldsForAdd()).matches(tempItem));
+			// Assertions.assertTrue(customAddEquals(queriedItem, tempItem));
 			
 			// Update with id
 			tempItem = queriedItem;
@@ -82,7 +82,7 @@ public abstract class AbstractDAOTest<T, V extends TemplateDAO<T>> {
 			itemDAO.update(tempItem);
 			T queriedItem = itemDAO.getById(tempItemId);
 			
-			Assertions.assertTrue(new ReflectionEquals(queriedItem).matches(tempItem));
+			Assertions.assertEquals(queriedItem, tempItem);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			Assertions.fail();

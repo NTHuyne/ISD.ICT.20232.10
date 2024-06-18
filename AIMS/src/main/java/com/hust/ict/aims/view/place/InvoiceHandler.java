@@ -10,6 +10,8 @@ import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.payment.PaymentTransaction;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
 import com.hust.ict.aims.exception.PaymentException;
+import com.hust.ict.aims.persistence.dao.media.MediaDAO;
+import com.hust.ict.aims.persistence.dao.order.OrderDAO;
 import com.hust.ict.aims.persistence.dao.payment.InvoiceDAO;
 import com.hust.ict.aims.subsystem.payment.IClient;
 import com.hust.ict.aims.subsystem.payment.vnpay.VNPayOrderManager;
@@ -22,20 +24,14 @@ import com.hust.ict.aims.view.BaseScreenHandler;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
-import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class InvoiceHandler extends BaseScreenHandler implements IClient {
@@ -92,7 +88,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
     private Invoice invoice;
 
     private PlaceOrderController placeOrderController;
-
+    
     public InvoiceHandler(Stage stage, String screenPath, Invoice invoice, PlaceOrderController placeOrderController) throws IOException {
         super(stage, screenPath);
         this.invoice = invoice;
@@ -200,7 +196,8 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
 		
 		this.invoice.setTransaction(trans);
 		try {
-			new InvoiceDAO().addFromStart(this.invoice);
+			System.out.println("WHAT");
+			new InvoiceDAO(new OrderDAO(new MediaDAO().getAllMedia())).addFromStart(this.invoice);
             placeOrderController.sendSuccessfulOrderMail(invoice);
 			
 			// Go back to main javafx thread

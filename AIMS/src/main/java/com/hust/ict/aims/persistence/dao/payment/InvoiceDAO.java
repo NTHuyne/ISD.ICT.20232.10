@@ -10,10 +10,14 @@ import com.hust.ict.aims.persistence.dao.TemplateDAO;
 import com.hust.ict.aims.persistence.dao.order.OrderDAO;
 
 public class InvoiceDAO extends TemplateDAO<Invoice> {
-	private OrderDAO orderDAO = new OrderDAO(connection);
+	private OrderDAO orderDAO;
 	private PaymentTransactionDAO transDAO = new PaymentTransactionDAO(connection);
-	
-	
+
+	public InvoiceDAO(OrderDAO orderDAO) {
+		super();
+		this.orderDAO = orderDAO;
+	}
+
 	@Override
 	protected String addQuery() {
 		return "INSERT INTO Invoice (totalAmount, transaction_id, order_id) VALUES (?, ?, ?)";
@@ -39,7 +43,11 @@ public class InvoiceDAO extends TemplateDAO<Invoice> {
         );
     }
     
-    
+	@Override
+	protected String getAllQuery() throws SQLException {
+		return "SELECT * FROM Invoice;";
+	}
+	
     @Override
     protected String getByIdQuery() throws SQLException {
         return "SELECT * FROM Invoice WHERE invoice_id = ?;";
@@ -64,5 +72,16 @@ public class InvoiceDAO extends TemplateDAO<Invoice> {
     	invoice.getTransaction().setTransactionId(transId);
     	
     	return super.add(invoice);
+	}
+
+	
+	// Unused
+	@Override
+	protected String updateQuery() throws SQLException {
+		throw new SQLException("Unimplemented Update for " + getDaoName() +" DAO");
+	}
+	@Override
+	protected void updateParams(PreparedStatement stmt, Invoice item) throws SQLException {
+		throw new SQLException("Unimplemented Update for " + getDaoName() +" DAO");
 	}
 }

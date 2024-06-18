@@ -3,9 +3,6 @@ package com.hust.ict.aims.persistence.dao.media;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
-import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.persistence.dao.media.temp.MediaTemplateDAO;
 
@@ -83,4 +80,7 @@ public class CDDAO extends MediaTemplateDAO<CdAndLp> {
 	public String getDaoName() {
 		return "CD/LP";
 	}
+	
+	
+
 }

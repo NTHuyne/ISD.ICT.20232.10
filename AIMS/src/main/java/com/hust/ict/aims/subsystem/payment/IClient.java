@@ -7,3 +7,5 @@ public interface IClient {
 	void updateTransactionOnFailure(PaymentException exception);
 	void updateTransactionOnSuccess(PaymentTransaction trans);
 }
+
+

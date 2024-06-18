@@ -4,6 +4,8 @@ import java.sql.SQLException;
 
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+
+import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.entity.media.Dvd;
 import com.hust.ict.aims.persistence.dao.media.DVDDAO;
 import com.hust.ict.aims.persistence.dao.media.MediaDAO;
@@ -35,12 +37,6 @@ public class DvdDAOTest extends AbstractDAOTest<Dvd, DVDDAO>{
 	public void prepareUpdateItem(Dvd item) {
 		item.setTitle("UPDATING");
 		item.setSubtitles("Spanish");
-	}
-	
-	@Override
-	public String[] excludeFieldsForAdd() {
-		String[] exclude = {"importDate"};
-		return exclude;
 	}
 	
 	@Override

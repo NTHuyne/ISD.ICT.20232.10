@@ -1,15 +1,25 @@
 package com.hust.ict.aims.controller.productmanager;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
+import com.hust.ict.aims.entity.productmanager.ProductManagerSession;
+import com.hust.ict.aims.entity.shipping.DeliveryInfo;
+import com.hust.ict.aims.persistence.dao.media.MediaDAO;
+import com.hust.ict.aims.persistence.dao.order.OrderDAO;
 import com.hust.ict.aims.utils.Configs;
+import com.hust.ict.aims.utils.ErrorAlert;
 import com.hust.ict.aims.view.login.LoginHandler;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,23 +29,34 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class ProductManagerProductController implements Initializable, DataChangedListener {
 
+	private OrderDAO orderDAO;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// TODO Auto-generated method stub
+		try {
+			this.orderDAO = new OrderDAO(new MediaDAO().getAllMedia());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
+		displayUsername();
+		this.orderShowData();
 	}
 
 	@Override
 	public void onDataChanged() {
-		// TODO Auto-generated method stub
-		
+		this.orderShowData();
 	}
+	
+
 
 	@FXML
     private Button dashboard_btn;
@@ -108,20 +129,72 @@ public class ProductManagerProductController implements Initializable, DataChang
 
     @FXML
     void acceptOrder(ActionEvent event) {
-    	
+    	try {
+			this.orderDAO.acceptOrder(selectedOrder);
+		} catch (SQLException e) {
+			e.printStackTrace();
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
+		}
     }
 
 
     @FXML
     void rejectOrder(ActionEvent event) {
-
+    	try {
+			this.orderDAO.rejectOrder(selectedOrder);
+		} catch (SQLException e) {
+			e.printStackTrace();
+            ErrorAlert errorAlert = new ErrorAlert();
+            errorAlert.createAlert("Error Message", null, e.getMessage());
+            errorAlert.show();
+		}
     }
+    
+	private ObservableList<Order> orderListData;
 
+	private void orderShowData() {
+        try {
+        	orderListData = FXCollections.observableArrayList(orderDAO.getAll());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+	    orders_tableView.setItems(orderListData);
+        
+	    orders_col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
+	    orders_col_subtotal.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+	    orders_col_shippingFee.setCellValueFactory(new PropertyValueFactory<>("shippingFees"));
+	    orders_col_status.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getStatus().toString()));
+
+	}
+	
+	private void orderMediaShowData() {
+		omedias_tableView.setItems(FXCollections.observableArrayList(selectedOrder.getLstOrderMedia()));
+		
+		omedias_col_id.setCellValueFactory(col -> new SimpleIntegerProperty(col.getValue().getMedia().getMediaId()).asObject());
+		omedias_col_quantity.setCellValueFactory(col -> new SimpleIntegerProperty(col.getValue().getQuantity()).asObject());
+		omedias_col_title.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getMedia().getTitle()));
+		omedias_col_orderType.setCellValueFactory(col -> new SimpleStringProperty(col.getValue().getOrderType().toString()));
+	}
+
+    private Order selectedOrder;
+    
     @FXML
     void selectOrder(MouseEvent event) {
-    	Order order = orders_tableView.getSelectionModel().getSelectedItem();
+    	selectedOrder = orders_tableView.getSelectionModel().getSelectedItem();
+    	orderMediaShowData();
 
-        // int num = medias_tableView.getSelectionModel().getSelectedIndex();
+    	DeliveryInfo currentDelivery = selectedOrder.getDeliveryInfo();
+    	
+        delivery_address.setText(currentDelivery.getAddress());
+		delivery_email.setText(currentDelivery.getEmail());
+		delivery_instruction.setText(currentDelivery.getShippingInstructions());
+		delivery_name.setText(currentDelivery.getName());
+		delivery_phone.setText(currentDelivery.getPhone());
+		delivery_province.setText(currentDelivery.getProvince());
     }
     
 
@@ -157,5 +230,12 @@ public class ProductManagerProductController implements Initializable, DataChang
             System.out.println("Uncessfully logout");
             e.printStackTrace();
         }
+    }
+    
+    public void displayUsername() {
+        String user = ProductManagerSession.username;
+        user = user.substring(0, 1).toUpperCase() + user.substring(1);
+        username.setText(user);
+        productManagerEmail.setText(ProductManagerSession.email);
     }
 }

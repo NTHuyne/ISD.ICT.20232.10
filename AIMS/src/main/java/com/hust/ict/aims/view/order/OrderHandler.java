@@ -123,7 +123,7 @@ public class OrderHandler extends BaseScreenHandler{
             	
             	List<OrderMedia> mediaInOrder;
             	try {
-                	Order orderInfo = viewOrderController.getOrderById(Integer.parseInt(inputOrder), inputEmail, new OrderDAO());
+                	Order orderInfo = viewOrderController.getOrderById(Integer.parseInt(inputOrder), inputEmail);
                     // Hiển thị GridPane và fill thông tin
                     gridPane.setVisible(true);
                     noOrderFoundLabel.setVisible(false);

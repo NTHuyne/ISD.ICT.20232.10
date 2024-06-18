@@ -37,12 +37,6 @@ public class BookDAOTest extends AbstractDAOTest<Book, BookDAO>{
 	}
 	
 	@Override
-	public String[] excludeFieldsForAdd() {
-		String[] exclude = {"importDate"};
-		return exclude;
-	}
-	
-	@Override
 	public void deleteStatement(int id) throws SQLException {
 		// Doesn't implement delete because that's mediaDAO responsibility
 		new MediaDAO().deleteMedia(id);

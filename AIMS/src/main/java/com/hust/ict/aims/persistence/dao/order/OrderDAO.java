@@ -8,16 +8,13 @@ import java.util.Map;
 
 import com.hust.ict.aims.entity.media.Media;
 import com.hust.ict.aims.entity.order.Order;
+import com.hust.ict.aims.entity.order.Order.OrderStatus;
 import com.hust.ict.aims.entity.order.RushOrder;
 import com.hust.ict.aims.persistence.dao.media.BookDAO;
 import com.hust.ict.aims.persistence.dao.media.CDDAO;
 import com.hust.ict.aims.persistence.dao.media.DVDDAO;
 
 public class OrderDAO {
-	public OrderDAO() {
-		
-	}
-	
 	private Map<Integer, Media> mediaMap;
 	
 	public OrderDAO(Collection<Media> allMedias) {
@@ -60,5 +57,15 @@ public class OrderDAO {
         } else {
             return new NormalOrderDAO().add(order);
         }
+	}
+	
+	public void acceptOrder(Order order) throws SQLException {
+		order.setStatus(OrderStatus.ACCEPTED);
+		new NormalOrderDAO().update(order);
+	}
+	
+	public void rejectOrder(Order order) throws SQLException {
+		order.setStatus(OrderStatus.REJECTED);
+		new NormalOrderDAO().update(order);
 	}
 }

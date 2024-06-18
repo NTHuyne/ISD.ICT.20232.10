@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 public class RushOrder extends Order {
-	private static final DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
     private Instant deliveryTime;
     private String instruction;
 	
@@ -16,6 +15,7 @@ public class RushOrder extends Order {
 	}
 
 	public String getDeliveryTimeAsString() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT);
 		return formatter.format(deliveryTime);
 	}
 	public Instant getDeliveryTime() {

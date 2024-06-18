@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
+import org.unitils.reflectionassert.ReflectionAssert;
 
 import com.hust.ict.aims.entity.order.RushOrder;
 import com.hust.ict.aims.persistence.dao.order.RushOrderDAO;
@@ -22,7 +23,7 @@ public class RushOrderDAOTest extends AbstractDAOTest<RushOrder, RushOrderDAO> {
 	public RushOrder getExistingItem() {
 		return AllDAOData.getExistingRushOrder();
 	}
-
+	
 	@Override
 	@Test
 	@Order(1)
@@ -31,8 +32,11 @@ public class RushOrderDAOTest extends AbstractDAOTest<RushOrder, RushOrderDAO> {
 			RushOrder queriedItem = this.getDAO().getById(this.getExistingItemId());
 			RushOrder trueItem = this.getExistingItem();
 			
-			Assertions.assertTrue(new ReflectionEquals(queriedItem.getDeliveryInfo()).matches(trueItem.getDeliveryInfo()));
-			Assertions.assertTrue(new ReflectionEquals(queriedItem.getDeliveryTime()).matches(trueItem.getDeliveryTime()));
+//			ObjectPrinting.printAllAttributes(queriedItem);
+//			ObjectPrinting.printAllAttributes(trueItem);
+			ObjectPrinting.checkAllAttributes(queriedItem, trueItem);
+			
+			Assertions.assertTrue(new ReflectionEquals(queriedItem).matches(trueItem));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			

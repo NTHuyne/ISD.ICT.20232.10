@@ -4,6 +4,8 @@ import java.sql.SQLException;
 
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+
+import com.hust.ict.aims.entity.media.Book;
 import com.hust.ict.aims.entity.media.CdAndLp;
 import com.hust.ict.aims.persistence.dao.media.CDDAO;
 import com.hust.ict.aims.persistence.dao.media.MediaDAO;
@@ -36,12 +38,6 @@ public class CdDAOTest extends AbstractDAOTest<CdAndLp, CDDAO>{
 	public void prepareUpdateItem(CdAndLp item) {
 		item.setTitle("UPDATING");
 		item.setRecordLabel("Universal Music Group");
-	}
-	
-	@Override
-	public String[] excludeFieldsForAdd() {
-		String[] exclude = {"importDate"};
-		return exclude;
 	}
 	
 	@Override

@@ -80,6 +80,22 @@ public class UserDAO {
         }
     }
 
+    public void updateUserPassword(String password, int id) {
+        Connection conn = null;
+        String query = "UPDATE User SET password = \"" + password +
+                "\"" +
+                "WHERE user_id = " + id;
+
+        try {
+            conn = ConnectJDBC.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.executeUpdate();
+        }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void deleteUser(User user) {
         Connection conn = null;
         String query = "DELETE FROM User WHERE user_id = " + user.getId();

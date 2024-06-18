@@ -30,6 +30,7 @@ module com.hust.ict.aims {
 	requires javafx.base;
 	requires org.mockito;
     requires org.simplejavamail.core;
+    requires org.checkerframework.checker.qual;
     opens com.hust.ict.aims.entity.media to javafx.base;
     opens com.hust.ict.aims.entity.user to javafx.base;
 

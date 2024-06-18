@@ -68,8 +68,6 @@ public class LoginHandler extends BaseScreenHandler {
         } else {
             try {
                 User user = loginController.validateLogin(username.getText(), password.getText(), new UserDAO());
-                ProductManagerSession.username = user.getUsername();
-                ProductManagerSession.email = user.getEmail();
                 if (user.getIsAdmin()){
                     System.out.println("Admin logged in");
                     AdminSession.username = user.getUsername();
@@ -84,6 +82,10 @@ public class LoginHandler extends BaseScreenHandler {
                     stage1.show();
                 }
                 else {
+                    ProductManagerSession.setPassword(user.getPassword());
+                    ProductManagerSession.setId(user.getId());
+                    ProductManagerSession.username = user.getUsername();
+                    ProductManagerSession.email = user.getEmail();
                     Stage stage1 = (Stage) username.getScene().getWindow();
                     stage1.close();
                     Parent root = FXMLLoader.load(getClass().getResource(Configs.PRODUCT_MANAGER_PATH));

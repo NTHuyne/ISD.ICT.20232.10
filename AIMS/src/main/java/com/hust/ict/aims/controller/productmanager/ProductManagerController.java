@@ -17,8 +17,12 @@ import com.hust.ict.aims.view.login.LoginHandler;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -40,6 +44,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class ProductManagerController implements Initializable, DataChangedListener {
+
+    @FXML
+    public Button changepassword_btn;
 
     @Override
     public void onDataChanged() {
@@ -524,4 +531,13 @@ public class ProductManagerController implements Initializable, DataChangedListe
         productManagerEmail.setText(ProductManagerSession.email);
     }
 
+    public void changePasswordBtn() throws IOException{
+        Parent root = FXMLLoader.load(getClass().getResource(Configs.CHANGE_PASSWORD_PATH));
+        Stage stage1 = new Stage();
+        Scene scene1 = new Scene(root);
+
+        stage1.setTitle("Change account password");
+        stage1.setScene(scene1);
+        stage1.show();
+    }
 }

@@ -12,11 +12,9 @@ import com.hust.ict.aims.subsystem.payment.IPayment;
 
 public class VNPayOrderManager implements IPayment, IParamsProcessor {
 	private IClient client;
-	private VNPayDisplay vnpayDisplay;
 
 	public VNPayOrderManager() {
 		super();
-		this.vnpayDisplay = new VNPayDisplay(this);
 	}
 
 	@Override
@@ -42,7 +40,7 @@ public class VNPayOrderManager implements IPayment, IParamsProcessor {
 		try {
 			String queryURL = newRequest.buildQueryURL();
 			System.out.println(queryURL);
-			vnpayDisplay.sendPayOrder(queryURL);
+			new VNPayDisplay(this).sendPayOrder(queryURL);
 
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block

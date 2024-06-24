@@ -7,7 +7,6 @@ import com.hust.ict.aims.controller.ViewOrderController;
 import com.hust.ict.aims.entity.order.Order;
 import com.hust.ict.aims.entity.order.OrderMedia;
 import com.hust.ict.aims.entity.shipping.DeliveryInfo;
-import com.hust.ict.aims.persistence.dao.order.OrderDAO;
 import com.hust.ict.aims.view.BaseScreenHandler;
 
 import javafx.beans.property.SimpleIntegerProperty;

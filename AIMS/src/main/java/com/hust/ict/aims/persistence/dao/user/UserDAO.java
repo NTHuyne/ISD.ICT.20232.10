@@ -64,15 +64,15 @@ public class UserDAO {
 
     public void updateUser(User user) {
         Connection conn = null;
-        String query = "UPDATE User SET username = \"" + user.getUsername() +
-                                    "\", password = \"" + user.getPassword() +
-                                    "\", email = \"" + user.getEmail() +
-                                    "\", isAdmin = " + (user.getIsAdmin() ? "TRUE " : "FALSE ") +
-                                    "WHERE user_id = " + user.getId();
 
         try {
             conn = ConnectJDBC.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement("UPDATE User SET username = ?, password = ?, email = ?, isAdmin = ? WHERE user_id = ?;");
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getEmail());
+            stmt.setBoolean(4, user.getIsAdmin());
+            stmt.setInt(5, user.getId());
             stmt.executeUpdate();
         }
         catch(SQLException e) {
@@ -82,13 +82,12 @@ public class UserDAO {
 
     public void updateUserPassword(String password, int id) {
         Connection conn = null;
-        String query = "UPDATE User SET password = \"" + password +
-                "\"" +
-                "WHERE user_id = " + id;
 
         try {
             conn = ConnectJDBC.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement("UPDATE User SET password = ? WHERE user_id = ?;");
+            stmt.setString(1, password);
+            stmt.setInt(2, id);
             stmt.executeUpdate();
         }
         catch(SQLException e) {
@@ -96,13 +95,13 @@ public class UserDAO {
         }
     }
 
-    public void deleteUser(User user) {
+    public void deleteUser(int id) {
         Connection conn = null;
-        String query = "DELETE FROM User WHERE user_id = " + user.getId();
 
         try {
             conn = ConnectJDBC.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM User WHERE user_id = ?;");
+            stmt.setInt(1, id);
             stmt.executeUpdate();
         }
         catch(SQLException e) {
@@ -112,15 +111,15 @@ public class UserDAO {
 
     public void addUser(User user) {
         Connection conn = null;
-        String query = "INSERT INTO User (username, password, email, isAdmin)" +
-                        " VALUES (\'" + user.getUsername() +
-                        "\', \'" + user.getPassword() +
-                        "\', \'" + user.getEmail() +
-                        "\', " + user.getIsAdmin() + ")";
 
         try {
             conn = ConnectJDBC.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query);
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO User (username, password, email, isAdmin) VALUES (?, ?, ?, ?)");
+            
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+            stmt.setString(3, user.getEmail());
+            stmt.setBoolean(4, user.getIsAdmin());
             stmt.executeUpdate();
         }
         catch (SQLException e) {

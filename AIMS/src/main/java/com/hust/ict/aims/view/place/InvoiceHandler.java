@@ -14,6 +14,7 @@ import com.hust.ict.aims.persistence.dao.media.MediaDAO;
 import com.hust.ict.aims.persistence.dao.order.OrderDAO;
 import com.hust.ict.aims.persistence.dao.payment.InvoiceDAO;
 import com.hust.ict.aims.subsystem.payment.IClient;
+import com.hust.ict.aims.subsystem.payment.IPayment;
 import com.hust.ict.aims.subsystem.payment.vnpay.VNPayOrderManager;
 import com.hust.ict.aims.utils.Configs;
 import com.hust.ict.aims.utils.ConfirmationAlert;
@@ -160,7 +161,7 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
     }
     
     // VNPay Stuffs
-    private static VNPayOrderManager vnpayManager;
+    private static IPayment vnpayManager;
     public void requestPayOrder() {
     	// ProgressIndicator pg;
     	loadingOverlay.setVisible(true);

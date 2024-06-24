@@ -219,7 +219,7 @@ public class AdminController implements Initializable {
             throw new RuntimeException();
         }
         try {
-            userDAO.deleteUser(user);
+            userDAO.deleteUser(user.getId());
             UserEmailSender.sendUserEmail(user, "Your AIMS' account has been deleted by " + AdminSession.getEmail() + " \n");
             userShowData();
             deselectUser();

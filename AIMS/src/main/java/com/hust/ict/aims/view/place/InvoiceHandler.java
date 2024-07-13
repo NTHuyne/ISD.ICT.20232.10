@@ -109,6 +109,8 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
         });
 
         payOrderButton.setOnMouseClicked(e -> {
+    		System.out.println("VNPayOrderManager is running new.");
+    		vnpayManager = new VNPayOrderManager();
             requestPayOrder();
         });
 
@@ -165,10 +167,6 @@ public class InvoiceHandler extends BaseScreenHandler implements IClient {
     public void requestPayOrder() {
     	// ProgressIndicator pg;
     	loadingOverlay.setVisible(true);
-    	if (vnpayManager == null) {
-    		System.out.println("VNPayOrderManager is running new.");
-    		vnpayManager = new VNPayOrderManager();
-    	}
     	
     	vnpayManager.payOrder(
     		totalAllFee,
